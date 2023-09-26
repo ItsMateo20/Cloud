@@ -24,7 +24,7 @@ body {
 
 form#auth {
     width: 600px;
-    border-radius: 39px;
+    border-radius: 20px;
     background: #3c3c3c;
     box-shadow: -32px 32px 82px #222222,
         32px -32px 82px #565656;
