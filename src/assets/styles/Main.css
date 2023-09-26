@@ -1,17 +1,49 @@
 body {
-    background: #f5f5f5;
+    background: #3c3c3c;
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
-    color: #444444;
+    color: #c8c8c8;
     margin: 0;
     padding: 0;
 }
 
-form#login {
+:root {
+    --bs-secondary-color: #c5c5c5;
+    --bs-body-bg: #676767;
+    --bs-body-color: #353535;
+    --bs-border-color: #747474;
+}
+
+.form-control:valid,
+.form-control:focus {
+    background-color: var(--bs-body-bg);
+    outline: none;
+    border-color: var(--bs-secondary-color);
+    box-shadow: none;
+}
+
+form#auth {
     width: 600px;
-    border-radius: 25px;
-    background: #ffffff;
-    box-shadow: -50px 50px 100px #dedede,
-        50px -50px 100px #ffffff;
+    border-radius: 39px;
+    background: #3c3c3c;
+    box-shadow: -32px 32px 82px #222222,
+        32px -32px 82px #565656;
     padding: 20px;
+    transition: 0.3s;
+}
+
+@media (max-width: 620px) {
+    form#auth {
+        width: 100%;
+        border-radius: 0px;
+        transition: 0.3s;
+    }
+}
+
+@media (max-width: 370px) {
+    form#auth {
+        width: 100%;
+        border-radius: 0px;
+        transition: 0.3s;
+    }
 }
