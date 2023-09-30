@@ -7,6 +7,7 @@ module.exports = {
     description: 'Database',
     async execute() {
 
+
         const sequelize = new Sequelize({
             dialect: 'sqlite',
             logging: false,
