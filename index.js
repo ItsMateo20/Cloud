@@ -1,5 +1,5 @@
 require("dotenv").config()
-const { gray, cyan } = require("chalk")
+const { gray, cyan, red } = require("chalk")
 
 const express = require('express')
 const app = express()
@@ -45,4 +45,9 @@ database.execute().then(async () => {
     });
 
     app.listen(process.env.PORT || 7250, () => console.log(gray("[SITE]: ") + cyan(`Listening on port ${process.env.PORT || 7250}`)))
+});
+
+process.on('unhandledRejection', (reason, error) => {
+    console.error(gray("[SITE]: ") + red('Unhandled Rejection reason:', reason));
+    console.error(error);
 });
