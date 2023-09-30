@@ -14,34 +14,31 @@
     </head>
 
     <body>
-        <%- include('../partials/header.ejs') %>
-            <div class="container">
-                <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
-                    action="/login" method="POST">
-                    <h2 class="text-center">Zaloguj się</h2>
-                    <h3 id="error-message" class="text-center text-danger fs-6"></h3>
-                    <div class="form-group mb-2">
-                        <label for="email">Email adres <strong class="text-danger">*</strong></label>
-                        <input type="email" class="form-control" id="email" placeholder="Wpisz mail" name="email"
-                            required>
-                        <div class="invalid-feedback">
-                            Prosze wpisać maila!
-                        </div>
+        <div class="container">
+            <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
+                action="/login" method="POST">
+                <h2 class="text-center">Zaloguj się</h2>
+                <h3 id="error-message" class="text-center text-danger fs-6"></h3>
+                <div class="form-group mb-2">
+                    <label for="email">Email adres <strong class="text-danger">*</strong></label>
+                    <input type="email" class="form-control" id="email" placeholder="Wpisz mail" name="email" required>
+                    <div class="invalid-feedback">
+                        Prosze wpisać maila!
                     </div>
-                    <div class="form-group mb-2">
-                        <label for="password">Hasło <strong class="text-danger">*</strong></label>
-                        <input type="password" class="form-control" id="password" placeholder="Hasło" name="password"
-                            maxlength="40" minlength="8" required>
-                        <div class="invalid-feedback">
-                            Prosze wpisać hasło!
-                        </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password">Hasło <strong class="text-danger">*</strong></label>
+                    <input type="password" class="form-control" id="password" placeholder="Hasło" name="password"
+                        maxlength="40" minlength="8" required>
+                    <div class="invalid-feedback">
+                        Prosze wpisać hasło!
                     </div>
-                    <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
-                    <br>
-                    <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
-                </form>
-            </div>
-            <%- include('../partials/footer.ejs') %>
+                </div>
+                <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
+                <br>
+                <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
+            </form>
+        </div>
     </body>
 
     <script src="../assets/javascript/Error.js"></script>

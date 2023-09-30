@@ -6,7 +6,7 @@ module.exports = {
     run: async (req, res) => {
         const UserS = await User.findOne()
         await UserS.destroy()
-        res.cookies.clear()
+        res.clearCookie("token")
         res.redirect("/signup")
     }
 }

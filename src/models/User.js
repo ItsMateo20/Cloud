@@ -7,12 +7,11 @@ const sequelize = new Sequelize({
 
 const User = sequelize.define('User', {
     token: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         unique: true,
     },
     email: {
         type: Sequelize.STRING,
-        primaryKey: true,
     },
     password: {
         type: Sequelize.STRING,
