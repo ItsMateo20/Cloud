@@ -9,6 +9,12 @@ const UrlEncodedParser = require("body-parser").urlencoded({ extended: false })
 const { readdirSync } = require('fs')
 const database = require("./database.js")
 
+const ffprobe = require('node-ffprobe')
+const ffprobeInstaller = require('@ffprobe-installer/ffprobe')
+
+ffprobe.FFPROBE_PATH = ffprobeInstaller.path
+ffprobe.SYNC = true
+
 
 
 database.execute().then(async () => {
@@ -25,6 +31,7 @@ database.execute().then(async () => {
     app.set("view engine", "ejs")
     app.set("views", __dirname + "/src/pages")
     app.use(express.static(__dirname + '/src'))
+    // app.use(express.static('../../.././Users/'));
 
     let files = readdirSync(__dirname + '/src/routes/')
     files.forEach(f => {
