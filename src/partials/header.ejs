@@ -1,9 +1,10 @@
 <div class="cloudHeader">
     <h1>Helo
         <a href="/signout">signout</a>
-        <button type="button" class="ms-3 btn btn-dark">New folder</button>
-        <button type="button" class="ms-3 btn btn-dark">Upload file</button>
-        <button type="button" class="ms-3 btn btn-dark" id="deleteButton" disabled>Delete</button>
-        <button type="button" class="ms-3 btn btn-dark" id="downloadButton" disabled>Download</button>
+        <button type="button" class="ms-3 btn btn-dark" id="backButton" onClick="backButton()">Back</button>
+        <button type="button" class="ms-3 btn btn-dark" onClick="newFolder()">New folder</button>
+        <button type="button" class="ms-3 btn btn-dark" onClick="uploadFile()">Upload file</button>
+        <button type="button" class="ms-3 btn btn-dark" id="deleteButton" onClick="deleteItem()" disabled>Delete</button>
+        <button type="button" class="ms-3 btn btn-dark" id="downloadButton" onClick="downloadItem()" disabled>Download</button>
     </h1>
 </div>
