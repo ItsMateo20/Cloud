@@ -3,28 +3,31 @@ const items = document.querySelectorAll('.cloudItemContainer');
 const deleteBtn = document.getElementById('deleteButton');
 
 items.forEach(item => {
-    item.addEventListener('click', handleItemClick);
-    item.addEventListener('touchstart', handleTouchStart);
+    item.addEventListener('click', handleItemClick, { passive: true });
+    item.addEventListener('touchstart', handleTouchStart, { passive: true });
 });
 
-document.addEventListener('click', handleBodyClick);
-document.addEventListener('touchstart', handleBodyClick);
+document.addEventListener('click', handleBodyClick, { passive: true });
+document.addEventListener('touchstart', handleBodyClick, { passive: true });
 
 function handleItemClick(event) {
     const clickedItem = event.currentTarget;
+    const clickedItemType = clickedItem.dataset.filetype;
     const clickedItemPath = clickedItem.dataset.filepath;
+    const clickedItemHeight = clickedItem.dataset.fileheight;
+    const clickedItemWidth = clickedItem.dataset.filewidth;
 
     if (clickedItem.classList.contains('cloudItemContainerSelected')) {
-        // If the item is already selected, redirect to the specified URL
-        window.location.href = clickedItemPath.trim(); // Trim to remove any extra spaces
+        if (clickedItemType === "folder") {
+            window.location.href = clickedItemPath.trim();
+        } else {
+            window.open(clickedItemPath.trim(), "_blank", `location=yes,height=${clickedItemHeight},width=${clickedItemWidth},status=yes`);
+        }
     } else {
-        // If the item is not selected, toggle the selected class
         items.forEach(item => {
             item.classList.remove('cloudItemContainerSelected');
         });
         clickedItem.classList.add('cloudItemContainerSelected');
-
-        // Enable buttons
         deleteBtn.removeAttribute('disabled');
     }
 

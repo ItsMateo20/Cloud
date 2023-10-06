@@ -21,23 +21,34 @@
                     <div class="cloudBody">
                         <div class="row row-cols-auto">
                             <% for (let i=0; i < items.length; i++) { %>
-                                <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
-                                    data-filepath="<%= items[i].path%> ">
-                                    <img title alt src="<%=items[i].imageurl %>" height="64" width="64">
-                                    <h1>
-                                        <%= items[i].name %>
-                                    </h1>
-                                </div>
-                                <% } %>
+                                <% if (items[i].type=="folder" ) { %>
+                                    <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
+                                        data-filepath="<%= items[i].path%>">
+                                        <img title alt src="../assets/images/folder.png" height="64" width="64">
+                                        <h1>
+                                            <%= items[i].name %>
+                                        </h1>
+                                    </div>
+                                    <% } else if (items[i].type=="image" || items[i].type=="video" ) { %>
+                                        <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
+                                            data-filepath="<%= items[i].path%>" data-fileheight="<%= items[i].height %>"
+                                            data-filewidth="<%= items[i].width %>">
+                                            <img title alt src="<%= items[i].imageurl %>" height="64" width="64">
+                                            <h1>
+                                                <%= items[i].name %>
+                                            </h1>
+                                        </div>
+                                        <% } %>
+                                            <% } %>
                         </div>
                     </div>
             </div>
-        </div>
     </body>
 
     <script src="../assets/javascript/Error.js"></script>
     <script src="../assets/javascript/Validate.js"></script>
     <script src="../assets/javascript/OpenFile.js"></script>
+    <script src="../assets/javascript/SizeAdjust.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>

@@ -2,6 +2,8 @@ const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, statSync } = require("fs");
 const { join, extname, relative } = require("path");
+const sizeOf = require('image-size');
+const ffprobe = require('node-ffprobe')
 
 module.exports = {
     name: "Home",
@@ -40,26 +42,38 @@ module.exports = {
         const userFolderPath = `../../.././Users/${emailExtractedName}`;
         const folderPath = `${userFolderPath}${folder}`;
 
-        function getSubfolders(directory, items) {
+        async function getSubfolders(directory, items) {
             const entries = readdirSync(directory);
             for (const entry of entries) {
                 const entryPath = join(directory, entry);
-                let relativePath = relative(userFolderPath, entryPath);
+                const entyRelativePath = relative(userFolderPath, entryPath);
                 const isDirectory = statSync(entryPath).isDirectory();
 
                 let url = "assets/icons/other.png";
+                let relativePath = ""
                 let type = "other";
+                let height = 100
+                let width = 300
                 const extnameS = extname(entry);
-                if (extnameS === ".jpg" || extnameS === ".png" || extnameS === ".gif") {
-                    relativePath = `/image?image="${relativePath}"`
+                if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
+                    relativePath = `/image?image="${entyRelativePath}"`
                     url = "assets/icons/image.png";
                     type = "image";
+
+                    const dimensions = sizeOf(entryPath);
+                    height = dimensions.height;
+                    width = dimensions.width;
                 } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
-                    relativePath = `/video?video="${relativePath}"`
+                    relativePath = `/video?video="${entyRelativePath}"`
                     url = "assets/icons/video.png";
                     type = "video";
+
+                    const metadata = await ffprobe(entryPath);
+                    const dimensions = metadata.streams[0];
+                    height = dimensions.height;
+                    width = dimensions.width;
                 } else if (isDirectory) {
-                    relativePath = `/folder?folder="${relativePath}"`
+                    relativePath = `/folder?folder="${entyRelativePath}"`
                     url = "assets/icons/folder.png";
                     type = "folder";
                 }
@@ -71,6 +85,8 @@ module.exports = {
                     path: relativePath,
                     type: type,
                     imageurl: url,
+                    height: height,
+                    width: width,
                 };
 
                 items.push(itemInfo);
@@ -80,7 +96,7 @@ module.exports = {
         const items = [];
         await getSubfolders(folderPath, items);
 
-        console.table(items);
+        // console.table(items);
 
         let args = {
             body: [`Głowna strona | Chmura`],

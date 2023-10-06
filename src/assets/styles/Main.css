@@ -52,17 +52,16 @@ body {
 .cloudBody .row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
     max-width: 100%;
     max-height: 100%;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    padding: 10px
+    scrollbar-color: transparent transparent;
+    padding: 10px;
 }
 
 .cloudItemContainer {
     cursor: pointer;
-
     display: flex;
     flex-direction: column;
     vertical-align: middle;
