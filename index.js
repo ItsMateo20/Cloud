@@ -30,7 +30,7 @@ database.execute().then(async () => {
     app.use(UrlEncodedParser)
     app.set("view engine", "ejs")
     app.set("views", __dirname + "/src/pages")
-    app.use(express.static(__dirname + '/src'))
+    app.use(express.static(__dirname + '/src/assets/'))
     // app.use(express.static('../../.././Users/'));
 
     let files = readdirSync(__dirname + '/src/routes/')

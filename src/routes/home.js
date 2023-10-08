@@ -25,9 +25,9 @@ module.exports = {
 
         let folder
         if (req.cookies.folder) {
-            folder = `/${req.cookies.folder}`;
+            folder = `${req.cookies.folder}`;
         } else {
-            folder = "";
+            folder = "/";
         }
 
         const emailExtractedName = data.email.split("@")[0];
@@ -41,6 +41,14 @@ module.exports = {
 
         const userFolderPath = `../../.././Users/${emailExtractedName}`;
         const folderPath = `${userFolderPath}${folder}`;
+
+        try {
+            readdirSync(folderPath)
+        } catch (e) {
+            res.clearCookie('folder');
+            return res.redirect("/?error=INVALID_FOLDER")
+        }
+
 
         async function getSubfolders(directory, items) {
             const entries = readdirSync(directory);
@@ -57,7 +65,7 @@ module.exports = {
                 const extnameS = extname(entry);
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
                     relativePath = `/image?image="${entyRelativePath}"`
-                    url = "assets/icons/image.png";
+                    url = "icons/image.png";
                     type = "image";
 
                     const dimensions = sizeOf(entryPath);
@@ -65,7 +73,7 @@ module.exports = {
                     width = dimensions.width;
                 } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
                     relativePath = `/video?video="${entyRelativePath}"`
-                    url = "assets/icons/video.png";
+                    url = "icons/video.png";
                     type = "video";
 
                     const metadata = await ffprobe(entryPath);
@@ -102,6 +110,7 @@ module.exports = {
             body: [`Głowna strona | Chmura`],
             email: data.email,
             items: items,
+            directory: folder,
 
             loggedIn: true,
         };

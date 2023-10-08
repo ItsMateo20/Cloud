@@ -1,0 +1,10 @@
+{
+    "MISSING_DATA_LOGIN": "Przepraszamy, musisz wprowadzić wszystkie wymagane dane.",
+    "INCORRECT_DATA_LOGIN": "Przepraszamy, wprowadzone dane są nieprawidłowe. Spróbuj ponownie.",
+    "MISSING_DATA_SIGNUP": "Przepraszamy, musisz wprowadzić wszystkie wymagane dane.",
+    "INCORRECT_DATA_SIGNUP": "Przepraszamy, wprowadzone dane są nieprawidłowe. Spróbuj ponownie.",
+    "PASSWORD_NOT_MATCH_SIGNUP": "Przepraszamy, wprowadzone hasła nie są takie same. Spróbuj ponownie.",
+    "ACCOUNT_ALREADY_EXISTS_SIGNUP": "Przepraszamy, konto o podanym adresie e-mail już istnieje. Spróbuj ponownie.",
+    "INVALID_FOLDER": "Przepraszamy, wybrany folder jest nieprawidłowy. Spróbuj ponownie.",
+    "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
+}

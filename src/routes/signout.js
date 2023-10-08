@@ -2,8 +2,8 @@ const User = require("../models/User.js")
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-    name: "signout",
-    url: "/signout",
+    name: "logout",
+    url: "/logout",
     run: async (req, res) => {
         let decoded
         let data

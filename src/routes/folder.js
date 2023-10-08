@@ -1,7 +1,6 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, mkdirSync, statSync } = require("fs");
-const { join, extname, relative } = require("path");
+const { readdirSync } = require("fs");
 
 module.exports = {
     name: "Folder",
@@ -37,8 +36,11 @@ module.exports = {
 
         if (!getFolder) return res.redirect("/");
 
-        res.cookie("folder", `/${req.query.folder}`, { maxAge: 86400000 });
-
+        if (req.query.folder.startsWith("/")) {
+            res.cookie("folder", `${req.query.folder}`);
+        } else {
+            res.cookie("folder", `/${req.query.folder}`);
+        }
         res.redirect("/");
     },
 };

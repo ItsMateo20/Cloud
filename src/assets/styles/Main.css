@@ -20,23 +20,9 @@ body {
     left: 50% !important;
     top: 50% !important;
     position: absolute !important;
-    width: 2050px;
-    height: 1000px;
-    border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 34px 34px 67px #b3b3b3,
-        -34px -34px 67px #ffffff;
+    height: 100%;
+    width: 100%;
     transition: 0.3s;
-    padding: 10px;
-}
-
-.cloudHeader {
-    transform: translate(-50%, -50%) !important;
-    left: 50% !important;
-    top: 5% !important;
-    position: absolute !important;
-    font-size: 30px;
-    font-weight: 600;
     padding: 10px;
 }
 
@@ -80,20 +66,22 @@ body {
     transition: 0.3s;
     border-radius: 10px;
     background: linear-gradient(145deg, #e6e6e6, #ffffff);
-    box-shadow: 35px 35px 81px #bfbfbf,
-        -35px -35px 81px #ffffff;
+    box-shadow: 15px 15px 51px #bfbfbf,
+        -15px -15px 51px #ffffff;
 }
 
 .cloudItemContainerSelected {
     transition: 0.3s;
     border-radius: 10px;
     background: linear-gradient(145deg, #e6e6e6, #ffffff);
-    box-shadow: 35px 35px 81px #bfbfbf,
-        -35px -35px 81px #ffffff;
+    box-shadow: 15px 15px 51px #bfbfbf,
+        -15px -15px 51px #ffffff;
 }
 
 .cloudItemContainer img {
     margin: 0 auto;
+    height: 35px;
+    width: 35px;
 }
 
 .cloudItemContainer h1 {
@@ -101,56 +89,6 @@ body {
     font-weight: 600;
     padding: 10px;
 }
-
-.cloudDivider {
-    position: absolute !important;
-    top: 7% !important;
-    left: 0% !important;
-    width: 100%;
-    height: 1px;
-    background: #cecece;
-}
-
-@media (max-width: 2050px) {
-    .cloud {
-        width: 1700px;
-        height: 500px;
-        transition: 0.3s;
-    }
-}
-
-@media (max-width: 1700px) {
-    .cloud {
-        width: 1400px;
-        height: 500px;
-        transition: 0.3s;
-    }
-}
-
-@media (max-width: 1500px) {
-    .cloud {
-        width: 1000px;
-        height: 500px;
-        transition: 0.3s;
-    }
-}
-
-@media (max-width: 1000px) {
-    .cloud {
-        width: 700px;
-        height: 500px;
-        transition: 0.3s;
-    }
-}
-
-@media (max-width: 720px) {
-    .cloud {
-        width: 100%;
-        border-radius: 0px;
-        transition: 0.3s;
-    }
-}
-
 
 form#auth {
     width: 600px;
@@ -168,6 +106,11 @@ form#auth {
         border-radius: 0px;
         transition: 0.3s;
     }
+}
+
+h3#error-message,
+span#error-message {
+    text-wrap: break-word;
 }
 
 
