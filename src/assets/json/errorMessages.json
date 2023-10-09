@@ -6,5 +6,7 @@
     "PASSWORD_NOT_MATCH_SIGNUP": "Przepraszamy, wprowadzone hasła nie są takie same. Spróbuj ponownie.",
     "ACCOUNT_ALREADY_EXISTS_SIGNUP": "Przepraszamy, konto o podanym adresie e-mail już istnieje. Spróbuj ponownie.",
     "INVALID_FOLDER": "Przepraszamy, wybrany folder jest nieprawidłowy. Spróbuj ponownie.",
+    "FILE_ALREADY_EXISTS": "Przepraszamy, plik o podanej nazwie już istnieje. Zmień nazwę pliku i spróbuj ponownie.",
+    "ERROR_WHILE_UPLOADING_FILE": "Przepraszamy, wystąpił błąd podczas przesyłania pliku. Spróbuj ponownie.",
     "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
 }

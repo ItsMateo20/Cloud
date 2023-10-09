@@ -2,6 +2,7 @@
 
 const backBtn = document.getElementById('backButton');
 const newFolderBtn = document.getElementById('newFolderButton');
+const uploadBtn = document.getElementById('uploadFileButton');
 const deleteBtn = document.getElementById('deleteButton');
 const downloadBtn = document.getElementById('downloadButton');
 
@@ -128,5 +129,40 @@ function handleNewFolderClick(event) {
         }
     }
 }
+
+//handle upload button
+
+uploadBtn.addEventListener('click', handleUploadClick, { passive: true });
+
+function handleUploadClick(event) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*,video/*,audio/*';
+    fileInput.multiple = true;
+    fileInput.addEventListener('change', handleFileSelect);
+    fileInput.click();
+}
+
+function handleFileSelect(event) {
+    const selectedFiles = event.currentTarget.files;
+
+    if (selectedFiles.length > 0) {
+        const formData = new FormData();
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append('files', selectedFiles[i]);
+        }
+
+        fetch('/file/upload', { method: 'POST', body: formData }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    window.location.href = `/?success=${data.message}`;
+                } else {
+                    window.location.href = `/?error=${data.message}`;
+                }
+            });
+    }
+}
+
+
 
 //handle delete button

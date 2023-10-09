@@ -1,37 +1,40 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/folder/root">Chmura</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <% if (directory==="/" || directory==="" ) { %>
-                    <span class="navbar-text">Katalog: ./ </span>
-                    <% } else { %>
-                        <spa class="navbar-text">Katalog: <a class="navbar-text" href="/folder/root">./</a>
-                            <% const folderNames=directory.split('/') %>
-                                <% folderNames.forEach((folder, index)=> { %>
-                                    <% if (index===folderNames.length - 1) { %>
-                                        <span class="navbar-text">
-                                            <%= folder %>
-                                        </span>
-                                        <% } else { %>
-                                            <% if (index===0) return; %>
-                                                <a class="navbar-text"
-                                                    href="/folder?folder=<%= folderNames.slice(0, index + 1).join('/') %>">
-                                                    <%= folder %>
-                                                </a>
-                                                <span class="navbar-text">/</span>
-                                                <% } %>
-                                                    <% }); %>
-                                                        </span>
-                                                        <% } %>
-                                                            <span id="error-message"
-                                                                class="navbar-text text-danger"></span>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0">
+                <li class="nav-item me-2">
+                    <% if (directory==="/" || directory==="" ) { %>
+                        <span class="navbar-text me-3">Katalog: ./ </span>
+                        <% } else { %>
+                            <span class="navbar-text">Katalog: <a class="navbar-text" href="/folder/root">./</a>
+                                <% const folderNames=directory.split('/') %>
+                                    <% folderNames.forEach((folder, index)=> { %>
+                                        <% if (index===folderNames.length - 1) { %>
+                                            <span class="navbar-text">
+                                                <%= folder %>
+                                            </span>
+                                            <% } else { %>
+                                                <% if (index===0) return; %>
+                                                    <a class="navbar-text"
+                                                        href="/folder?folder=<%= folderNames.slice(0, index + 1).join('/') %>">
+                                                        <%= folder %>
+                                                    </a>
+                                                    <span class="navbar-text">/</span>
+                                                    <% } %>
+                                                        <% }); %>
+                            </span>
+                            <% } %>
+                </li>
+                <li class="nav-item me-2">
+                    <span id="message" class="me-3 navbar-text fs-6"></span>
+                </li>
             </ul>
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
                 <li class="nav-item me-2">
                     <a type="button" class="btn btn-outline-dark" id="backButton" href="/folder/back">Powrót</a>
                 </li>
