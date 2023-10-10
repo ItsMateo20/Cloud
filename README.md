@@ -1,6 +1,6 @@
 # Cloud Storage
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/0cce368c-9ab3-4e4d-9be2-3e7f7132a9a8)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/7dd8c35a-5afa-467a-8e2d-04a7721672c1)
 
 ## Overview
 
@@ -12,30 +12,30 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **User Authentication**: Users can create accounts, log in securely, and access their own cloud storage space.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e5354cc0-a50f-4aa3-a77f-59e8f33fbba8)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/2caa6185-e227-4ce2-9cea-fe469a86973f)
 
 - **File Management**: Easily upload, download, and delete files and folders.
   
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/cb172642-7559-4321-b123-4163e2287bcc)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/75c89525-241e-4816-b929-4f37a6ddec92)
 
 - **Folder Navigation**: Navigate through your folder structure and access nested folders.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/d781b91b-4ba5-4b0e-bd37-4cd50c08d8c3)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/c3b8150b-9fd9-4ab9-9aac-f276131bc5e8)
 
 - **File Preview**: View images and videos directly within the web interface.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/55e0c1ed-e500-4d3a-84fc-fc366f326dd0)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/294a3c1c-6fac-434c-91b3-929aaeb86c1a)
 
 - **Security**: Secure access to your files and folders with user authentication.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/479c142b-a771-4bbc-94db-c4970d31f582)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/8006b5d9-e806-4a8e-861b-b8f2e48e52ca)
 
 - **Responsive Design**: The app is responsive and works seamlessly on both desktop and mobile devices.
   
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/549406e9-9885-4aed-acc3-8192183310fb)
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/7fe17567-ec31-44a1-9575-6b7b54458c4a)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/db633029-73e2-42fc-9d59-6fb22642dd87)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/8dabfbf0-dd44-4f0a-9305-81580a368f16)
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/3767929b-b836-480b-bb64-9d98a45f0afc)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e21ae285-1c45-4a2e-b98c-7c6c88f42baf)
 
 ## Technologies Used
 - Node.js
@@ -54,4 +54,4 @@ This project was created for fun but will be used by me to store my files, elimi
 Contributions are welcome! If you have any ideas or improvements, feel free to submit a pull request.
 
 ## License
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT License](https://github.com/ItsMateo20/Cloud/blob/main/COPYRIGHT.md).
