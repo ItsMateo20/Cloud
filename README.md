@@ -55,5 +55,3 @@ Contributions are welcome! If you have any ideas or improvements, feel free to s
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
-<img src="https://github.com/ItsMateo20/Cloud/assets/84156177/0cce368c-9ab3-4e4d-9be2-3e7f7132a9a8" alt="Image" width="50" height="25">
