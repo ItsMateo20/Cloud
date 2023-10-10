@@ -12,6 +12,8 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **User Authentication**: Users can create accounts, log in securely, and access their own cloud storage space.
 
+<img src="[https://github.com/ItsMateo20/Cloud/assets/84156177/0cce368c-9ab3-4e4d-9be2-3e7f7132a9a8](https://github.com/ItsMateo20/Cloud/assets/84156177/e5354cc0-a50f-4aa3-a77f-59e8f33fbba8)" title alt width="50%" height="50%">
+
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e5354cc0-a50f-4aa3-a77f-59e8f33fbba8)
 
 - **File Management**: Easily upload, download, and delete files and folders.
