@@ -9,7 +9,7 @@
             <ul class="navbar-nav me-auto my-2 my-lg-0">
                 <li class="nav-item me-2">
                     <% if (directory==="/" || directory==="" ) { %>
-                        <span class="navbar-text me-3">Katalog: ./ </span>
+                        <span class="navbar-text me-3">Katalog: <span id="directory">./</span> </span>
                         <% } else { %>
                             <span class="navbar-text">Katalog: <a class="navbar-text" href="/folder/root">./</a>
                                 <% const folderNames=directory.split('/') %>

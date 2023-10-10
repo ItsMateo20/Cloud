@@ -57,7 +57,7 @@ document.addEventListener('touchstart', handleBodyClick, { passive: true });
 function handleItemClick(event) {
     const clickedItem = event.currentTarget;
     const clickedItemType = clickedItem.dataset.filetype;
-    const clickedItemPath = clickedItem.dataset.filepath;
+    const clickedItemPath = clickedItem.dataset.fileredirect;
     const clickedItemHeight = clickedItem.dataset.fileheight;
     const clickedItemWidth = clickedItem.dataset.filewidth;
 
@@ -111,7 +111,8 @@ function handleBodyClick(event) {
 //handle the back button so its disabled when on root folder
 
 function handleBackButton() {
-    if ("<%= directory %>" === "./") {
+    const directory = document.getElementById('directory').textContent;
+    if (directory === "./") {
         backBtn.classList.add('disabled');
     }
 }
@@ -152,7 +153,10 @@ function handleFileSelect(event) {
             formData.append('files', selectedFiles[i]);
         }
 
-        fetch('/file/upload', { method: 'POST', body: formData }).then((response) => response.json())
+        fetch('/file/upload', {
+            method: 'POST',
+            body: formData
+        }).then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     window.location.href = `/?success=${data.message}`;
@@ -166,3 +170,41 @@ function handleFileSelect(event) {
 
 
 //handle delete button
+
+deleteBtn.addEventListener('click', handleDeleteClick, { passive: true });
+
+function handleDeleteClick(event) {
+    const selectedFile = document.querySelector('.cloudItemContainerSelected');
+    const selectedFilePath = selectedFile.dataset.filepath;
+    const selectedFileName = selectedFile.dataset.filename;
+    const selectedFileType = selectedFile.dataset.filetype;
+
+    let confirmMessage
+
+    if (selectedFileType === "folder") {
+        confirmMessage = `Czy na pewno chcesz usunąć folder ${selectedFileName}?`
+    } else if (selectedFileType === "image") {
+        confirmMessage = `Czy na pewno chcesz usunąć obraz ${selectedFileName}?`
+    } else if (selectedFileType === "video") {
+        confirmMessage = `Czy na pewno chcesz usunąć film ${selectedFileName}?`
+    } else {
+        confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`
+    }
+
+    if (confirm(confirmMessage)) {
+        window.location.href = `/file/delete?name=${selectedFileName}&path=${selectedFilePath}&type=${selectedFileType}`;
+    }
+}
+
+//handle download button
+
+downloadBtn.addEventListener('click', handleDownloadClick, { passive: true });
+
+function handleDownloadClick(event) {
+    const selectedFile = document.querySelector('.cloudItemContainerSelected');
+    const selectedFilePath = selectedFile.dataset.filepath;
+    const selectedFileName = selectedFile.dataset.filename;
+    const selectedFileType = selectedFile.dataset.filetype;
+
+    window.location.href = `/file/download?name=${selectedFileName}&path=${selectedFilePath}&type=${selectedFileType}`;
+}

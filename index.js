@@ -39,7 +39,7 @@ database.execute().then(async () => {
         if (file && file.url) {
             if (file.run) app.get(file.url, file.run)
             if (file.run2) app.post(file.url, file.run2)
-            console.log(gray("[SITE]: ") + cyan(`Loaded /src/routes/${file.name.toLowerCase()}`))
+            console.log(gray("[SITE]: ") + cyan(`Loaded /${file.name.toLowerCase()}`))
         }
     })
 

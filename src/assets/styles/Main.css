@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    text-size-adjust: 100%;
 }
 
 .container {
@@ -57,7 +58,6 @@ body {
     max-height: 100%;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    scrollbar-color: transparent transparent;
     padding: 20px;
 }
 

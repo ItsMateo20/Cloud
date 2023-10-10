@@ -7,6 +7,11 @@
     "ACCOUNT_ALREADY_EXISTS_SIGNUP": "Przepraszamy, konto o podanym adresie e-mail już istnieje. Spróbuj ponownie.",
     "INVALID_FOLDER": "Przepraszamy, wybrany folder jest nieprawidłowy. Spróbuj ponownie.",
     "FILE_ALREADY_EXISTS": "Przepraszamy, plik o podanej nazwie już istnieje. Zmień nazwę pliku i spróbuj ponownie.",
+    "FILE_DOESNT_EXIST": "Przepraszamy, plik nie został znaleziony. Spróbuj ponownie.",
+    "FOLDER_DOESNT_EXIST": "Przepraszamy, folder nie został znaleziony. Spróbuj ponownie.",
+    "ERROR_WHILE_DELETING_FILE": "Przepraszamy, wystąpił błąd podczas usuwania pliku. Spróbuj ponownie.",
     "ERROR_WHILE_UPLOADING_FILE": "Przepraszamy, wystąpił błąd podczas przesyłania pliku. Spróbuj ponownie.",
+    "ZIP_CREATION_ERROR": "Przepraszamy, wystąpił błąd podczas tworzenia archiwum. Spróbuj ponownie.",
+    "DOWNLOAD_ERROR": "Przepraszamy, wystąpił błąd podczas pobierania pliku. Spróbuj ponownie.",
     "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
 }
