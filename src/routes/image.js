@@ -23,11 +23,11 @@ module.exports = {
         req.query.image = req.query.image.replace(/"/g, "").replace(/'/g, "")
 
         const emailExtractedName = data.email.split("@")[0];
-        const UserFolder = readdirSync("../../.././Users/").some(
+        const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === emailExtractedName
         );
 
-        if (!UserFolder) {
+        if (!userFolder) {
             mkdirSync(`../../.././Users/${emailExtractedName}`);
         }
 

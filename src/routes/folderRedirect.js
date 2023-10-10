@@ -29,11 +29,11 @@ module.exports = {
 
 
         const emailExtractedName = data.email.split("@")[0];
-        const UserFolder = readdirSync("../../.././Users/").some(
+        const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === emailExtractedName
         );
 
-        if (!UserFolder) return res.redirect("/");
+        if (!userFolder) return res.redirect("/");
 
         if (!req.params.folder) return res.redirect("/")
 

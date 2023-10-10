@@ -24,11 +24,11 @@ module.exports = {
         req.query.folder = req.query.folder.replace(/"/g, "").replace(/'/g, "")
 
         const emailExtractedName = data.email.split("@")[0];
-        const UserFolder = readdirSync("../../.././Users/").some(
+        const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === emailExtractedName
         );
 
-        if (!UserFolder) return res.redirect("/");
+        if (!userFolder) return res.redirect("/");
 
         const userFolderPath = `../../.././Users/${emailExtractedName}`;
         const folderPath = `${userFolderPath}/${req.query.folder}`;
