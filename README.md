@@ -36,3 +36,24 @@ This project was created for fun but will be used by me to store my files, elimi
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/7fe17567-ec31-44a1-9575-6b7b54458c4a)
 
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/3767929b-b836-480b-bb64-9d98a45f0afc)
+
+## Technologies Used
+- Node.js
+- Express.js
+- Sqlite3
+- Sequelize
+- Ejs
+- Css
+- FFmpeg
+- JSON
+- JavaScript
+- Bootstrap
+- And some other [npm](https://npmjs.com) packages (full list in [package.json](https://github.com/ItsMateo20/Cloud/blob/main/package.json))
+
+## Contributing
+Contributions are welcome! If you have any ideas or improvements, feel free to submit a pull request.
+
+## License
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+<img src="https://github.com/ItsMateo20/Cloud/assets/84156177/0cce368c-9ab3-4e4d-9be2-3e7f7132a9a8" alt="Image" width="50" height="25">
