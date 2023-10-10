@@ -1,6 +1,6 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, mkdirSync, readFileSync } = require("fs");
+const { readdirSync, mkdirSync, existsSync } = require("fs");
 const { resolve } = require("path");
 
 module.exports = {
@@ -33,9 +33,9 @@ module.exports = {
 
         const userFolderPath = `../../.././Users/${emailExtractedName}`;
         const imagePath = `${userFolderPath}/${req.query.image}`;
-        const getImage = readFileSync(imagePath);
+        const getImage = existsSync(imagePath);
 
-        if (!getImage) return res.redirect("/");
+        if (!getImage) return res.redirect("/?error=FILE_DOESNT_EXIST");
         const image = resolve(imagePath);
 
         res.sendFile(image);
