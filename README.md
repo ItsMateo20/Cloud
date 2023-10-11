@@ -1,4 +1,5 @@
 # Cloud Storage
+![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge)
 
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/7dd8c35a-5afa-467a-8e2d-04a7721672c1)
 
