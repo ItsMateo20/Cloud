@@ -1,11 +1,11 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, rmdirSync, createWriteStream } = require("fs");
+const { readdirSync, existsSync, unlinkSync, rmdirSync, createWriteStream, renameSync } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
 
-const { gray, cyan, red } = require("chalk")
+const { gray, cyan, red } = require("chalk");
 
 module.exports = {
     name: "file",
@@ -78,23 +78,22 @@ module.exports = {
                     });
                 } else return res.redirect("/?error=FILE_DOESNT_EXIST");
             }
-        } else res.redirect("/?error=UNKNOWN_ERROR")
-        //  else if (req.params.file === "rename") {
-        //     const { name, path, type, newName } = req.query;
+        } else if (req.params.file === "rename") {
+            const { name, path, type, newName } = req.query;
 
-        //     if (!name || !path || !type || !newName) return res.redirect("/?error=FILE_DOESNT_EXIST")
-        //     if (type === "folder") {
-        //         if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-        //             await rmdirSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
-        //             return res.redirect("/?success=FOLDER_DELETED")
-        //         } else return res.redirect("/?error=FOLDER_DOESNT_EXIST")
-        //     } else {
-        //         if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-        //             await unlinkSync(`${userFolderPath}/${path}`)
-        //             return res.redirect("/?success=FILE_DELETED")
-        //         } else return res.redirect("/?error=FILE_DOESNT_EXIST")
-        //     }
-        // }
+            if (!name || !path || !type || !newName) return res.redirect("/?error=FILE_DOESNT_EXIST")
+            if (type === "folder") {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    await rmdirSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
+                    return res.redirect("/?success=FOLDER_DELETED")
+                } else return res.redirect("/?error=FOLDER_DOESNT_EXIST")
+            } else {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    await unlinkSync(`${userFolderPath}/${path}`)
+                    return res.redirect("/?success=FILE_DELETED")
+                } else return res.redirect("/?error=FILE_DOESNT_EXIST")
+            }
+        } else res.redirect("/?error=UNKNOWN_ERROR")
     },
     run2: async (req, res) => {
         const { emailExtractedName, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
@@ -122,6 +121,31 @@ module.exports = {
 
                 return res.status(200).json({ success: true, message: "FILE_UPLOADED" });
             });
+        } else if (req.params.file == "rename") {
+            const { name, path, type, newName } = req.body;
+
+            if (!name || !path || !type || !newName) {
+                return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            }
+
+            if (type === "folder") {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    await renameSync(`${folderPath}/${name}`, `${folderPath}/${newFileName}`);
+                    return res.status(200).json({ success: true, message: "FOLDER_RENAMED" });
+                } else {
+                    return res.status(500).json({ success: false, message: "FOLDER_DOESNT_EXIST" });
+                }
+            } else {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    let newFileName = `${newName}${name.substring(name.lastIndexOf('.'))}`
+
+                    await renameSync(`${folderPath}/${name}`, `${folderPath}/${newFileName}`);
+                    return res.status(200).json({ success: true, message: "FILE_RENAMED" });
+                } else {
+                    return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+                }
+            }
+
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
 };

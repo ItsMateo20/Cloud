@@ -1,5 +1,7 @@
 {
     "FILE_UPLOADED": "Plik został przesłany",
     "FILE_DELETED": "Plik został usunięty",
-    "FOLDER_DELETED": "Folder został usunięty"
+    "FOLDER_DELETED": "Folder został usunięty",
+    "FOLDER_RENAMED": "Foldera nazwa została zmieniona",
+    "FILE_RENAMED": "Nazwa pliku została zmieniona"
 }
