@@ -52,7 +52,6 @@ module.exports = {
 
         async function getSubfolders(directory, items) {
             const entries = readdirSync(directory);
-            const fileTimestamps = [];
 
             for (const entry of entries) {
                 const entryPath = join(directory, entry);
@@ -66,7 +65,7 @@ module.exports = {
                 let type = "other";
                 let height = 100;
                 let width = 300;
-                let dateModified = 0;
+                let dateModified = 1;
 
                 const extnameS = extname(entry);
 
@@ -78,6 +77,8 @@ module.exports = {
                     const dimensions = sizeOf(entryPath);
                     height = dimensions.height;
                     width = dimensions.width;
+
+                    dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
                     relativePath = `/video?video="${entryRelativePath}"`
                     url = "icons/video.png";
@@ -93,8 +94,6 @@ module.exports = {
                     relativePath = `/folder?folder="${entryRelativePath}"`
                     url = "assets/icons/folder.png";
                     type = "folder";
-
-                    dateModified = statSync(entryPath).mtimeMs;
                 }
 
                 const itemInfo = {
@@ -109,13 +108,20 @@ module.exports = {
                 };
 
                 items.push(itemInfo);
-                fileTimestamps.push(dateModified);
             }
 
-            items.sort((a, b) => b.dateModified - a.dateModified);
+            items.sort((a, b) => {
+                if (a.type === "folder" && b.type !== "folder") {
+                    return -1;
+                } else if (a.type !== "folder" && b.type === "folder") {
+                    return 1;
+                }
+                return b.dateModified - a.dateModified;
+            });
 
             return items;
         }
+
 
         const items = [];
         await getSubfolders(folderPath, items);
