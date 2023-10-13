@@ -2,3 +2,5 @@ node_modules
 package-lock.json
 database.sqlite
 *env
+runCloud.bat
+src/assets/icons/webpageicon.ico
