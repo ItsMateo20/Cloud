@@ -8,6 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav me-auto my-2 my-lg-0">
                 <li class="nav-item me-2" id="directory" data-directory="<%= directory %>">
+
                     <% if (directory==="/" || directory==="" ) { %>
                         <span class="navbar-text me-3">Katalog: <span>./</span>
                         </span>
@@ -30,6 +31,7 @@
                                                         <% }); %>
                             </span>
                             <% } %>
+
                 </li>
                 <li class="nav-item me-2">
                     <span id="message" class="me-3 navbar-text fs-6"></span>
