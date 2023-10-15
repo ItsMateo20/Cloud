@@ -22,6 +22,11 @@ body {
     background-color: #ffffff;
 }
 
+.dropdown-item:hover {
+    background-color: #cdcdcd;
+    transition: 0.3s;
+}
+
 .form-control:valid,
 .form-control:focus {
     background-color: var(--bs-body-bg);
