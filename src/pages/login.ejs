@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="pl">
 
-    <head>
-        <%- include('../partials/head.ejs') %>
-    </head>
+    <%- include('../partials/head.ejs') %>
 
-    <body>
-        <div class="container">
-            <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
-                action="/login" method="POST">
-                <h2 class="text-center">Zaloguj się</h2>
-                <h3 id="message" class="text-center fs-6"></h3>
-                <div class="form-group mb-2">
-                    <label for="email">Email adres <strong class="text-danger">*</strong></label>
-                    <input type="email" autocomplete="username" class="form-control" id="email" placeholder="Wpisz mail"
-                        name="email" required>
-                    <div class="invalid-feedback">
-                        Prosze wpisać maila!
+        <body>
+            <div class="container">
+                <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
+                    action="/login" method="POST">
+                    <h2 class="text-center">Zaloguj się</h2>
+                    <h3 id="message" class="text-center fs-6"></h3>
+                    <div class="form-group mb-2">
+                        <label for="email">Email adres <strong class="text-danger">*</strong></label>
+                        <input type="email" autocomplete="username" class="form-control" id="email"
+                            placeholder="Wpisz mail" name="email" required>
+                        <div class="invalid-feedback">
+                            Prosze wpisać maila!
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="password">Hasło <strong class="text-danger">*</strong></label>
-                    <input type="password" autocomplete="current-password" class="form-control" id="password"
-                        placeholder="Hasło" name="password" maxlength="40" minlength="8" required>
-                    <div class="invalid-feedback">
-                        Prosze wpisać hasło!
+                    <div class="form-group mb-2">
+                        <label for="password">Hasło <strong class="text-danger">*</strong></label>
+                        <input type="password" autocomplete="current-password" class="form-control" id="password"
+                            placeholder="Hasło" name="password" maxlength="40" minlength="8" required>
+                        <div class="invalid-feedback">
+                            Prosze wpisać hasło!
+                        </div>
                     </div>
-                </div>
-                <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
-                <br>
-                <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
-            </form>
-        </div>
-    </body>
+                    <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
+                    <br>
+                    <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
+                </form>
+            </div>
+        </body>
 
-    <script src="javascript/Messages.js"></script>
-    <script src="javascript/Validate.js"></script>
-    <%- include('../partials/scripts.ejs') %>
+        <script src="javascript/Messages.js"></script>
+        <script src="javascript/Validate.js"></script>
+        <%- include('../partials/scripts.ejs') %>
 
 </html>

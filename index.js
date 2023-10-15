@@ -28,6 +28,7 @@ database.execute().then(async () => {
     app.set("etag", false)
     app.use(CookieParser())
     app.use(UrlEncodedParser)
+    app.use(express.json());
     app.set("view engine", "ejs")
     app.set("views", __dirname + "/src/pages")
     app.use(express.static(__dirname + '/src/assets/'))

@@ -1,47 +1,44 @@
 <!DOCTYPE html>
 <html lang="pl">
 
-    <head>
-        <%- include('../partials/head.ejs') %>
-    </head>
+    <%- include('../partials/head.ejs') %>
 
-    <body>
-        <div class="container">
-            <%- include('../partials/header.ejs') %>
-                <div class="cloud">
-                    <div class="cloudDivider mb-3"></div>
-                    <div class="cloudBody">
-                        <div class="row row-cols-auto">
-                            <% for (let i=0; i < items.length; i++) { %>
-                                <% if (items[i].type=="folder" ) { %>
-                                    <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
-                                        data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
-                                        data-fileredirect="<%= items[i].redirect %>">
-                                        <img title alt src="icons/folder.png">
-                                        <h1>
-                                            <%= items[i].name %>
-                                        </h1>
-                                    </div>
-                                    <% } else if (items[i].type=="image" || items[i].type=="video" ) { %>
+        <body>
+            <div class="container">
+                <%- include('../partials/header.ejs') %>
+                    <div class="cloud">
+                        <div class="cloudBody">
+                            <div class="row row-cols-auto">
+                                <% for (let i=0; i < items.length; i++) { %>
+                                    <% if (items[i].type=="folder" ) { %>
                                         <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
                                             data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
-                                            data-fileredirect="<%= items[i].redirect %>"
-                                            data-fileheight="<%= items[i].height %>"
-                                            data-filewidth="<%= items[i].width %>">
-                                            <img title alt src="<%= items[i].imageurl %>">
+                                            data-fileredirect="<%= items[i].redirect %>">
+                                            <img title alt src="icons/folder.png">
                                             <h1>
                                                 <%= items[i].name %>
                                             </h1>
                                         </div>
-                                        <% } %>
+                                        <% } else if (items[i].type=="image" || items[i].type=="video" ) { %>
+                                            <div class="col cloudItemContainer" data-filetype="<%= items[i].type %>"
+                                                data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
+                                                data-fileredirect="<%= items[i].redirect %>"
+                                                data-fileheight="<%= items[i].height %>"
+                                                data-filewidth="<%= items[i].width %>">
+                                                <img title alt src="<%= items[i].imageurl %>">
+                                                <h1>
+                                                    <%= items[i].name %>
+                                                </h1>
+                                            </div>
                                             <% } %>
+                                                <% } %>
+                            </div>
                         </div>
                     </div>
-                </div>
-    </body>
+        </body>
 
-    <script src="javascript/Messages.js"></script>
-    <script src="javascript/Cloud.js"></script>
-    <%- include('../partials/scripts.ejs') %>
+        <script src="javascript/Messages.js"></script>
+        <script src="javascript/Cloud.js"></script>
+        <%- include('../partials/scripts.ejs') %>
 
 </html>
