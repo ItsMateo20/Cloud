@@ -3,6 +3,7 @@
 const backBtn = document.getElementById('backButton');
 const newFolderBtn = document.getElementById('newFolderButton');
 const uploadBtn = document.getElementById('uploadFileButton');
+const renameBtn = document.getElementById('renameFileButton');
 const deleteBtn = document.getElementById('deleteButton');
 const downloadBtn = document.getElementById('downloadButton');
 
@@ -10,6 +11,7 @@ const downloadBtn = document.getElementById('downloadButton');
 function onLoad() {
     Adjust();
     handleBackButton();
+    handleItemEventListener("spawn");
 }
 
 window.onload = onLoad;
@@ -44,15 +46,44 @@ function Adjust() {
 
 //handle the click on the item
 
-const items = document.querySelectorAll('.cloudItemContainer');
+let items = document.querySelectorAll('.cloudItemContainer');
 
-items.forEach(item => {
-    item.addEventListener('click', handleItemClick, { passive: true });
-    item.addEventListener('touchstart', handleTouchStart, { passive: true });
-});
+function handleItemEventListener(value) {
+    items = document.querySelectorAll('.cloudItemContainer');
+    if (value == "spawn") {
+        items.forEach(item => {
+            item.addEventListener('click', handleItemClick, { passive: true });
+            item.addEventListener('touchstart', handleTouchStart, { passive: true });
+        });
+        Adjust()
+    } else if (value == "respawn") {
+        items.forEach(item => {
+            item.removeEventListener('click', handleItemClick, { passive: true });
+            item.removeEventListener('touchstart', handleTouchStart, { passive: true });
+        });
+        items.forEach(item => {
+            item.addEventListener('click', handleItemClick, { passive: true });
+            item.addEventListener('touchstart', handleTouchStart, { passive: true });
+        });
+        Adjust()
+    }
+}
 
-document.addEventListener('click', handleBodyClick, { passive: true });
-document.addEventListener('touchstart', handleBodyClick, { passive: true });
+document.body.addEventListener('click', handleBodyClick, { passive: true });
+document.body.addEventListener('touchstart', handleBodyClick, { passive: true });
+
+
+function setDisabledState(value) {
+    if (value == true) {
+        if (!deleteBtn.classList.contains('disabled')) deleteBtn.classList.add('disabled');
+        if (!downloadBtn.classList.contains('disabled')) downloadBtn.classList.add('disabled');
+        if (!renameBtn.classList.contains('disabled')) renameBtn.classList.add('disabled');
+    } else if (value == false) {
+        if (deleteBtn.classList.contains('disabled')) deleteBtn.classList.remove('disabled');
+        if (downloadBtn.classList.contains('disabled')) downloadBtn.classList.remove('disabled');
+        if (renameBtn.classList.contains('disabled')) renameBtn.classList.remove('disabled');
+    }
+}
 
 function handleItemClick(event) {
     const clickedItem = event.currentTarget;
@@ -72,10 +103,7 @@ function handleItemClick(event) {
             item.classList.remove('cloudItemContainerSelected');
         });
         clickedItem.classList.add('cloudItemContainerSelected');
-        if (deleteBtn.classList.contains('disabled') && downloadBtn.classList.contains('disabled')) {
-            deleteBtn.classList.remove('disabled');
-            downloadBtn.classList.remove('disabled');
-        }
+        setDisabledState(false);
     }
 
     event.stopPropagation();
@@ -95,24 +123,21 @@ function handleTouchStart(event) {
 
 function handleBodyClick(event) {
     const clickedElement = event.target;
+    if (clickedElement.closest('.dropdown-toggle') || clickedElement.closest('.dropdown-item') || clickedElement.closest('.nav-item') || clickedElement.closest('.navbar-toggler')) return;
 
     if (!clickedElement.closest('.cloudItemContainer')) {
         items.forEach(item => {
             item.classList.remove('cloudItemContainerSelected');
         });
-
-        if (!deleteBtn.classList.contains('disabled') && !downloadBtn.classList.contains('disabled')) {
-            deleteBtn.classList.add('disabled');
-            downloadBtn.classList.add('disabled');
-        }
+        setDisabledState(true);
     }
 }
 
 //handle the back button so its disabled when on root folder
 
 function handleBackButton() {
-    const directory = document.getElementById('directory').textContent;
-    if (directory === "./") {
+    const directory = document.getElementById('directory').dataset.directory;
+    if (directory.endsWith("/") && directory.startsWith("/")) {
         backBtn.classList.add('disabled');
     }
 }
@@ -144,6 +169,37 @@ function handleUploadClick(event) {
     fileInput.click();
 }
 
+function createItemElement(file) {
+    console.log(file);
+    const { type, name, path, redirect, height, width } = file;
+    console.log(type, name, path, redirect, height, width)
+
+    const container = document.createElement('div');
+    container.classList.add('col', 'cloudItemContainer');
+    container.dataset.filetype = type;
+    container.dataset.filename = name;
+    container.dataset.filepath = path;
+    container.dataset.fileredirect = redirect;
+    container.dataset.fileheight = height;
+    container.dataset.filewidth = width;
+
+    const img = document.createElement('img');
+    img.title = '';
+    img.alt = '';
+    img.src = 'icons/other.png'
+    if (type === "folder") img.src = 'icons/folder.png';
+    else if (type === "image") img.src = 'icons/image.png';
+    else if (type === "video") img.src = 'icons/video.png';
+
+    const h1 = document.createElement('h1');
+    h1.textContent = file.name;
+
+    container.appendChild(img);
+    container.appendChild(h1);
+
+    return container;
+}
+
 function handleFileSelect(event) {
     const selectedFiles = event.currentTarget.files;
 
@@ -153,21 +209,63 @@ function handleFileSelect(event) {
             formData.append('files', selectedFiles[i]);
         }
 
+
         fetch('/file/upload', {
-            method: 'POST',
-            body: formData
+            method: 'post',
+            body: formData,
         }).then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
                 if (data.success) {
-                    window.location.href = `/?success=${data.message}`;
+                    const files = data.files;
+                    const rowToAddTo = document.querySelector('.row');
+                    for (let i = 0; i < files.length; i++) {
+                        const newItemElement = await createItemElement(files[i]);
+                        rowToAddTo.appendChild(newItemElement);
+                    }
+                    handleItemEventListener("respawn");
+                    getSuccessMessage(data.message);
                 } else {
-                    window.location.href = `/?error=${data.message}`;
+                    getErrorMessage(data.message);
                 }
             });
     }
 }
 
+//handle rename button
 
+renameBtn.addEventListener('click', handleRenameClick, { passive: true });
+
+function handleRenameClick(event) {
+    const selectedFile = document.querySelector('.cloudItemContainerSelected');
+    const selectedFilePath = selectedFile.dataset.filepath;
+    const selectedFileName = selectedFile.dataset.filename;
+    const selectedFileType = selectedFile.dataset.filetype;
+
+    let newName = prompt("Podaj nową nazwę");
+
+    if (newName !== null) {
+        if (newName.trim() !== "") {
+            fetch('/file/rename', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString(), newName: newName.toString() }),
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
+                        selectedFile.querySelector('h1').textContent = newFileName
+                        console.log(newName)
+                        selectedFile.dataset.filename = newFileName
+                        selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
+                        selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
+                        getSuccessMessage(data.message);
+                    } else {
+                        getErrorMessage(data.message);
+                    }
+                });
+        }
+    }
+}
 
 //handle delete button
 
@@ -192,7 +290,19 @@ function handleDeleteClick(event) {
     }
 
     if (confirm(confirmMessage)) {
-        window.location.href = `/file/delete?name=${selectedFileName}&path=${selectedFilePath}&type=${selectedFileType}`;
+        fetch("/file/delete", {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString() }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    selectedFile.remove();
+                    getSuccessMessage(data.message);
+                } else {
+                    getErrorMessage(data.message);
+                }
+            })
     }
 }
 

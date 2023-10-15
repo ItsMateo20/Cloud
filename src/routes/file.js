@@ -4,6 +4,8 @@ const { readdirSync, existsSync, unlinkSync, rmdirSync, createWriteStream, renam
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
+const sizeOf = require('image-size');
+const ffprobe = require('node-ffprobe')
 
 const { gray, cyan, red } = require("chalk");
 
@@ -17,22 +19,7 @@ module.exports = {
 
         if (!req.params.file) return res.redirect("/")
 
-        if (req.params.file === "delete") {
-            const { name, path, type } = req.query;
-
-            if (!name || !path || !type) return res.redirect("/?error=FILE_DOESNT_EXIST")
-            if (type === "folder") {
-                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await rmdirSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
-                    return res.redirect("/?success=FOLDER_DELETED")
-                } else return res.redirect("/?error=FOLDER_DOESNT_EXIST")
-            } else {
-                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await unlinkSync(`${userFolderPath}/${path}`)
-                    return res.redirect("/?success=FILE_DELETED")
-                } else return res.redirect("/?error=FILE_DOESNT_EXIST")
-            }
-        } else if (req.params.file === "download") {
+        if (req.params.file === "download") {
             const { name, path, type } = req.query;
 
             if (!name || !path || !type) return res.redirect("/?error=FILE_DOESNT_EXIST");
@@ -78,21 +65,6 @@ module.exports = {
                     });
                 } else return res.redirect("/?error=FILE_DOESNT_EXIST");
             }
-        } else if (req.params.file === "rename") {
-            const { name, path, type, newName } = req.query;
-
-            if (!name || !path || !type || !newName) return res.redirect("/?error=FILE_DOESNT_EXIST")
-            if (type === "folder") {
-                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await rmdirSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
-                    return res.redirect("/?success=FOLDER_DELETED")
-                } else return res.redirect("/?error=FOLDER_DOESNT_EXIST")
-            } else {
-                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await unlinkSync(`${userFolderPath}/${path}`)
-                    return res.redirect("/?success=FILE_DELETED")
-                } else return res.redirect("/?error=FILE_DOESNT_EXIST")
-            }
         } else res.redirect("/?error=UNKNOWN_ERROR")
     },
     run2: async (req, res) => {
@@ -108,8 +80,10 @@ module.exports = {
             });
 
             const upload = multer({ storage: storage }).array("files");
+            let uploadingFiles
 
-            upload(req, res, (err) => {
+            upload(req, res, async (err) => {
+                uploadingFiles = req.files
                 // const filesExist = req.files.some((file) => {
                 //     return existsSync(`${userFolderPath}${folder}/${file.originalname}`);
                 // });
@@ -119,7 +93,39 @@ module.exports = {
                 // }
                 if (err) return res.status(500).json({ success: false, message: "ERROR_WHILE_UPLOADING_FILE" });
 
-                return res.status(200).json({ success: true, message: "FILE_UPLOADED" });
+                let newFileData = []
+
+                for (let i = 0; i < uploadingFiles.length; i++) {
+                    const file = uploadingFiles[i];
+                    const newFile = {}
+                    const { originalname, mimetype } = file;
+                    const isImage = mimetype.startsWith('image');
+                    const isVideo = mimetype.startsWith('video');
+
+                    if (isImage) {
+                        const dimensions = sizeOf(file.path);
+                        const { height, width } = dimensions;
+
+                        newFile.type = "image";
+                        newFile.height = height;
+                        newFile.width = width;
+                        newFile.redirect = `/image/?image=${folder}/${originalname}`;
+                    } else if (isVideo) {
+                        const metadata = await ffprobe(file.path);
+                        const dimensions = metadata.streams[0];
+                        newFile.type = "video";
+                        newFile.height = dimensions.height;
+                        newFile.width = dimensions.width;
+                        newFile.redirect = `/video/?video=${folder}/${originalname}`;
+                    }
+
+                    newFile.name = originalname;
+                    newFile.path = `${folder}/${originalname}`;
+
+                    newFileData.push(newFile)
+                }
+
+                return res.status(200).json({ success: true, message: "FILE_UPLOADED", files: newFileData });
             });
         } else if (req.params.file == "rename") {
             const { name, path, type, newName } = req.body;
@@ -146,6 +152,21 @@ module.exports = {
                 }
             }
 
+        } else if (req.params.file === "delete") {
+            const { name, path, type } = req.body;
+
+            if (!name || !path || !type) return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            if (type === "folder") {
+                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    await rmdirSync(`${userFolderPath}/${path}`, { force: true })
+                    return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
+                } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            } else {
+                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                    await unlinkSync(`${userFolderPath}/${path}`)
+                    return res.status(200).json({ success: true, message: "FILE_DELETED" });
+                } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            }
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
 };
