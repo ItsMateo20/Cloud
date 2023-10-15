@@ -54,7 +54,6 @@ module.exports = {
                 if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
                     if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}`).includes(req.query.name)) {
                         res.cookie('folder', folder + "/" + req.query.name)
-                        return res.redirect("/")
                     } else {
                         await mkdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)
 
