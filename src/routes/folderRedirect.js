@@ -24,7 +24,7 @@ module.exports = {
         if (req.cookies.folder) {
             folder = `${req.cookies.folder}`;
         } else {
-            folder = "";
+            folder = "/";
         }
 
 
@@ -51,15 +51,14 @@ module.exports = {
             res.clearCookie('folder');
         } else if (req.params.folder === "new") {
             if (req.query.name) {
-                req.query.name = req.query.name.replace(/\/\//g, '/');
                 if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
                     if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}`).includes(req.query.name)) {
-                        res.cookie('folder', folder + "/" + req.query.name)
+                        res.cookie('folder', folder + req.query.name)
                     } else {
                         await mkdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)
 
                         if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)) {
-                            res.cookie('folder', folder + "/" + req.query.name);
+                            res.cookie('folder', folder + req.query.name);
                         }
                     }
                 }
