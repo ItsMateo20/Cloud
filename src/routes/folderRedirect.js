@@ -51,6 +51,7 @@ module.exports = {
             res.clearCookie('folder');
         } else if (req.params.folder === "new") {
             if (req.query.name) {
+                req.query.name = req.query.name.replace(/\/\//g, '/');
                 if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
                     if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}`).includes(req.query.name)) {
                         res.cookie('folder', folder + "/" + req.query.name)
