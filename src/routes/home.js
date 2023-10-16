@@ -67,7 +67,7 @@ module.exports = {
                 let width = 300;
                 let dateModified = 1;
 
-                const extnameS = extname(entry);
+                const extnameS = extname(entry).toLowerCase()
 
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
                     relativePath = `/image?image="${entryRelativePath}"`
@@ -94,6 +94,11 @@ module.exports = {
                     relativePath = `/folder?folder="${entryRelativePath}"`
                     url = "assets/icons/folder.png";
                     type = "folder";
+                } else {
+                    relativePath = `/download?file="${entryRelativePath}"`
+                    url = "assets/icons/other.png";
+                    type = "other";
+                    dateModified = statSync(entryPath).mtimeMs;
                 }
 
                 const itemInfo = {
