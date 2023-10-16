@@ -18,7 +18,6 @@ module.exports = {
 
             res.clearCookie("token")
             res.redirect("/")
-
-        } else res.redirect("/")
+        } else return res.redirect("/")
     }
 }
