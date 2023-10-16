@@ -47,9 +47,6 @@ database.execute().then(async () => {
     app.use((req, res) => {
         res.status(404).redirect("/404")
     });
-    app.use((req, res) => {
-        res.status(302).redirect("/404")
-    });
 
     app.listen(process.env.PORT || 7250, () => console.log(gray("[SITE]: ") + cyan(`Listening on port ${process.env.PORT || 7250}`)))
 });
