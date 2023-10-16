@@ -6,6 +6,9 @@ body {
     padding: 0;
     overflow-x: hidden;
     text-size-adjust: 100%;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 .container {
@@ -34,6 +37,25 @@ body {
     border-color: var(--bs-secondary-color);
     box-shadow: none;
 }
+
+
+div#loading {
+    background: rgba(255, 255, 255, 0.891);
+    z-index: 1000;
+}
+
+div#loading div {
+    z-index: 1000;
+}
+
+.spinner-border {
+    color: #007bff;
+}
+
+p {
+    font-weight: bold;
+}
+
 
 .cloud {
     transform: translate(-50%, -50%) !important;
