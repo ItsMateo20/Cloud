@@ -144,5 +144,4 @@ module.exports = {
 
         res.render("../pages/home.ejs", args);
     },
-    run2: async (req, res) => { },
 };
