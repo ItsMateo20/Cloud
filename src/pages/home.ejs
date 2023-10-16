@@ -4,6 +4,12 @@
     <%- include('../partials/head.ejs') %>
 
         <body>
+            <div id="loading" class="w-100 h-100 position-absolute d-none">
+                <div class="text-center position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border" role="status"></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
             <div class="container">
                 <%- include('../partials/header.ejs') %>
                     <div class="cloud">
@@ -35,6 +41,7 @@
                             </div>
                         </div>
                     </div>
+            </div>
         </body>
 
         <script src="javascript/Messages.js"></script>
