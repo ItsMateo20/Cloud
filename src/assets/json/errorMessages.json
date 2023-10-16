@@ -12,6 +12,5 @@
     "ERROR_WHILE_DELETING_FILE": "Przepraszamy, wystąpił błąd podczas usuwania pliku. Spróbuj ponownie.",
     "ERROR_WHILE_UPLOADING_FILE": "Przepraszamy, wystąpił błąd podczas przesyłania pliku. Spróbuj ponownie.",
     "ZIP_CREATION_ERROR": "Przepraszamy, wystąpił błąd podczas tworzenia archiwum. Spróbuj ponownie.",
-    "DOWNLOAD_ERROR": "Przepraszamy, wystąpił błąd podczas pobierania pliku. Spróbuj ponownie.",
     "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
 }
