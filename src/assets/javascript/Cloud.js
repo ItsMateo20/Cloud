@@ -17,6 +17,7 @@ function onLoad() {
 window.onload = onLoad;
 window.onresize = Adjust;
 
+
 //adjust the size of the opened image to the screen size
 
 function Adjust() {
@@ -44,6 +45,16 @@ function Adjust() {
     });
 }
 
+function loadingDiv(value) {
+    const loadingDiv = document.querySelector('#loading');
+    if (value == "hide") {
+        loadingDiv.classList.add("d-none")
+    } else if (value == "show") {
+        loadingDiv.classList.remove("d-none")
+    }
+}
+
+
 //handle the click on the item
 
 let items = document.querySelectorAll('.cloudItemContainer');
@@ -53,24 +64,20 @@ function handleItemEventListener(value) {
     if (value == "spawn") {
         items.forEach(item => {
             item.addEventListener('click', handleItemClick, { passive: true });
-            item.addEventListener('touchstart', handleTouchStart, { passive: true });
         });
         Adjust()
     } else if (value == "respawn") {
         items.forEach(item => {
             item.removeEventListener('click', handleItemClick, { passive: true });
-            item.removeEventListener('touchstart', handleTouchStart, { passive: true });
         });
         items.forEach(item => {
             item.addEventListener('click', handleItemClick, { passive: true });
-            item.addEventListener('touchstart', handleTouchStart, { passive: true });
         });
         Adjust()
     }
 }
 
 document.body.addEventListener('click', handleBodyClick, { passive: true });
-document.body.addEventListener('touchstart', handleBodyClick, { passive: true });
 
 
 function setDisabledState(value) {
@@ -95,8 +102,10 @@ function handleItemClick(event) {
     if (clickedItem.classList.contains('cloudItemContainerSelected')) {
         if (clickedItemType === "folder") {
             window.location.href = clickedItemPath.trim();
+            return event.stopPropagation();
         } else {
             window.open(clickedItemPath.trim(), "_blank", `location=yes,height=${clickedItemHeight},width=${clickedItemWidth},status=yes`);
+            return event.stopPropagation();
         }
     } else {
         items.forEach(item => {
@@ -104,21 +113,8 @@ function handleItemClick(event) {
         });
         clickedItem.classList.add('cloudItemContainerSelected');
         setDisabledState(false);
+        return event.stopPropagation();
     }
-
-    event.stopPropagation();
-}
-
-function handleTouchStart(event) {
-    const touchedItem = event.currentTarget;
-
-    items.forEach(item => {
-        item.classList.remove('cloudItemContainerSelected');
-    });
-
-    touchedItem.classList.toggle('cloudItemContainerSelected');
-
-    event.stopPropagation();
 }
 
 function handleBodyClick(event) {
@@ -161,7 +157,7 @@ function handleNewFolderClick(event) {
 uploadBtn.addEventListener('click', handleUploadClick, { passive: true });
 
 function handleUploadClick(event) {
-    const fileInput = document.createElement('input');
+    const fileInput = document.createElement('input')
     fileInput.type = 'file';
     fileInput.accept = 'image/*,video/*,audio/*';
     fileInput.multiple = true;
@@ -170,9 +166,7 @@ function handleUploadClick(event) {
 }
 
 function createItemElement(file) {
-    console.log(file);
     const { type, name, path, redirect, height, width } = file;
-    console.log(type, name, path, redirect, height, width)
 
     const container = document.createElement('div');
     container.classList.add('col', 'cloudItemContainer');
@@ -201,8 +195,10 @@ function createItemElement(file) {
 }
 
 function handleFileSelect(event) {
+    loadingDiv("show");
     const selectedFiles = event.currentTarget.files;
 
+    if (selectedFiles.length == 0) return loadingDiv("hide");
     if (selectedFiles.length > 0) {
         const formData = new FormData();
         for (let i = 0; i < selectedFiles.length; i++) {
@@ -227,7 +223,10 @@ function handleFileSelect(event) {
                 } else {
                     getErrorMessage(data.message);
                 }
+                loadingDiv("hide");
             });
+    } else {
+        loadingDiv("hide");
     }
 }
 
@@ -240,6 +239,8 @@ function handleRenameClick(event) {
     const selectedFilePath = selectedFile.dataset.filepath;
     const selectedFileName = selectedFile.dataset.filename;
     const selectedFileType = selectedFile.dataset.filetype;
+
+    loadingDiv("show");
 
     let newName = prompt("Podaj nową nazwę");
 
@@ -262,6 +263,7 @@ function handleRenameClick(event) {
                     } else {
                         getErrorMessage(data.message);
                     }
+                    loadingDiv("hide");
                 });
         }
     }
@@ -289,6 +291,8 @@ function handleDeleteClick(event) {
         confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`
     }
 
+    loadingDiv("show");
+
     if (confirm(confirmMessage)) {
         fetch("/file/delete", {
             method: 'post',
@@ -302,6 +306,7 @@ function handleDeleteClick(event) {
                 } else {
                     getErrorMessage(data.message);
                 }
+                loadingDiv("hide");
             })
     }
 }
