@@ -1,6 +1,6 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, rmdirSync, createWriteStream, renameSync } = require("fs");
+const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmSync } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
@@ -27,7 +27,7 @@ module.exports = {
             if (type === "folder") {
                 if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
                     const zipFileName = `${name}.zip`;
-                    const zipFilePath = join(`${userFolderPath}/${path}`, zipFileName);
+                    const zipFilePath = join(folderPath, zipFileName);
                     const output = createWriteStream(zipFilePath);
                     const archive = archiver('zip', {
                         zlib: { level: 0 },
@@ -57,11 +57,20 @@ module.exports = {
                     archive.directory(`${userFolderPath}/${path}`, false);
                     archive.finalize();
                 } else return res.redirect("/?error=FOLDER_DOESNT_EXIST");
+
             } else {
                 if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    return res.download(`${userFolderPath}/${path}`).catch((err) => {
-                        console.log(gray("[SITE]: ") + red('Error during download:', err));
-                        return res.redirect('/?error=DOWNLOAD_ERROR');
+                    return res.download(`${userFolderPath}/${path}`, async (err) => {
+                        if (err) {
+                            console.log(gray("[SITE]: ") + red('Error during download:', err));
+                        } else {
+                            await unlinkSync(zipFilePath);
+                            if (existsSync(zipFilePath)) {
+                                await unlinkSync(zipFilePath).catch((err) => {
+                                    console.log(gray("[SITE]: ") + red('Error during deleting zip file:', err));
+                                });
+                            }
+                        }
                     });
                 } else return res.redirect("/?error=FILE_DOESNT_EXIST");
             }
@@ -156,17 +165,11 @@ module.exports = {
             const { name, path, type } = req.body;
 
             if (!name || !path || !type) return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
-            if (type === "folder") {
-                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await rmdirSync(`${userFolderPath}/${path}`, { force: true })
-                    return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
-                } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
-            } else {
-                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    await unlinkSync(`${userFolderPath}/${path}`)
-                    return res.status(200).json({ success: true, message: "FILE_DELETED" });
-                } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
-            }
+            if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                await rmSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
+                if (type == "folder") return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
+                else return res.status(200).json({ success: true, message: "FILE_DELETED" });
+            } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
 };
