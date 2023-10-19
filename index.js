@@ -27,7 +27,7 @@ database.execute().then(async () => {
     app.set("etag", false)
 
     app.use(nocache())
-    app.use(CookieParser(process.env.COOKIESECRET))
+    app.use(CookieParser())
     app.use(UrlEncodedParser)
 
     app.use(express.json());
