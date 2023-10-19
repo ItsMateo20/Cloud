@@ -1,6 +1,7 @@
 const { gray, cyan, red } = require('chalk');
 const Sequelize = require('sequelize');
 const User = require('./src/models/User.js');
+const UserSettings = require('./src/models/UserSettings.js');
 
 module.exports = {
     name: 'database',
@@ -14,7 +15,13 @@ module.exports = {
             storage: 'database.sqlite',
         });
 
-        User.sync()
+        await User.sync({
+            alter: true
+        })
+
+        await UserSettings.sync({
+            alter: true
+        })
 
         await sequelize.authenticate()
             .then(() => {
