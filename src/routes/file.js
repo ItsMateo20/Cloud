@@ -13,8 +13,6 @@ module.exports = {
     name: "file",
     url: "/file/:file",
     run: async (req, res) => {
-        delete require.cache[require.resolve("../pages/home.ejs")];
-
         const { emailExtractedName, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
 
         if (!req.params.file) return res.redirect("/")
@@ -22,8 +20,8 @@ module.exports = {
         if (req.params.file === "download") {
             const { name, path, type } = req.query;
 
-            if (!name || !path || !type) return res.redirect("/?error=FILE_DOESNT_EXIST");
 
+            if (!name || !path || !type) return res.redirect("/?error=FILE_DOESNT_EXIST");
             if (type === "folder") {
                 if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
                     const zipFileName = `${name}.zip`;
@@ -63,13 +61,6 @@ module.exports = {
                     return res.download(`${userFolderPath}/${path}`, async (err) => {
                         if (err) {
                             console.log(gray("[SITE]: ") + red('Error during download:', err));
-                        } else {
-                            await unlinkSync(zipFilePath);
-                            if (existsSync(zipFilePath)) {
-                                await unlinkSync(zipFilePath).catch((err) => {
-                                    console.log(gray("[SITE]: ") + red('Error during deleting zip file:', err));
-                                });
-                            }
                         }
                     });
                 } else return res.redirect("/?error=FILE_DOESNT_EXIST");
