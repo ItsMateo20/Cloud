@@ -6,8 +6,6 @@ module.exports = {
     name: "Folder",
     url: "/folder",
     run: async (req, res) => {
-        delete require.cache[require.resolve("../pages/home.ejs")];
-
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
