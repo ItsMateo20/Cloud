@@ -1,4 +1,5 @@
 const User = require("../models/User.js")
+const UserSettings = require("../models/UserSettings.js")
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -40,6 +41,9 @@ module.exports = {
             const UserS = await User.create({ email: email, password: password1 });
             UserS.token = jwt.sign({ email: email, password: password1 }, process.env.JWTSECRET);
             await UserS.save();
+            const UserSettingsS = await UserSettings.create({ email: email })
+            await UserSettingsS.save()
+
 
 
             res.cookie("token", UserS.token, { maxAge: 86400000 });
