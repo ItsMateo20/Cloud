@@ -1,4 +1,5 @@
 const User = require("../models/User.js");
+const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, statSync } = require("fs");
 const { join, extname, relative } = require("path");
@@ -22,6 +23,10 @@ module.exports = {
             where: { email: decoded.email, password: decoded.password },
         });
         if (!data) return res.redirect("/login");
+        let UserSettingsS = await UserSettings.findOne({
+            where: { email: decoded.email },
+        });
+        if (!UserSettingsS) return res.redirect("/login");
 
         let folder
         if (req.cookies.folder) {
@@ -68,10 +73,11 @@ module.exports = {
                 let dateModified = 1;
 
                 const extnameS = extname(entry).toLowerCase()
+                const fileStats = statSync(entryPath);
 
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
                     relativePath = `/image?image="${entryRelativePath}"`
-                    url = "icons/image.png";
+                    url = "icons/image.png"
                     type = "image";
 
                     const dimensions = sizeOf(entryPath);
@@ -92,11 +98,11 @@ module.exports = {
                     dateModified = statSync(entryPath).mtimeMs;
                 } else if (isDirectory) {
                     relativePath = `/folder?folder="${entryRelativePath}"`
-                    url = "assets/icons/folder.png";
+                    url = "icons/folder.png";
                     type = "folder";
                 } else {
-                    relativePath = `/download?file="${entryRelativePath}"`
-                    url = "assets/icons/other.png";
+                    relativePath = `/file/download?name=${entry}&path=${entryRelativePath}&type=other`
+                    url = "icons/other.png";
                     type = "other";
                     dateModified = statSync(entryPath).mtimeMs;
                 }
