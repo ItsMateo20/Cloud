@@ -17,7 +17,7 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **File Management**: Easily upload, download, and delete files and folders.
   
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/75c89525-241e-4816-b929-4f37a6ddec92)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda)
 
 - **Folder Navigation**: Navigate through your folder structure and access nested folders.
 
@@ -25,7 +25,7 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **File Preview**: View images and videos directly within the web interface.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/294a3c1c-6fac-434c-91b3-929aaeb86c1a)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/0a7fd6c9-174d-4b42-850c-a3f593a4fe19)
 
 - **Security**: Secure access to your files and folders with user authentication.
 
@@ -33,10 +33,10 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **Responsive Design**: The app is responsive and works seamlessly on both desktop and mobile devices.
   
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/db633029-73e2-42fc-9d59-6fb22642dd87)
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/8dabfbf0-dd44-4f0a-9305-81580a368f16)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/30b138fb-50e4-4d57-976f-db0d2476f699)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/6765f26a-26fd-47ca-8017-bbfad9f37625)
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e21ae285-1c45-4a2e-b98c-7c6c88f42baf)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda)
 
 ## Technologies Used
 - Node.js
