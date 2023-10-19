@@ -1,19 +1,19 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/folder/root">Chmura</a>
+        <a class="navbar-brand user-select-none" href="/folder/root">Chmura</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0">
-                <li class="nav-item me-2" id="directory" data-directory="<%= directory %>">
+            <ul class="navbar-nav me-auto my-2">
+                <li class="nav-item user-select-none" id="directory" data-directory="<%= directory %>">
 
                     <% if (directory==="/" || directory==="" ) { %>
                         <span class="navbar-text me-3">Katalog: <span>./</span>
                         </span>
                         <% } else { %>
-                            <span class="navbar-text">Katalog: <a class="navbar-text" href="/folder/root">./</a>
+                            <span class="navbar-text me-3">Katalog: <a class="navbar-text" href="/folder/root">./</a>
                                 <% const folderNames=directory.split('/') %>
                                     <% folderNames.forEach((folder, index)=> { %>
                                         <% if (index===folderNames.length - 1) { %>
@@ -33,43 +33,59 @@
                             <% } %>
 
                 </li>
-                <li class="nav-item me-2">
+                <li class="nav-item">
                     <span id="message" class="me-3 navbar-text fs-6"></span>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
-                <li class="nav-item me-2">
-                    <a type="button" class="btn btn-outline-dark" id="backButton" href="/folder/back">Powrót</a>
+            <ul class="navbar-nav ms-auto my-2 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
+                <li class="nav-item">
+                    <a type="button" class="btn btn-outline-secondary user-select-none" id="backButton"
+                        href="/folder/back"><strong>Powrót</strong></a>
                 </li>
-                <li class="nav-item dropdown me-2">
-                    <a class="btn btn-outline-dark dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Menu plików
+                <li class="nav-item dropdown">
+                    <a class="btn btn-outline-secondary dropdown-toggle user-select-none" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong>Menu plików</strong>
                     </a>
-                    <ul class="dropdown-menu mt-2" aria-labelledby="navbarDropdown">
-                        <li class="dropdown-item" id="uploadFileButton">
+                    <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownFiles">
+                        <li class="dropdown-item user-select-none" id="uploadFileButton">
                             Dodaj plik
                         </li>
-                        <li class="dropdown-item disabled" id="renameFileButton">
+                        <li class="dropdown-item user-select-none disabled" id="renameFileButton">
                             Zmień nazwę
+                        </li>
+                        <li class="dropdown-item user-select-none" id="newFolderButton">
+                            Nowy folder
+                        </li>
+                        <li class="dropdown-item user-select-none disabled" id="deleteButton">
+                            Usuń
+                        </li>
+                        <li class="dropdown-item user-select-none disabled" id="downloadButton">
+                            Pobierz
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item me-2">
-                    <a type="button" class="btn btn-outline-success" id="newFolderButton">Nowy
-                        folder</a>
+                <li class="nav-item dropdown ms-3">
+                    <a class="nav-link dropdown-toggle rounded-circle border-dark" id="navbarDropdownProfile"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false"><img alt title
+                            src="icons/profile.png" width="35" height="35"></a>
+                    <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownProfile">
+                        <h6 class="dropdown-header user-select-auto">Zalogowano jako
+                            <strong>
+                                <%= email %>
+                            </strong>
+                        </h6>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item user-select-none" id="showImageSettingButton">
+                            Pokaż obrazy
+                            <i class="bi" id="showImageSettingStatus"></i>
+                        </li>
+                        <li class="dropdown-item text-danger user-select-none"
+                            onclick="window.location.href = '/logout'">
+                            Wyloguj
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item me-2">
-                    <a type="button" class="btn btn-outline-danger disabled" id="deleteButton">Usuń</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a type="button" class="btn btn-outline-dark disabled" id="downloadButton">Pobierz</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a type="button" class="btn btn-outline-danger" href="/logout" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" data-bs-title="Zalogowano jako <%= email %>">Wyloguj</a>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
