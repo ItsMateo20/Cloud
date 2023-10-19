@@ -1,3 +1,7 @@
+//settings
+
+let settings = {}
+
 //buttons
 
 const backBtn = document.getElementById('backButton');
@@ -7,16 +11,40 @@ const renameBtn = document.getElementById('renameFileButton');
 const deleteBtn = document.getElementById('deleteButton');
 const downloadBtn = document.getElementById('downloadButton');
 
-//handle window
-function onLoad() {
-    Adjust();
-    handleBackButton();
-    handleItemEventListener("spawn");
-}
+const showImageBtn = document.getElementById('showImageSettingButton');
 
-window.onload = onLoad;
+//handle window events
+
+window.onload = loadSettings;
 window.onresize = Adjust;
 
+//load settings
+
+function loadSettings() {
+    fetch("/settings/settings", {
+        method: 'get',
+        headers: { 'Content-Type': 'application/json' },
+    }).then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                settings = data.settings;
+                if (settings.showImage == true) {
+                    showImageBtn.dataset.value = "true";
+                    showImageBtn.querySelector('i').classList.add('bi-check');
+                } else if (settings.showImage == false) {
+                    showImageBtn.dataset.value = "false";
+                    showImageBtn.querySelector('i').classList.add('bi-x');
+                }
+
+                Adjust();
+                handleBackButton();
+                handleItemEventListener("spawn");
+                loadingDiv("hide");
+            } else {
+                location.reload()
+            }
+        });
+}
 
 //adjust the size of the opened image to the screen size
 
@@ -29,6 +57,29 @@ function Adjust() {
     cloudItems.forEach((item) => {
         const dataFileHeight = parseFloat(item.getAttribute('data-fileheight'));
         const dataFileWidth = parseFloat(item.getAttribute('data-filewidth'));
+        if (settings.showImage == true) {
+            if (!item.dataset.filetype === "image") {
+                if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) {
+                    item.querySelector("img").classList.add('cloudItemContainerImg');
+                }
+            } else if (item.dataset.filetype === "image") {
+                if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
+                if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
+                    if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+                    if (dataFileHeight < dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerLandscape');
+                    if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+                }
+                item.querySelector("img").src = item.dataset.fileredirect.trim();
+            }
+        } else {
+            if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.add('cloudItemContainerImg');
+            if (item.querySelector("img").classList.contains('cloudItemContainerPortrait')) item.querySelector("img").classList.remove('cloudItemContainerPortrait');
+            if (item.querySelector("img").classList.contains('cloudItemContainerLandscape')) item.querySelector("img").classList.remove('cloudItemContainerLandscape');
+            if (item.dataset.filetype == "image") item.querySelector("img").src = 'icons/image.png';
+            if (item.dataset.filetype == "video") item.querySelector("img").src = 'icons/video.png';
+            if (item.dataset.filetype == "folder") item.querySelector("img").src = 'icons/folder.png';
+            if (item.dataset.filetype == "other") item.querySelector("img").src = 'icons/other.png';
+        }
 
         if (dataFileHeight && dataFileWidth) {
             const heightScaleFactor = screenHeight / dataFileHeight;
@@ -100,7 +151,7 @@ function handleItemClick(event) {
     const clickedItemWidth = clickedItem.dataset.filewidth;
 
     if (clickedItem.classList.contains('cloudItemContainerSelected')) {
-        if (clickedItemType === "folder") {
+        if (clickedItemType === "folder" || clickedItemType === "other") {
             window.location.href = clickedItemPath.trim();
             return event.stopPropagation();
         } else {
@@ -157,6 +208,7 @@ function handleNewFolderClick(event) {
 uploadBtn.addEventListener('click', handleUploadClick, { passive: true });
 
 function handleUploadClick(event) {
+    setDisabledState(true);
     const fileInput = document.createElement('input')
     fileInput.type = 'file';
     fileInput.accept = 'image/*,video/*,audio/*';
@@ -240,6 +292,7 @@ function handleRenameClick(event) {
     const selectedFileName = selectedFile.dataset.filename;
     const selectedFileType = selectedFile.dataset.filetype;
 
+    setDisabledState(true);
     loadingDiv("show");
 
     let newName = prompt("Podaj nową nazwę");
@@ -291,6 +344,7 @@ function handleDeleteClick(event) {
         confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`
     }
 
+    setDisabledState(true);
     loadingDiv("show");
 
     if (confirm(confirmMessage)) {
@@ -322,4 +376,38 @@ function handleDownloadClick(event) {
     const selectedFileType = selectedFile.dataset.filetype;
 
     window.location.href = `/file/download?name=${selectedFileName}&path=${selectedFilePath}&type=${selectedFileType}`;
+}
+
+//handle show image button
+
+showImageBtn.addEventListener('click', handleShowImageClick, { passive: true });
+
+function handleShowImageClick(event) {
+    const showImageSettingStatus = document.getElementById('showImageSettingStatus');
+
+    if (showImageBtn.dataset.value === "true") {
+        showImageBtn.dataset.value = "false";
+        settings.showImage = false;
+        showImageSettingStatus.classList.toggle('bi-x');
+        showImageSettingStatus.classList.toggle('bi-check');
+    } else if (showImageBtn.dataset.value === "false") {
+        showImageBtn.dataset.value = "true";
+        settings.showImage = true;
+        showImageSettingStatus.classList.toggle('bi-check');
+        showImageSettingStatus.classList.toggle('bi-x');
+    }
+
+    setDisabledState(true);
+    Adjust();
+
+    fetch("/settings/showImage", {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: showImageBtn.dataset.value.toString() }),
+    }).then((response) => response.json())
+        .then((data) => {
+            if (data.success === false) {
+                getErrorMessage(data.message);
+            }
+        });
 }
