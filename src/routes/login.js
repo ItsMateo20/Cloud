@@ -15,7 +15,9 @@ module.exports = {
             } catch (e) { }
             if (decoded) {
                 data = await User.findOne({ where: { email: decoded.email, password: decoded.password } })
-                if (!data) return res.redirect("/login?redirect=" + req.originalUrl)
+                if (!data) return res.clearCookie("token").redirect("/login")
+            } else {
+                res.clearCookie("token").redirect("/login")
             }
             if (decoded && data) return res.redirect("/")
         }
@@ -32,20 +34,15 @@ module.exports = {
     },
     run2: async (req, res) => {
         const { email, password } = req.body;
-        let redirect = "/"
 
         if (!email || !password) return res.redirect("/login?error=MISSING_DATA_LOGIN")
         const UserS = await User.findOne({ where: { email: email, password: password } })
         if (UserS) {
-            if (req.cookies.redirect) {
-                redirect = req.cookies.redirect
-            }
-
             UserS.token = jwt.sign({ email: UserS.email, password: UserS.password }, process.env.JWTSECRET)
             await UserS.save()
 
             res.cookie("token", UserS.token, { maxAge: 86400000 })
-            res.redirect(redirect)
+            res.redirect("/")
         } else if (!UserS) {
             res.redirect("/login?error=INCORRECT_DATA_LOGIN")
         }
