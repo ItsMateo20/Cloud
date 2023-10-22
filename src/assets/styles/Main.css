@@ -285,29 +285,3 @@ h3#message,
 span#message {
     text-wrap: break-word;
 }
-
-
-/* dark mode */
-/* body {
-    background: #3c3c3c;
-    font-family: "Open Sans", sans-serif;
-    font-size: 16px;
-    color: #c8c8c8;
-    margin: 0;
-    padding: 0;
-}
-
-:root {
-    --bs-secondary-color: #c5c5c5;
-    --bs-body-bg: #676767;
-    --bs-body-color: #353535;
-    --bs-border-color: #747474;
-}
-
-.form-control:valid,
-.form-control:focus {
-    background-color: var(--bs-body-bg);
-    outline: none;
-    border-color: var(--bs-secondary-color);
-    box-shadow: none;
-} */

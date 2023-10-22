@@ -1,3 +1,5 @@
+const html = document.querySelector('html');
+
 //settings
 
 let settings = {}
@@ -31,11 +33,13 @@ function loadSettings() {
                 settings = data.settings;
                 if (settings.darkMode == true) {
                     darkThemeBtn.dataset.value = "true";
+                    html.setAttribute('data-bs-theme', 'dark');
                     body.classList.add("app-dark-theme")
                     body.classList.remove("app-light-theme")
                     darkThemeBtn.querySelector('i').classList.add('bi-moon');
                 } else if (settings.darkMode == false) {
                     darkThemeBtn.dataset.value = "false";
+                    html.setAttribute('data-bs-theme', 'light');
                     darkThemeBtn.querySelector('i').classList.add('bi-sun');
                 }
 
@@ -420,6 +424,7 @@ function handleDarkThemeClick(event) {
 
     if (body.classList.contains("app-dark-theme")) {
         darkThemeBtn.dataset.value = "false";
+        html.setAttribute('data-bs-theme', 'light');
         settings.darkMode = false;
         body.classList.toggle("app-dark-theme");
         body.classList.toggle("app-light-theme");
@@ -427,6 +432,7 @@ function handleDarkThemeClick(event) {
         darkThemeBtn.querySelector('i').classList.toggle('bi-sun');
     } else if (body.classList.contains("app-light-theme")) {
         darkThemeBtn.dataset.value = "true";
+        html.setAttribute('data-bs-theme', 'dark');
         settings.darkMode = true;
         body.classList.toggle("app-light-theme");
         body.classList.toggle("app-dark-theme");
