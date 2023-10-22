@@ -416,7 +416,7 @@ function handleDownloadClick(event) {
 darkThemeBtn.addEventListener('click', handleDarkThemeClick, { passive: true });
 
 function handleDarkThemeClick(event) {
-    const darkThemeSettingStatus = document.querySelector('i')
+    const darkThemeSettingStatus = darkThemeBtn.querySelector('i')
 
     if (body.classList.contains("app-dark-theme")) {
         darkThemeBtn.dataset.value = "false";
@@ -452,7 +452,7 @@ function handleDarkThemeClick(event) {
 showImageBtn.addEventListener('click', handleShowImageClick, { passive: true });
 
 function handleShowImageClick(event) {
-    const showImageSettingStatus = document.querySelector('i')
+    const showImageSettingStatus = showImageBtn.querySelector('i')
 
     if (showImageBtn.dataset.value === "true") {
         showImageBtn.dataset.value = "false";
