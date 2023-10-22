@@ -11,6 +11,7 @@ const renameBtn = document.getElementById('renameFileButton');
 const deleteBtn = document.getElementById('deleteButton');
 const downloadBtn = document.getElementById('downloadButton');
 
+const darkThemeBtn = document.getElementById('darkThemeSettingButton');
 const showImageBtn = document.getElementById('showImageSettingButton');
 
 //handle window events
@@ -28,6 +29,16 @@ function loadSettings() {
         .then((data) => {
             if (data.success) {
                 settings = data.settings;
+                if (settings.darkMode == true) {
+                    darkThemeBtn.dataset.value = "true";
+                    body.classList.add("app-dark-theme")
+                    body.classList.remove("app-light-theme")
+                    darkThemeBtn.querySelector('i').classList.add('bi-moon');
+                } else if (settings.darkMode == false) {
+                    darkThemeBtn.dataset.value = "false";
+                    darkThemeBtn.querySelector('i').classList.add('bi-sun');
+                }
+
                 if (settings.showImage == true) {
                     showImageBtn.dataset.value = "true";
                     showImageBtn.querySelector('i').classList.add('bi-check');
@@ -36,7 +47,9 @@ function loadSettings() {
                     showImageBtn.querySelector('i').classList.add('bi-x');
                 }
 
+
                 Adjust();
+                setTheme();
                 handleBackButton();
                 handleItemEventListener("spawn");
                 loadingDiv("hide");
@@ -44,6 +57,26 @@ function loadSettings() {
                 location.reload()
             }
         });
+}
+
+// dark/light theme
+
+const body = document.body
+
+function setTheme() {
+    if (body.classList.contains("app-dark-theme")) {
+        const btn = document.querySelectorAll('.btn-outline-secondary')
+        btn.forEach(btn => {
+            btn.classList.toggle('btn-outline-light')
+            btn.classList.toggle('btn-outline-secondary')
+        })
+    } else if (body.classList.contains("app-light-theme")) {
+        const btn = document.querySelectorAll('.btn-outline-light')
+        btn.forEach(btn => {
+            btn.classList.toggle('btn-outline-light')
+            btn.classList.toggle('btn-outline-secondary')
+        })
+    }
 }
 
 //adjust the size of the opened image to the screen size
@@ -378,12 +411,48 @@ function handleDownloadClick(event) {
     window.location.href = `/file/download?name=${selectedFileName}&path=${selectedFilePath}&type=${selectedFileType}`;
 }
 
+//handle dark theme button
+
+darkThemeBtn.addEventListener('click', handleDarkThemeClick, { passive: true });
+
+function handleDarkThemeClick(event) {
+    const darkThemeSettingStatus = document.querySelector('i')
+
+    if (body.classList.contains("app-dark-theme")) {
+        darkThemeBtn.dataset.value = "false";
+        settings.darkMode = false;
+        body.classList.toggle("app-dark-theme");
+        body.classList.toggle("app-light-theme");
+        darkThemeBtn.querySelector('i').classList.toggle('bi-moon');
+        darkThemeBtn.querySelector('i').classList.toggle('bi-sun');
+    } else if (body.classList.contains("app-light-theme")) {
+        darkThemeBtn.dataset.value = "true";
+        settings.darkMode = true;
+        body.classList.toggle("app-light-theme");
+        body.classList.toggle("app-dark-theme");
+        darkThemeSettingStatus.classList.toggle('bi-sun');
+        darkThemeSettingStatus.classList.toggle('bi-moon');
+    }
+    setTheme();
+
+    fetch("/settings/darkMode", {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: body.classList.contains("app-dark-theme") ? "true" : "false" }),
+    }).then((response) => response.json())
+        .then((data) => {
+            if (data.success === false) {
+                getErrorMessage(data.message);
+            }
+        });
+}
+
 //handle show image button
 
 showImageBtn.addEventListener('click', handleShowImageClick, { passive: true });
 
 function handleShowImageClick(event) {
-    const showImageSettingStatus = document.getElementById('showImageSettingStatus');
+    const showImageSettingStatus = document.querySelector('i')
 
     if (showImageBtn.dataset.value === "true") {
         showImageBtn.dataset.value = "false";

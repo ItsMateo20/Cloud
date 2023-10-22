@@ -73,7 +73,6 @@ module.exports = {
                 let dateModified = 1;
 
                 const extnameS = extname(entry).toLowerCase()
-                const fileStats = statSync(entryPath);
 
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
                     relativePath = `/image?image=${entryRelativePath}`

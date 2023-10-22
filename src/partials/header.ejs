@@ -40,13 +40,11 @@
             <ul class="navbar-nav ms-auto my-2 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
                 <li class="nav-item">
                     <a type="button" class="btn btn-outline-secondary user-select-none" id="backButton"
-                        href="/folder/back"><strong>Powrót</strong></a>
+                        href="/folder/back">Powrót</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="btn btn-outline-secondary dropdown-toggle user-select-none" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong>Menu plików</strong>
-                    </a>
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu plików</a>
                     <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownFiles">
                         <li class="dropdown-item user-select-none" id="uploadFileButton">
                             Dodaj plik
@@ -76,9 +74,13 @@
                             </strong>
                         </h6>
                         <li class="dropdown-divider"></li>
+                        <li class="dropdown-item user-select-none" id="darkThemeSettingButton">
+                            Tryb ciemny
+                            <i class="bi"></i>
+                        </li>
                         <li class="dropdown-item user-select-none" id="showImageSettingButton">
                             Pokaż obrazy
-                            <i class="bi" id="showImageSettingStatus"></i>
+                            <i class="bi"></i>
                         </li>
                         <li class="dropdown-item text-danger user-select-none"
                             onclick="window.location.href = '/logout'">
