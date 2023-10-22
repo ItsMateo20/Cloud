@@ -47,6 +47,12 @@ module.exports = {
             }
         } else if (req.params.folder === "root") {
             res.clearCookie('folder');
+        } else if (req.params.folder == "folder") {
+            if (req.query.path.startsWith("/")) {
+                res.cookie("folder", `${req.query.path}`);
+            } else {
+                res.cookie("folder", `/${req.query.path}`);
+            }
         } else if (req.params.folder === "new") {
             if (req.query.name) {
                 if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
@@ -61,13 +67,7 @@ module.exports = {
                     }
                 }
             }
-        } else if (!req.params.folder) {
-            if (req.query.folder.startsWith("/")) {
-                res.cookie("folder", `${req.query.folder}`);
-            } else {
-                res.cookie("folder", `/${req.query.folder}`);
-            }
-        }
+        } else return res.redirect("/?error=INVALID_FOLDER")
 
         res.redirect("/")
     },

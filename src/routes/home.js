@@ -76,7 +76,7 @@ module.exports = {
                 const fileStats = statSync(entryPath);
 
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
-                    relativePath = `/image?image="${entryRelativePath}"`
+                    relativePath = `/image?image=${entryRelativePath}`
                     url = "icons/image.png"
                     type = "image";
 
@@ -86,7 +86,7 @@ module.exports = {
 
                     dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
-                    relativePath = `/video?video="${entryRelativePath}"`
+                    relativePath = `/video?video=${entryRelativePath}`
                     url = "icons/video.png";
                     type = "video";
 
@@ -97,7 +97,7 @@ module.exports = {
 
                     dateModified = statSync(entryPath).mtimeMs;
                 } else if (isDirectory) {
-                    relativePath = `/folder?folder="${entryRelativePath}"`
+                    relativePath = `/folder/folder?path=${entryRelativePath}`
                     url = "icons/folder.png";
                     type = "folder";
                 } else {

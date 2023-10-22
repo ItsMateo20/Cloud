@@ -23,7 +23,7 @@
                                             <% } else { %>
                                                 <% if (index===0) return; %>
                                                     <a class="navbar-text"
-                                                        href="/folder?folder=<%= folderNames.slice(0, index + 1).join('/') %>">
+                                                        href="/folder/folder?path=<%= folderNames.slice(0, index + 1).join('/') %>">
                                                         <%= folder %>
                                                     </a>
                                                     <span class="navbar-text">/</span>
