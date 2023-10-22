@@ -1,10 +1,10 @@
 const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync } = require("fs");
+const { readdirSync, mkdirSync } = require("fs");
 
 module.exports = {
-    name: "Folder",
-    url: "/folder",
+    name: "folder",
+    url: "/folder/:folder",
     run: async (req, res) => {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
@@ -18,8 +18,13 @@ module.exports = {
         });
         if (!data) return res.redirect("/login");
 
-        if (!req.query.folder) return res.redirect("/")
-        req.query.folder = req.query.folder.replace(/"/g, "").replace(/'/g, "")
+        let folder
+        if (req.cookies.folder) {
+            folder = `${req.cookies.folder}`;
+        } else {
+            folder = "/";
+        }
+
 
         const emailExtractedName = data.email.split("@")[0];
         const userFolder = readdirSync("../../.././Users/").some(
@@ -28,17 +33,43 @@ module.exports = {
 
         if (!userFolder) return res.redirect("/");
 
-        const userFolderPath = `../../.././Users/${emailExtractedName}`;
-        const folderPath = `${userFolderPath}/${req.query.folder}`;
-        const getFolder = readdirSync(folderPath);
+        if (!req.params.folder) return res.redirect("/")
 
-        if (!getFolder) return res.redirect("/");
+        if (req.params.folder === "back") {
 
-        if (req.query.folder.startsWith("/")) {
-            res.cookie("folder", `${req.query.folder}`);
-        } else {
-            res.cookie("folder", `/${req.query.folder}`);
+            const folders = folder.split('/').filter(folder => folder.trim() !== '');
+
+            if (folders.length >= 1) {
+                folders.pop();
+                const newFolderPath = "/" + folders.join('/')
+
+                res.cookie('folder', newFolderPath);
+            }
+        } else if (req.params.folder === "root") {
+            res.clearCookie('folder');
+        } else if (req.params.folder === "new") {
+            if (req.query.name) {
+                if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
+                    if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}`).includes(req.query.name)) {
+                        res.cookie('folder', folder + req.query.name)
+                    } else {
+                        await mkdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)
+
+                        if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)) {
+                            res.cookie('folder', folder + req.query.name);
+                        }
+                    }
+                }
+            }
+        } else if (!req.params.folder) {
+            if (req.query.folder.startsWith("/")) {
+                res.cookie("folder", `${req.query.folder}`);
+            } else {
+                res.cookie("folder", `/${req.query.folder}`);
+            }
         }
-        res.redirect("/");
+
+        res.redirect("/")
     },
+    run2: async (req, res) => { },
 };
