@@ -1,7 +1,7 @@
 # Cloud Storage
 ![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge)
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/7dd8c35a-5afa-467a-8e2d-04a7721672c1)
+![Header image](https://github.com/ItsMateo20/Cloud/assets/84156177/9fc28c5c-44df-4b75-a2da-699bd0ab7f8e)
 
 ## Overview
 
@@ -36,6 +36,16 @@ This project was created for fun but will be used by me to store my files, elimi
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/30b138fb-50e4-4d57-976f-db0d2476f699)  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/6765f26a-26fd-47ca-8017-bbfad9f37625)
 
 ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda)
+
+- **Dark theme**: Dark theme provides a sleek and visually appealing option for users who prefer it.
+
+![Image](https://github.com/ItsMateo20/Cloud/assets/84156177/5fb2a9cb-8d29-4a46-92eb-faa00a85948c)
+
+## How to migrade to newer versions of this project
+1. Move your database.db file outside of the folder and clear the content of the folder.
+2. Download the new version and extract the files from it.
+3. Move the database.db file in the folder that you extracted the files into.
+4. And run it and your migrated!
 
 ## Technologies Used
 - Node.js
