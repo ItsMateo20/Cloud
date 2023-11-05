@@ -38,6 +38,8 @@ module.exports = {
         if (password1 !== password2) return res.redirect("/signup?error=PASSWORD_NOT_MATCH_SIGNUP")
 
         try {
+            const UserFind = await User.findOne({ email: email })
+            if (UserFind) return res.redirect("/signup?error=ACCOUNT_ALREADY_EXISTS_SIGNUP")
             const UserS = await User.create({ email: email, password: password1 });
             UserS.token = jwt.sign({ email: email, password: password1 }, process.env.JWTSECRET);
             await UserS.save();
