@@ -3,6 +3,7 @@ const html = document.querySelector('html');
 //settings
 
 let settings = {}
+let info = {}
 
 //buttons
 
@@ -15,6 +16,7 @@ const downloadBtn = document.getElementById('downloadButton');
 
 const darkThemeBtn = document.getElementById('darkThemeSettingButton');
 const showImageBtn = document.getElementById('showImageSettingButton');
+const adminModeBtn = document.getElementById('adminModeSettingButton');
 
 //handle window events
 
@@ -31,6 +33,7 @@ function loadSettings() {
         .then((data) => {
             if (data.success) {
                 settings = data.settings;
+                info = data.info;
                 if (settings.darkMode == true) {
                     darkThemeBtn.dataset.value = "true";
                     html.setAttribute('data-bs-theme', 'dark');
@@ -50,6 +53,18 @@ function loadSettings() {
                     showImageBtn.dataset.value = "false";
                     showImageBtn.querySelector('i').classList.add('bi-x');
                 }
+
+
+                if (info.admin == true) {
+                    if (settings.adminMode == true) {
+                        adminModeBtn.dataset.value = "true";
+                        adminModeBtn.querySelector('i').classList.add('bi-check');
+                    } else if (settings.adminMode == false) {
+                        adminModeBtn.dataset.value = "false";
+                        adminModeBtn.querySelector('i').classList.add('bi-x');
+                    }
+                }
+
 
 
                 Adjust();
@@ -483,6 +498,41 @@ function handleShowImageClick(event) {
         .then((data) => {
             if (data.success === false) {
                 getErrorMessage(data.message);
+            }
+        });
+}
+
+//handle admin mode button
+
+adminModeBtn.addEventListener('click', handleAdminModeClick, { passive: true });
+
+function handleAdminModeClick(event) {
+    const adminModeSettingStatus = adminModeBtn.querySelector('i')
+
+    if (adminModeBtn.dataset.value === "true") {
+        adminModeBtn.dataset.value = "false";
+        settings.adminMode = false;
+        adminModeSettingStatus.classList.toggle('bi-x');
+        adminModeSettingStatus.classList.toggle('bi-check');
+    } else if (adminModeBtn.dataset.value === "false") {
+        adminModeBtn.dataset.value = "true";
+        settings.adminMode = true;
+        adminModeSettingStatus.classList.toggle('bi-check');
+        adminModeSettingStatus.classList.toggle('bi-x');
+    }
+
+    setDisabledState(true);
+
+    fetch("/settings/adminMode", {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: adminModeBtn.dataset.value.toString() }),
+    }).then((response) => response.json())
+        .then((data) => {
+            if (data.success === false) {
+                getErrorMessage(data.message);
+            } else {
+                location.reload()
             }
         });
 }

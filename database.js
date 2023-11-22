@@ -28,6 +28,7 @@ module.exports = {
             await User.create({
                 email: 'admin@localhost',
                 password: 'admin',
+                admin: true,
                 token: 'admin'
             })
             await UserSettings.create({ email: 'admin@localhost' })

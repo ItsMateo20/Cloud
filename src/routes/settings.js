@@ -37,7 +37,7 @@ module.exports = {
         const folderPath = `${userFolderPath}${folder}`;
 
         if (req.params.setting === "settings") {
-            return res.status(200).json({ success: true, settings: { darkMode: UserSettingsS.darkMode, showImage: UserSettingsS.showImage } })
+            return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
     run2: async (req, res) => {
@@ -85,6 +85,15 @@ module.exports = {
             if (value.toString() === "true") newValue = true
             if (value.toString() === "false") newValue = false
             UserSettingsS.darkMode = newValue
+            await UserSettingsS.save()
+            res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+        } else if (req.params.setting === "adminMode") {
+            const { value } = req.body;
+            if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+            let newValue
+            if (value.toString() === "true") newValue = true
+            if (value.toString() === "false") newValue = false
+            UserSettingsS.adminMode = newValue
             await UserSettingsS.save()
             res.status(200).json({ success: true, message: "UPDATED_SETTING" })
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })

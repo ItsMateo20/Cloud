@@ -61,6 +61,9 @@
                         <li class="dropdown-item user-select-none disabled" id="downloadButton">
                             Pobierz
                         </li>
+                        <% if (admin==true) { %>
+                            <a class="dropdown-item user-select-none" href="/admin">Panel admina</a>
+                            <% } %>
                     </ul>
                 </li>
                 <li class="nav-item dropdown ms-3">
@@ -82,10 +85,16 @@
                             Pokaż obrazy
                             <i class="bi"></i>
                         </li>
-                        <li class="dropdown-item text-danger user-select-none"
-                            onclick="window.location.href = '/logout'">
-                            Wyloguj
-                        </li>
+                        <% if (admin==true) { %>
+                            <li class="dropdown-item user-select-none" id="adminModeSettingButton">
+                                Tryb admina
+                                <i class="bi"></i>
+                            </li>
+                            <% } %>
+                                <li class="dropdown-item text-danger user-select-none"
+                                    onclick="window.location.href = '/logout'">
+                                    Wyloguj
+                                </li>
                     </ul>
                 </li>
         </div>

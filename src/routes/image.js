@@ -1,4 +1,5 @@
 const User = require("../models/User.js");
+const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, existsSync } = require("fs");
 const { resolve } = require("path");
@@ -18,6 +19,10 @@ module.exports = {
             where: { email: decoded.email, password: decoded.password },
         });
         if (!data) return res.redirect("/login");
+        let UserSettingsS = await UserSettings.findOne({
+            where: { email: decoded.email },
+        });
+        if (!UserSettingsS) return res.redirect("/login");
 
         if (!req.query.image) return res.redirect("/");
         req.query.image = req.query.image.replace(/"/g, "").replace(/'/g, "")
@@ -31,8 +36,13 @@ module.exports = {
             mkdirSync(`../../.././Users/${decoded.email}`);
         }
 
-        const userFolderPath = `../../.././Users/${decoded.email}`;
-        const imagePath = `${userFolderPath}/${req.query.image}`;
+        let userFolderPath = `../../.././Users/${decoded.email}/`;
+
+        if (UserSettingsS.adminMode) {
+            userFolderPath = `../../.././Users/`;
+        }
+
+        const imagePath = `${userFolderPath}${req.query.image}`;
         const getImage = existsSync(imagePath);
 
         if (!getImage) return res.redirect("/?error=FILE_DOESNT_EXIST");

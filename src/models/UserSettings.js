@@ -17,6 +17,10 @@ const UserSettings = sequelize.define('UserSettings', {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
     },
+    adminMode: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+    },
 });
 
 module.exports = UserSettings;

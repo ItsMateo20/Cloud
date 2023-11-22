@@ -1,4 +1,5 @@
 const User = require("../models/User.js");
+const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmSync } = require("fs");
 const archiver = require('archiver');
@@ -23,7 +24,7 @@ module.exports = {
 
             if (!name || !path || !type) return res.redirect("/?error=FILE_DOESNT_EXIST");
             if (type === "folder") {
-                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                     const zipFileName = `${name}.zip`;
                     const zipFilePath = join(folderPath, zipFileName);
                     const output = createWriteStream(zipFilePath);
@@ -52,13 +53,13 @@ module.exports = {
                     });
 
                     archive.pipe(output);
-                    archive.directory(`${userFolderPath}/${path}`, false);
+                    archive.directory(`${userFolderPath}${path}`, false);
                     archive.finalize();
                 } else return res.redirect("/?error=FOLDER_DOESNT_EXIST");
 
             } else {
-                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                    return res.download(`${userFolderPath}/${path}`, async (err) => {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
+                    return res.download(`${userFolderPath}${path}`, async (err) => {
                         if (err) {
                             console.log(gray("[SITE]: ") + red('Error during download:', err));
                         }
@@ -135,14 +136,14 @@ module.exports = {
             }
 
             if (type === "folder") {
-                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                     await renameSync(`${folderPath}/${name}`, `${folderPath}/${newFileName}`);
                     return res.status(200).json({ success: true, message: "FOLDER_RENAMED" });
                 } else {
                     return res.status(500).json({ success: false, message: "FOLDER_DOESNT_EXIST" });
                 }
             } else {
-                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
+                if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                     let newFileName = `${newName}${name.substring(name.lastIndexOf('.'))}`
 
                     await renameSync(`${folderPath}/${name}`, `${folderPath}/${newFileName}`);
@@ -156,8 +157,8 @@ module.exports = {
             const { name, path, type } = req.body;
 
             if (!name || !path || !type) return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
-            if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}/${path}`)) {
-                await rmSync(`${userFolderPath}/${path}`, { recursive: true, force: true })
+            if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
+                await rmSync(`${userFolderPath}${path}`, { recursive: true, force: true })
                 if (type == "folder") return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
                 else return res.status(200).json({ success: true, message: "FILE_DELETED" });
             } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
@@ -177,6 +178,10 @@ async function auth(req, res) {
         where: { email: decoded.email, password: decoded.password },
     });
     if (!data) return res.redirect("/login");
+    let UserSettingsS = await UserSettings.findOne({
+        where: { email: decoded.email },
+    });
+    if (!UserSettingsS) return res.redirect("/login");
 
     let folder = req.cookies.folder || "";
 
@@ -186,7 +191,12 @@ async function auth(req, res) {
     );
 
     if (!userFolder) return res.redirect("/");
-    const userFolderPath = `../../.././Users/${email}`;
+    let userFolderPath = `../../.././Users/${email}/`;
+
+    if (UserSettingsS.adminMode) {
+        userFolderPath = `../../.././Users/`;
+    }
+
     const folderPath = `${userFolderPath}${folder}`;
 
     return { email, folder, decoded, data, userFolderPath, folderPath }

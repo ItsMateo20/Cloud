@@ -43,11 +43,16 @@ module.exports = {
             mkdirSync(`../../.././Users/${decoded.email}`);
         }
 
-        let userFolderPath = `../../.././Users/${decoded.email}`;
+        let userFolderPath = `../../.././Users/${decoded.email}/`;
+
+        if (UserSettingsS.adminMode) {
+            userFolderPath = `../../.././Users/`;
+        }
+
         const folderPath = `${userFolderPath}${folder}`;
 
         try {
-            readdirSync(folderPath)
+            await readdirSync(folderPath)
         } catch (e) {
             res.clearCookie('folder');
             return res.redirect("/?error=INVALID_FOLDER")
@@ -140,6 +145,8 @@ module.exports = {
             email: data.email,
             items: items,
             directory: folder,
+
+            admin: data.admin,
 
             loggedIn: true,
         };

@@ -1,4 +1,5 @@
 const User = require("../models/User.js");
+const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync } = require("fs");
 
@@ -17,6 +18,10 @@ module.exports = {
             where: { email: decoded.email, password: decoded.password },
         });
         if (!data) return res.redirect("/login");
+        let UserSettingsS = await UserSettings.findOne({
+            where: { email: decoded.email },
+        });
+        if (!UserSettingsS) return res.redirect("/login");
 
         let folder
         if (req.cookies.folder) {
@@ -30,6 +35,12 @@ module.exports = {
         const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === decoded.email
         );
+
+        let userFolderPath = `../../.././Users/${decoded.email}/`;
+
+        if (UserSettingsS.adminMode) {
+            userFolderPath = `../../.././Users/`;
+        }
 
         if (!userFolder) return res.redirect("/");
 
@@ -55,13 +66,13 @@ module.exports = {
             }
         } else if (req.params.folder === "new") {
             if (req.query.name) {
-                if (readdirSync(`../../.././Users/${decoded.email}${folder}`)) {
-                    if (readdirSync(`../../.././Users/${decoded.email}/${folder}`).includes(req.query.name)) {
+                if (readdirSync(`${userFolderPath}${folder}`)) {
+                    if (readdirSync(`${userFolderPath}${folder}`).includes(req.query.name)) {
                         res.cookie('folder', folder + req.query.name)
                     } else {
-                        await mkdirSync(`../../.././Users/${decoded.email}/${folder}/${req.query.name}`)
+                        await mkdirSync(`${userFolderPath}${folder}/${req.query.name}`)
 
-                        if (readdirSync(`../../.././Users/${decoded.email}/${folder}/${req.query.name}`)) {
+                        if (readdirSync(`${userFolderPath}${folder}/${req.query.name}`)) {
                             res.cookie('folder', folder + req.query.name);
                         }
                     }

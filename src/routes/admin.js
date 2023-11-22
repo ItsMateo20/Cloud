@@ -1,13 +1,14 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, mkdirSync, existsSync } = require("fs");
-const { resolve } = require("path");
+const { readdirSync, mkdirSync } = require("fs");
 
 module.exports = {
-    name: "video",
-    url: "/video",
+    name: "Admin",
+    url: "/admin",
     run: async (req, res) => {
+        delete require.cache[require.resolve("../pages/admin.ejs")];
+
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
@@ -19,14 +20,18 @@ module.exports = {
             where: { email: decoded.email, password: decoded.password },
         });
         if (!data) return res.redirect("/login");
+        if (data.admin == false) return res.redirect("/");
         let UserSettingsS = await UserSettings.findOne({
             where: { email: decoded.email },
         });
         if (!UserSettingsS) return res.redirect("/login");
 
-        if (!req.query.video) return res.redirect("/");
-        req.query.video = req.query.video.replace(/"/g, "").replace(/'/g, "")
-
+        let folder
+        if (req.cookies.folder) {
+            folder = `${req.cookies.folder}`;
+        } else {
+            folder = "/";
+        }
 
         const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === decoded.email
@@ -42,12 +47,18 @@ module.exports = {
             userFolderPath = `../../.././Users/`;
         }
 
-        const videoPath = `${userFolderPath}${req.query.video}`;
-        const getVideo = existsSync(videoPath);
+        const folderPath = `${userFolderPath}${folder}`;
 
-        if (!getVideo) return res.redirect("/?error=FILE_DOESNT_EXIST");
-        const video = resolve(videoPath);
+        let args = {
+            body: [`Panel admina | Chmura`],
+            email: data.email,
+            directory: folder,
 
-        res.sendFile(video);
+            admin: data.admin,
+
+            loggedIn: true,
+        };
+
+        res.render("../pages/admin.ejs", args);
     },
 };
