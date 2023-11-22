@@ -13,7 +13,7 @@ module.exports = {
     name: "file",
     url: "/file/:file",
     run: async (req, res) => {
-        const { emailExtractedName, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
+        const { email, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
 
         if (!req.params.file) return res.redirect("/")
 
@@ -68,7 +68,7 @@ module.exports = {
         } else res.redirect("/?error=UNKNOWN_ERROR")
     },
     run2: async (req, res) => {
-        const { emailExtractedName, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
+        const { email, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
         if (req.params.file === "upload") {
             const storage = multer.diskStorage({
                 destination: (req, file, cb) => {
@@ -180,14 +180,14 @@ async function auth(req, res) {
 
     let folder = req.cookies.folder || "";
 
-    let emailExtractedName = data.email.split("@")[0];
+    const email = decoded.email
     const userFolder = readdirSync("../../.././Users/").some(
-        (userFolder) => userFolder.toLowerCase() === emailExtractedName
+        (userFolder) => userFolder.toLowerCase() === email
     );
 
     if (!userFolder) return res.redirect("/");
-    const userFolderPath = `../../.././Users/${emailExtractedName}`;
+    const userFolderPath = `../../.././Users/${email}`;
     const folderPath = `${userFolderPath}${folder}`;
 
-    return { emailExtractedName, folder, decoded, data, userFolderPath, folderPath }
+    return { email, folder, decoded, data, userFolderPath, folderPath }
 }

@@ -23,6 +23,16 @@ module.exports = {
             alter: true
         })
 
+        const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
+        if (!adminFind) {
+            await User.create({
+                email: 'admin@localhost',
+                password: 'admin',
+                token: 'admin'
+            })
+            await UserSettings.create({ email: 'admin@localhost' })
+        }
+
         await sequelize.authenticate()
             .then(() => {
                 console.log(gray('[SITE]: ') + cyan('Database connected!'));

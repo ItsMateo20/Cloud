@@ -26,9 +26,9 @@ module.exports = {
         }
 
 
-        const emailExtractedName = data.email.split("@")[0];
+
         const userFolder = readdirSync("../../.././Users/").some(
-            (folder) => folder.toLowerCase() === emailExtractedName
+            (folder) => folder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) return res.redirect("/");
@@ -55,13 +55,13 @@ module.exports = {
             }
         } else if (req.params.folder === "new") {
             if (req.query.name) {
-                if (readdirSync(`../../.././Users/${emailExtractedName}${folder}`)) {
-                    if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}`).includes(req.query.name)) {
+                if (readdirSync(`../../.././Users/${decoded.email}${folder}`)) {
+                    if (readdirSync(`../../.././Users/${decoded.email}/${folder}`).includes(req.query.name)) {
                         res.cookie('folder', folder + req.query.name)
                     } else {
-                        await mkdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)
+                        await mkdirSync(`../../.././Users/${decoded.email}/${folder}/${req.query.name}`)
 
-                        if (readdirSync(`../../.././Users/${emailExtractedName}/${folder}/${req.query.name}`)) {
+                        if (readdirSync(`../../.././Users/${decoded.email}/${folder}/${req.query.name}`)) {
                             res.cookie('folder', folder + req.query.name);
                         }
                     }

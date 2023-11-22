@@ -39,7 +39,7 @@ module.exports = {
 
         try {
             const UserFind = await User.findOne({ where: { email: email } })
-            if (UserFind.email == email) return res.redirect("/signup?error=ACCOUNT_ALREADY_EXISTS_SIGNUP")
+            if (UserFind) return res.redirect("/signup?error=ACCOUNT_ALREADY_EXISTS_SIGNUP")
             const UserS = await User.create({ email: email, password: password1 });
             UserS.token = jwt.sign({ email: email, password: password1 }, process.env.JWTSECRET);
             await UserS.save();

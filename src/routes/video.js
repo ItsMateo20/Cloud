@@ -22,16 +22,16 @@ module.exports = {
         if (!req.query.video) return res.redirect("/");
         req.query.video = req.query.video.replace(/"/g, "").replace(/'/g, "")
 
-        const emailExtractedName = data.email.split("@")[0];
+
         const userFolder = readdirSync("../../.././Users/").some(
-            (folder) => folder.toLowerCase() === emailExtractedName
+            (folder) => folder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) {
-            mkdirSync(`../../.././Users/${emailExtractedName}`);
+            mkdirSync(`../../.././Users/${decoded.email}`);
         }
 
-        const userFolderPath = `../../.././Users/${emailExtractedName}`;
+        const userFolderPath = `../../.././Users/${decoded.email}`;
         const videoPath = `${userFolderPath}/${req.query.video}`;
         const getVideo = existsSync(videoPath);
 

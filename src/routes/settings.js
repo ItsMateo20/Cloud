@@ -27,13 +27,13 @@ module.exports = {
 
         const folder = req.cookies.folder || "";
 
-        const emailExtractedName = data.email.split("@")[0];
+
         const userFolder = readdirSync("../../.././Users/").some(
-            (userFolder) => userFolder.toLowerCase() === emailExtractedName
+            (userFolder) => userFolder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) return res.status(500).json({ success: false, message: "INVALID_FOLDER" });
-        const userFolderPath = `../../.././Users/${emailExtractedName}`;
+        const userFolderPath = `../../.././Users/${decoded.email}`;
         const folderPath = `${userFolderPath}${folder}`;
 
         if (req.params.setting === "settings") {
@@ -59,13 +59,13 @@ module.exports = {
 
         const folder = req.cookies.folder || "";
 
-        const emailExtractedName = data.email.split("@")[0];
+
         const userFolder = readdirSync("../../.././Users/").some(
-            (userFolder) => userFolder.toLowerCase() === emailExtractedName
+            (userFolder) => userFolder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) return res.status(500).json({ success: false, message: "INVALID_FOLDER" });
-        const userFolderPath = `../../.././Users/${emailExtractedName}`;
+        const userFolderPath = `../../.././Users/${decoded.email}`;
         const folderPath = `${userFolderPath}${folder}`;
 
 

@@ -35,16 +35,15 @@ module.exports = {
             folder = "/";
         }
 
-        const emailExtractedName = data.email.split("@")[0];
         const userFolder = readdirSync("../../.././Users/").some(
-            (folder) => folder.toLowerCase() === emailExtractedName
+            (folder) => folder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) {
-            mkdirSync(`../../.././Users/${emailExtractedName}`);
+            mkdirSync(`../../.././Users/${decoded.email}`);
         }
 
-        const userFolderPath = `../../.././Users/${emailExtractedName}`;
+        let userFolderPath = `../../.././Users/${decoded.email}`;
         const folderPath = `${userFolderPath}${folder}`;
 
         try {
@@ -135,8 +134,6 @@ module.exports = {
 
         const items = [];
         await getSubfolders(folderPath, items);
-
-        // console.table(items);
 
         let args = {
             body: [`Głowna strona | Chmura`],
