@@ -61,6 +61,7 @@ module.exports = {
                     token: 'admin',
                 })
                 await UserSettings.create({ email: 'admin@localhost' })
+                await Whitelisted.create({ email: 'admin@localhost' })
             }
         }, 5000);
     }

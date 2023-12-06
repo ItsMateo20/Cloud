@@ -1,5 +1,6 @@
 const User = require("../models/User.js")
 const UserSettings = require("../models/UserSettings.js")
+const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -36,6 +37,9 @@ module.exports = {
 
         if (!email || !password1 || !password2) return res.redirect("/signup?error=MISSING_DATA_SIGNUP")
         if (password1 !== password2) return res.redirect("/signup?error=PASSWORD_NOT_MATCH_SIGNUP")
+
+        const WhitelistedS = await Whitelisted.findOne({ where: { email: email } })
+        if (!WhitelistedS) return res.redirect("/signup?error=EMAIL_NOT_WHITELISTED")
 
         try {
             const UserFind = await User.findOne({ where: { email: email } })
