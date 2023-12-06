@@ -2,13 +2,12 @@ const { gray, cyan, red } = require('chalk');
 const Sequelize = require('sequelize');
 const User = require('./src/models/User.js');
 const UserSettings = require('./src/models/UserSettings.js');
+const Whitelisted = require('./src/models/Whitelisted.js');
 
 module.exports = {
     name: 'database',
     description: 'Database',
     async execute() {
-
-
         const sequelize = new Sequelize({
             dialect: 'sqlite',
             logging: false,
@@ -23,13 +22,17 @@ module.exports = {
             alter: true
         })
 
+        await Whitelisted.sync({
+            alter: true
+        })
+
         const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
         if (!adminFind) {
             await User.create({
                 email: 'admin@localhost',
                 password: 'admin',
                 admin: true,
-                token: 'admin'
+                token: 'admin',
             })
             await UserSettings.create({ email: 'admin@localhost' })
         }
