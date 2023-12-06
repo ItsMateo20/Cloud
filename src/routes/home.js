@@ -1,9 +1,10 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
+const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, statSync } = require("fs");
 const { join, extname, relative } = require("path");
-const sizeOf = require('image-size');
+const sharp = require('sharp');
 const ffprobe = require('node-ffprobe')
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
-            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET);
+            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
         } catch (e) { }
         if (!decoded) return res.redirect("/login");
 
@@ -83,7 +84,7 @@ module.exports = {
                     url = "icons/image.png"
                     type = "image";
 
-                    const dimensions = sizeOf(entryPath);
+                    const dimensions = await sharp(entryPath).metadata();
                     height = dimensions.height;
                     width = dimensions.width;
 
@@ -150,6 +151,24 @@ module.exports = {
 
             loggedIn: true,
         };
+
+        if (data.admin) {
+            const whitelisted = await Whitelisted.findAll();
+            const whitelist = [];
+            whitelisted.forEach((user) => {
+                whitelist.push({ id: user.id, email: user.email });
+            });
+            whitelist.sort((a, b) => a.id - b.id);
+            args.whitelistList = whitelist;
+
+            const admins = await User.findAll({ where: { admin: true } });
+            const adminList = [];
+            admins.forEach((user) => {
+                adminList.push({ id: user.id, email: user.email });
+            });
+            adminList.sort((a, b) => a.id - b.id);
+            args.adminList = adminList;
+        }
 
         res.render("../pages/home.ejs", args);
     },
