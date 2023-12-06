@@ -9,7 +9,7 @@ module.exports = {
         let data
         if (req.cookies.token) {
             try {
-                decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET)
+                decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM })
             } catch (e) { }
             if (decoded) {
                 data = await User.findOne({ where: { email: decoded.email, password: decoded.password } })

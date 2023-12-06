@@ -10,7 +10,7 @@ module.exports = {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
-            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET);
+            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
         } catch (e) { }
         if (!decoded) return res.redirect("/login");
 
