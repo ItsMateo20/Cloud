@@ -23,7 +23,9 @@
     "7": "",
     "ZIP_CREATION_ERROR": "Przepraszamy, wystąpił błąd podczas tworzenia archiwum. Spróbuj ponownie.",
     "8": "",
-    "EMAIL_ALREADY_WHITELISTED": "Przepraszamy, podany adres e-mail jest już na białej liście. Spróbuj ponownie.",
     "EMAIL_ALREADY_ADMIN": "Przepraszamy, podany adres e-mail jest już administratorem. Spróbuj ponownie.",
+    "EMAIL_NOT_ADMIN": "Przepraszamy, podany adres e-mail nie jest administratorem. Spróbuj ponownie.",
+    "EMAIL_ALREADY_WHITELISTED": "Przepraszamy, podany adres e-mail jest już na białej liście. Spróbuj ponownie.",
+    "EMAIL_NOT_WHITELISTED": "Przepraszamy, podany adres e-mail nie jest na białej liście. Spróbuj ponownie.",
     "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
 }
