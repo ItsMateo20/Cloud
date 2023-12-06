@@ -4,5 +4,7 @@
     "FOLDER_DELETED": "Folder został usunięty",
     "FOLDER_RENAMED": "Foldera nazwa została zmieniona",
     "FILE_RENAMED": "Nazwa pliku została zmieniona",
-    "UPDATED_SETTING": "Ustawienie zostało zaktualizowane"
+    "UPDATED_SETTING": "Ustawienie zostało zaktualizowane",
+    "EMAIL_WHITELISTED": "Email został dodany do białej listy",
+    "EMAIL_UNWHITELISTED": "Email został usunięty z białej listy"
 }
