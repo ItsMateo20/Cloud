@@ -7,7 +7,6 @@ const app = express()
 const CookieParser = require("cookie-parser")
 const UrlEncodedParser = require("body-parser").urlencoded({ extended: false })
 const nocache = require('nocache');
-const onHeaders = require('on-headers');
 
 const { readdirSync } = require('fs')
 const database = require("./database.js")
