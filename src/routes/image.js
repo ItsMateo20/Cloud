@@ -3,6 +3,7 @@ const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, existsSync } = require("fs");
 const { resolve } = require("path");
+const sharp = require("sharp");
 
 module.exports = {
     name: "image",
@@ -11,7 +12,7 @@ module.exports = {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
-            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET);
+            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
         } catch (e) { }
         if (!decoded) return res.redirect("/login");
 
@@ -26,7 +27,6 @@ module.exports = {
 
         if (!req.query.image) return res.redirect("/");
         req.query.image = req.query.image.replace(/"/g, "").replace(/'/g, "")
-
 
         const userFolder = readdirSync("../../.././Users/").some(
             (folder) => folder.toLowerCase() === decoded.email
@@ -48,6 +48,15 @@ module.exports = {
         if (!getImage) return res.redirect("/?error=FILE_DOESNT_EXIST");
         const image = resolve(imagePath);
 
-        res.sendFile(image);
+        if (req.query.preview && req.query.preview == "true") {
+            const imageInfo = await sharp(image).metadata();
+            const originalWidth = imageInfo.width;
+            const originalHeight = imageInfo.height;
+            const resizedWidth = Math.round(originalWidth / 4);
+            const resizedHeight = Math.round(originalHeight / 4);
+
+            const resizedImage = await sharp(image).resize(resizedWidth, resizedHeight).toBuffer();
+            res.type("image/png").send(resizedImage);
+        } else res.sendFile(image);
     },
 };
