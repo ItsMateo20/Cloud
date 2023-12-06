@@ -16,7 +16,6 @@ const downloadBtn = document.getElementById('downloadButton');
 
 const darkThemeBtn = document.getElementById('darkThemeSettingButton');
 const showImageBtn = document.getElementById('showImageSettingButton');
-const adminModeBtn = document.getElementById('adminModeSettingButton');
 
 //handle window events
 
@@ -110,7 +109,7 @@ function Adjust() {
         const dataFileHeight = parseFloat(item.getAttribute('data-fileheight'));
         const dataFileWidth = parseFloat(item.getAttribute('data-filewidth'));
         if (settings.showImage == true) {
-            if (!item.dataset.filetype === "image") {
+            if (!item.dataset.filetype === "image" || item.dataset.filetype === "video") {
                 if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) {
                     item.querySelector("img").classList.add('cloudItemContainerImg');
                 }
@@ -121,8 +120,17 @@ function Adjust() {
                     if (dataFileHeight < dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerLandscape');
                     if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
                 }
-                item.querySelector("img").src = item.dataset.fileredirect.trim();
+                item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
             }
+            // else if (item.dataset.filetype === "video") {
+            //     if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
+            //     if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
+            //         if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+            //         if (dataFileHeight < dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerLandscape');
+            //         if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+            //     }
+            //     item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
+            // }
         } else {
             if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.add('cloudItemContainerImg');
             if (item.querySelector("img").classList.contains('cloudItemContainerPortrait')) item.querySelector("img").classList.remove('cloudItemContainerPortrait');
@@ -139,8 +147,8 @@ function Adjust() {
 
             const scaleFactor = Math.min(heightScaleFactor, widthScaleFactor);
 
-            const adjustedHeight = (dataFileHeight * scaleFactor) / 1.5;
-            const adjustedWidth = (dataFileWidth * scaleFactor) / 1.5;
+            const adjustedHeight = Math.round((dataFileHeight * scaleFactor) / 1.5);
+            const adjustedWidth = Math.round((dataFileWidth * scaleFactor) / 1.5);
 
             item.setAttribute('data-fileheight', adjustedHeight.toString());
             item.setAttribute('data-filewidth', adjustedWidth.toString());
@@ -317,7 +325,7 @@ function handleFileSelect(event) {
             .then(async (data) => {
                 if (data.success) {
                     const files = data.files;
-                    const rowToAddTo = document.querySelector('.row');
+                    const rowToAddTo = document.querySelector('.app-row');
                     for (let i = 0; i < files.length; i++) {
                         const newItemElement = await createItemElement(files[i]);
                         rowToAddTo.appendChild(newItemElement);
@@ -399,7 +407,7 @@ function handleDeleteClick(event) {
     setDisabledState(true);
     loadingDiv("show");
 
-    if (confirm(confirmMessage)) {
+    if (confirm(confirmMessage) === true) {
         fetch("/file/delete", {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -498,41 +506,6 @@ function handleShowImageClick(event) {
         .then((data) => {
             if (data.success === false) {
                 getErrorMessage(data.message);
-            }
-        });
-}
-
-//handle admin mode button
-
-adminModeBtn.addEventListener('click', handleAdminModeClick, { passive: true });
-
-function handleAdminModeClick(event) {
-    const adminModeSettingStatus = adminModeBtn.querySelector('i')
-
-    if (adminModeBtn.dataset.value === "true") {
-        adminModeBtn.dataset.value = "false";
-        settings.adminMode = false;
-        adminModeSettingStatus.classList.toggle('bi-x');
-        adminModeSettingStatus.classList.toggle('bi-check');
-    } else if (adminModeBtn.dataset.value === "false") {
-        adminModeBtn.dataset.value = "true";
-        settings.adminMode = true;
-        adminModeSettingStatus.classList.toggle('bi-check');
-        adminModeSettingStatus.classList.toggle('bi-x');
-    }
-
-    setDisabledState(true);
-
-    fetch("/settings/adminMode", {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: adminModeBtn.dataset.value.toString() }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success === false) {
-                getErrorMessage(data.message);
-            } else {
-                location.reload()
             }
         });
 }

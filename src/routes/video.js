@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, existsSync } = require("fs");
 const { resolve } = require("path");
 
+const ffprobe = require('node-ffprobe')
+
 module.exports = {
     name: "video",
     url: "/video",
@@ -11,7 +13,7 @@ module.exports = {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
         try {
-            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET);
+            decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
         } catch (e) { }
         if (!decoded) return res.redirect("/login");
 
@@ -48,6 +50,12 @@ module.exports = {
         if (!getVideo) return res.redirect("/?error=FILE_DOESNT_EXIST");
         const video = resolve(videoPath);
 
+        // if (req.query.preview && req.query.preview == "true") {
+        //     const metadata = await ffprobe(video);
+        //     const dimensions = metadata.streams[0];
+        //     let height = dimensions.height;
+        //     let width = dimensions.width;
+        // } else 
         res.sendFile(video);
     },
 };
