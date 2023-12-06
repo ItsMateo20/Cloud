@@ -23,6 +23,9 @@ async function connectDatabase() {
 
 async function synchronizeModels(sequelize) {
     try {
+        await sequelize.sync({ alter: true });
+        console.log(gray('[SITE]: ') + cyan('Database synchronized successfully!'));
+
         await User.sync({ alter: true });
         console.log(gray('[SITE]: ') + cyan('User model synchronized successfully!'));
 
@@ -31,9 +34,12 @@ async function synchronizeModels(sequelize) {
 
         await Whitelisted.sync({ alter: true });
         console.log(gray('[SITE]: ') + cyan('Whitelisted model synchronized successfully!'));
+
         console.log(gray('[SITE]: ') + cyan('All models synchronized successfully!\n') + gray('[SITE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
     } catch (error) {
         console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
+        console.log(gray('[SITE]: ') + cyan('Trying automatic fixes...'));
+        require('./debug.js').execute().catch(console.error);
         throw error;
     }
 }
@@ -45,15 +51,17 @@ module.exports = {
         const sequelize = await connectDatabase();
         await synchronizeModels(sequelize);
 
-        const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
-        if (!adminFind) {
-            await User.create({
-                email: 'admin@localhost',
-                password: 'admin',
-                admin: true,
-                token: 'admin',
-            })
-            await UserSettings.create({ email: 'admin@localhost' })
-        }
+        setTimeout(async () => {
+            const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
+            if (!adminFind) {
+                await User.create({
+                    email: 'admin@localhost',
+                    password: 'admin',
+                    admin: true,
+                    token: 'admin',
+                })
+                await UserSettings.create({ email: 'admin@localhost' })
+            }
+        }, 5000);
     }
 }
