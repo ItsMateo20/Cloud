@@ -25,7 +25,7 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **File Preview**: View images and videos directly within the web interface.
 
-![image](https://github.com/ItsMateo20/Cloud/assets/84156177/0a7fd6c9-174d-4b42-850c-a3f593a4fe19)
+(image soon)
 
 - **Security**: Secure access to your files and folders with user authentication.
 
