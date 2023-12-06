@@ -31,6 +31,7 @@ async function synchronizeModels(sequelize) {
 
         await Whitelisted.sync({ alter: true });
         console.log(gray('[SITE]: ') + cyan('Whitelisted model synchronized successfully!'));
+        console.log(gray('[SITE]: ') + cyan('All models synchronized successfully!\n') + gray('[SITE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
     } catch (error) {
         console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
         throw error;

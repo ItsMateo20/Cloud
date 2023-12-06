@@ -34,9 +34,9 @@ database.execute().then(async () => {
     app.set("view engine", "ejs")
     app.set("views", __dirname + "/src/pages")
     app.use(express.static(__dirname + '/src/assets/'))
-    // app.use(express.static('../../.././Users/'));
 
     let files = readdirSync(__dirname + '/src/routes/')
+    console.log(gray("[SITE]: ") + cyan(`Started loading ${files.length} routes`));
     files.forEach(f => {
         const file = require(`./src/routes/${f}`)
         if (file && file.url) {
@@ -45,7 +45,9 @@ database.execute().then(async () => {
             console.log(gray("[SITE]: ") + cyan(`Loaded /${file.name.toLowerCase()}`))
         }
     })
+    console.log(gray("[SITE]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
 
+    console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT || 7250}`));
     app.listen(process.env.PORT || 7250, () => console.log(gray("[SITE]: ") + cyan(`Listening on port ${process.env.PORT || 7250}`)))
 });
 
