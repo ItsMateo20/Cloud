@@ -47,7 +47,7 @@ This project was created for fun but will be used by me to store my files, elimi
 3. Move the database.sqlite file in the folder that you extracted the files into.
 4. And run it and your migrated!
 
-##FAQ
+## FAQ
 
 1. Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should i do?..
 A: Run the command "npm run fix" and that should fix the error your having!
