@@ -59,7 +59,7 @@ async function ApiFunction(req, res) {
             const { email } = req.body;
             if (!email) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
             const data = await User.findOne({ where: { email } });
-            if (data) return res.status(500).json({ success: false, message: "EMAIL_ALREADY_ADMIN" });
+            if (data.admin) return res.status(500).json({ success: false, message: "EMAIL_ALREADY_ADMIN" });
             data.admin = true;
             await data.save();
             let admins = await getAllEmails();
@@ -68,7 +68,7 @@ async function ApiFunction(req, res) {
             const { email } = req.body;
             if (!email) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
             const data = await User.findOne({ where: { email } });
-            if (!data) return res.status(500).json({ success: false, message: "" });
+            if (!data.admin) return res.status(500).json({ success: false, message: "EMAIL_NOT_ADMIN" });
             data.admin = false
             await data.save();
             let admins = await getAllEmails();
