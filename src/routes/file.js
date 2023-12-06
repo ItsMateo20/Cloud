@@ -1,11 +1,11 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmSync } = require("fs");
+const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmdirSync, rmSync } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
-const sizeOf = require('image-size');
+const sharp = require('sharp');
 const ffprobe = require('node-ffprobe')
 
 const { gray, cyan, red } = require("chalk");
@@ -73,7 +73,7 @@ module.exports = {
         if (req.params.file === "upload") {
             const storage = multer.diskStorage({
                 destination: (req, file, cb) => {
-                    cb(null, `${userFolderPath}${folder}`);
+                    cb(null, `${folderPath}`);
                 },
                 filename: (req, file, cb) => {
                     cb(null, file.originalname);
@@ -104,7 +104,7 @@ module.exports = {
                     const isVideo = mimetype.startsWith('video');
 
                     if (isImage) {
-                        const dimensions = sizeOf(file.path);
+                        const dimensions = await sharp(file.path).metadata();
                         const { height, width } = dimensions;
 
                         newFile.type = "image";
@@ -158,9 +158,13 @@ module.exports = {
 
             if (!name || !path || !type) return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
             if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
-                await rmSync(`${userFolderPath}${path}`, { recursive: true, force: true })
-                if (type == "folder") return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
-                else return res.status(200).json({ success: true, message: "FILE_DELETED" });
+                if (type == "folder") {
+                    rmdirSync(`${userFolderPath}${path}`, { force: true });
+                    return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
+                } else {
+                    rmSync(`${userFolderPath}${path}`, { force: true });
+                    return res.status(200).json({ success: true, message: "FILE_DELETED" });
+                }
             } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
@@ -170,7 +174,7 @@ async function auth(req, res) {
     if (!req.cookies.token) return res.redirect("/login");
     let decoded;
     try {
-        decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET);
+        decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
     } catch (e) { }
     if (!decoded) return res.redirect("/login");
 
