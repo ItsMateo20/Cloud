@@ -48,8 +48,8 @@ This project was created for fun but will be used by me to store my files, elimi
 4. And run it and your migrated!
 
 ## FAQ
+Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should i do?..
 
-1. Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should i do?..
 A: Run the command "npm run fix" and that should fix the error your having!
 
 ## Technologies Used
