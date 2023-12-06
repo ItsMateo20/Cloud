@@ -5,4 +5,3 @@ database.sqlite-journal
 *env
 runCloud.bat
 src/assets/icons/webpageicon.ico
-src/routes/resetDB.js
