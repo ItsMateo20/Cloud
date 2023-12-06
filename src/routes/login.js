@@ -1,4 +1,5 @@
 const User = require("../models/User.js")
+const UserSettings = require("../models/UserSettings.js")
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -19,6 +20,8 @@ module.exports = {
             } else {
                 res.clearCookie("token").redirect("/login")
             }
+            const UserSettingS = await UserSettings.findOne({ where: { email: decoded.email } })
+            if (!UserSettingS) await UserSettings.create({ email: decoded.email })
             if (decoded && data) return res.redirect("/")
         }
 
@@ -37,9 +40,13 @@ module.exports = {
 
         if (!email || !password) return res.redirect("/login?error=MISSING_DATA_LOGIN")
         const UserS = await User.findOne({ where: { email: email, password: password } })
+        const UserSettingsS = await UserSettings.findOne({ where: { email: email } })
         if (UserS) {
-            UserS.token = jwt.sign({ email: UserS.email, password: UserS.password }, process.env.JWTSECRET)
+            UserS.token = jwt.sign({ email: UserS.email, password: UserS.password }, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM, expiresIn: process.env.JWTEXPIRESIN })
             await UserS.save()
+            if (!UserSettingsS) {
+                await UserSettings.create({ email: email })
+            }
 
             res.cookie("token", UserS.token, { maxAge: 86400000 })
             res.redirect("/")
