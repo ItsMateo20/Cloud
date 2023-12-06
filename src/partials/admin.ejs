@@ -1,0 +1,61 @@
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasAdminMenu"
+    aria-labelledby="offcanvasAdminMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasAdminMenuLabel">Admin Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        <div class="input-group mb-3">
+            <input type="email" class="form-control" id="adminInput" placeholder="Wpisz maila">
+            <button class="btn btn-outline-secondary" type="button" id="adminButton">Dodaj</button>
+        </div>
+
+        <table class="table table-borderless">
+            <tbody id="adminEmailList">
+                <% adminList.forEach(function(user) { %>
+                    <tr>
+                        <td>
+                            <%= user.email %>
+                                </br>
+                                <button class="btn btn-outline-danger" type="button" onclick="removeadminButton(this)"
+                                    data-email="<%= user.email %>">Usuń</button>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWhitelistMenu"
+    aria-labelledby="offcanvasWhitelistMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWhitelistMenuLabel">Whitelist Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        <div class="input-group mb-3">
+            <input type="email" class="form-control" id="whitelistInput" placeholder="Wpisz maila">
+            <button class="btn btn-outline-secondary" type="button" id="whitelistButton">Dodaj</button>
+            <div class="invalid-feedback">
+                Prosze wpisać maila!
+            </div>
+        </div>
+
+        <table class="table table-borderless">
+            <tbody id="whitelistEmailList">
+                <% whitelistList.forEach(function(user) { %>
+                    <tr>
+                        <td>
+                            <%= user.email %>
+                                </br>
+                                <button class="btn btn-outline-danger" type="button" onclick="unwhitelistButton(this)"
+                                    data-email="<%= user.email %>">Usuń</button>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
