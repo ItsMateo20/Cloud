@@ -42,61 +42,75 @@
                     <a type="button" class="btn btn-outline-secondary user-select-none" id="backButton"
                         href="/folder/back">Powrót</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="btn btn-outline-secondary dropdown-toggle user-select-none" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu plików</a>
-                    <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownFiles">
-                        <li class="dropdown-item user-select-none" id="uploadFileButton">
-                            Dodaj plik
-                        </li>
-                        <li class="dropdown-item user-select-none disabled" id="renameFileButton">
-                            Zmień nazwę
-                        </li>
-                        <li class="dropdown-item user-select-none" id="newFolderButton">
-                            Nowy folder
-                        </li>
-                        <li class="dropdown-item user-select-none disabled" id="deleteButton">
-                            Usuń
-                        </li>
-                        <li class="dropdown-item user-select-none disabled" id="downloadButton">
-                            Pobierz
-                        </li>
-                        <% if (admin==true) { %>
-                            <a class="dropdown-item user-select-none" href="/admin">Panel admina</a>
-                            <% } %>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown ms-3">
-                    <a class="nav-link dropdown-toggle rounded-circle border-dark" id="navbarDropdownProfile"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false"><img alt title
-                            src="icons/profile.png" width="35" height="35"></a>
-                    <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownProfile">
-                        <h6 class="dropdown-header user-select-auto">Zalogowano jako
-                            <strong>
-                                <%= email %>
-                            </strong>
-                        </h6>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-item user-select-none" id="darkThemeSettingButton">
-                            Tryb ciemny
-                            <i class="bi"></i>
-                        </li>
-                        <li class="dropdown-item user-select-none" id="showImageSettingButton">
-                            Pokaż obrazy
-                            <i class="bi"></i>
-                        </li>
-                        <% if (admin==true) { %>
-                            <li class="dropdown-item user-select-none" id="adminModeSettingButton">
-                                Tryb admina
-                                <i class="bi"></i>
+                <% if (admin==true) { %>
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-outline-danger dropdown-toggle user-select-none" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Menu admina</a>
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarAdminDropdown">
+                            <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasAdminMenu" aria-controls="offcanvasAdminMenu">
+                                Admin menu
                             </li>
-                            <% } %>
-                                <li class="dropdown-item text-danger user-select-none"
-                                    onclick="window.location.href = '/logout'">
-                                    Wyloguj
+                            <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasWhitelistMenu" aria-controls="offcanvasWhitelistMenu">
+                                Whitelist menu
+                            </li>
+                        </ul>
+                    </li>
+                    <% } %>
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-outline-secondary dropdown-toggle user-select-none" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Menu
+                                plików</a>
+                            <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownFiles">
+                                <li class="dropdown-item user-select-none" id="uploadFileButton">
+                                    Dodaj plik
                                 </li>
-                    </ul>
-                </li>
+                                <li class="dropdown-item user-select-none disabled" id="renameFileButton">
+                                    Zmień nazwę
+                                </li>
+                                <li class="dropdown-item user-select-none" id="newFolderButton">
+                                    Nowy folder
+                                </li>
+                                <li class="dropdown-item user-select-none disabled" id="deleteButton">
+                                    Usuń
+                                </li>
+                                <li class="dropdown-item user-select-none disabled" id="downloadButton">
+                                    Pobierz
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown ms-3">
+                            <a class="nav-link dropdown-toggle rounded-circle border-dark" id="navbarDropdownProfile"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"><img alt title
+                                    src="icons/profile.png" width="35" height="35"></a>
+                            <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownProfile">
+                                <h6 class="dropdown-header user-select-auto">Zalogowano jako
+                                    <strong>
+                                        <%= email %>
+                                    </strong>
+                                </h6>
+                                <li class="dropdown-divider"></li>
+                                <li class="dropdown-item user-select-none" id="darkThemeSettingButton">
+                                    Tryb ciemny
+                                    <i class="bi"></i>
+                                </li>
+                                <li class="dropdown-item user-select-none" id="showImageSettingButton">
+                                    Pokaż obrazy
+                                    <i class="bi"></i>
+                                </li>
+                                <% if (admin==true) { %>
+                                    <li class="dropdown-item user-select-none" id="adminModeSettingButton">
+                                        Tryb admina
+                                        <i class="bi"></i>
+                                    </li>
+                                    <% } %>
+                                        <li class="dropdown-item text-danger user-select-none"
+                                            onclick="window.location.href = '/logout'">
+                                            Wyloguj
+                                        </li>
+                            </ul>
+                        </li>
         </div>
     </div>
 </nav>
