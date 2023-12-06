@@ -9,14 +9,14 @@ module.exports = {
     name: "settings",
     url: "/settings/:setting",
     run: async (req, res) => {
-        const { email, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
+        const { email, folder, decoded, data, UserSettingsS, userFolderPath, folderPath } = await auth(req, res)
 
         if (req.params.setting === "settings") {
             return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     },
     run2: async (req, res) => {
-        const { email, folder, decoded, data, userFolderPath, folderPath } = await auth(req, res)
+        const { email, folder, decoded, data, UserSettingsS, userFolderPath, folderPath } = await auth(req, res)
 
 
         if (req.params.setting === "showImage") {
@@ -77,11 +77,7 @@ async function auth(req, res) {
     if (!userFolder) return res.status(500).json({ success: false, message: "FAILED_AUTHENTICATION" });
     let userFolderPath = `../../.././Users/${email}/`;
 
-    if (UserSettingsS.adminMode) {
-        userFolderPath = `../../.././Users/`;
-    }
-
     const folderPath = `${userFolderPath}${folder}`;
 
-    return { email, folder, decoded, data, userFolderPath, folderPath }
+    return { email, folder, decoded, data, UserSettingsS, userFolderPath, folderPath }
 }
