@@ -53,10 +53,39 @@ body {
 }
 
 
-.container {
+.app-container {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
     width: 100%;
-    height: 100%;
-    z-index: 100;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-right: auto;
+    margin-left: auto;
+    transition: 0.3s;
+}
+
+@media (min-width: 576px) {
+    .app-container {
+        max-width: 100%
+    }
+}
+
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .app-container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1580px) {
+    .app-container {
+        max-width: 1340px;
+    }
 }
 
 .navbar {
@@ -155,6 +184,9 @@ a.navbar-text:hover {
 
 
 div#loading {
+    height: 100%;
+    width: 100%;
+    position: absolute !important;
     background: var(--app-loading-bg);
     z-index: 1000;
 }
@@ -194,7 +226,7 @@ p {
     background-color: transparent;
 }
 
-.row {
+.app-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     scroll-behavior: smooth;
@@ -264,24 +296,27 @@ p {
     padding: 10px;
 }
 
-.adminBody {
-    position: absolute !important;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    padding: 20px;
-    z-index: 1;
+.offcanvas-header,
+.offcanvas-body {
+    background-color: var(--app-body-bg);
 }
 
-.adminBodyContainer {
-    width: 1400px;
-    height: 900px;
-    padding: 15px;
+.table {
+    --bs-table-bg: transparent;
+    vertical-align: middle;
+}
+
+.table td {
+    font-size: large;
     border-radius: 10px;
+}
+
+.table tr:hover {
+    transform: scale(1.02);
+    transition: 0.2s;
+    background: var(--app-card-selected-hover);
     box-shadow: var(--app-card-shadow);
+    z-index: 2;
 }
 
 form#auth {
