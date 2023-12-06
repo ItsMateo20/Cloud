@@ -4,16 +4,16 @@
     <%- include('../partials/head.ejs') %>
 
         <body class="app-light-theme">
-            <div id="loading" class="w-100 h-100 position-absolute">
+            <div id="loading">
                 <div class="text-center position-absolute top-50 start-50 translate-middle">
                     <div class="spinner-border" role="status"></div>
                     <p>Wczytywanie...</p>
                 </div>
             </div>
-            <div class="container">
+            <div class="app-container">
                 <%- include('../partials/header.ejs') %>
                     <div class="cloud">
-                        <div class="cloudBody row row-cols-auto">
+                        <div class="cloudBody app-row row-cols-auto">
                             <% for (let i=0; i < items.length; i++) { %>
                                 <% if (items[i].type=="folder" ) { %>
                                     <div class="col cloudItemContainer user-select-none"
@@ -53,11 +53,17 @@
                         </div>
                     </div>
             </div>
+            <% if (admin==true) { %>
+                <%- include('../partials/admin.ejs') %>
+                    <% } %>
         </body>
 
         <script src="javascript/Messages.js"></script>
-        <script src="javascript/Cloud.js"></script>
-        <%- include('../partials/scripts.ejs') %>
+        <% if (admin==true) { %>
+            <script src="javascript/Admin.js"></script>
+            <% } %>
+                <script src="javascript/Cloud.js"></script>
+                <%- include('../partials/scripts.ejs') %>
 
 
 </html>
