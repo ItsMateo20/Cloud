@@ -25,7 +25,7 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **File Preview**: View images and videos directly within the web interface.
 
-(image soon)
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/5ad4e947-b5b9-4976-ae33-3ad2cd1d35dc)
 
 - **Security**: Secure access to your files and folders with user authentication.
 
@@ -41,11 +41,27 @@ This project was created for fun but will be used by me to store my files, elimi
 
 ![Image](https://github.com/ItsMateo20/Cloud/assets/84156177/5fb2a9cb-8d29-4a46-92eb-faa00a85948c)
 
+- **FTP**: By using FTP (File Transfer Protocol) you can access user/server files by local ip not public ip (yet)
+  
+**(Admin view)**
+![image](https://github.com/ItsMateo20/Cloud/assets/84156177/12b2865b-6536-4678-a140-c20aa3f021a0)
+
+
 ## How to migrade to newer versions of this project
-1. Move your database.db file outside of the folder and clear the content of the folder.
+1. Move your database.sqlite file outside of the folder and clear the content of the folder.
 2. Download the new version and extract the files from it.
-3. Move the database.db file in the folder that you extracted the files into.
+3. Move the database.sqlite file in the folder that you extracted the files into.
 4. And run it and your migrated!
+
+## FAQ
+- **Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should i do?..**
+- A: Run the command "npm run fix" and that should fix the error your having!
+
+- **Q: What is the port to the FTP server?...**
+- A: The port to the FTP server is by default 3001 you can change it in your .env file
+
+- **Q: What do I use to log into the FTP server?..**
+- A: You login the same way you would login on the webpage (using your mail as the username and password as the password)
 
 ## Technologies Used
 - Node.js
