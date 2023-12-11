@@ -34,6 +34,7 @@
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "netmask": "^2.0.2",
     "nocache": "^4.0.0",
     "node-ffprobe": "^3.0.0",
     "sequelize": "^6.33.0",
