@@ -4,9 +4,41 @@ const { gray, cyan, red } = require("chalk")
 const express = require('express')
 const app = express()
 
-const ftpSrv = require("ftp-srv")
+const ftpSrv = require("ftp-srv");
+const { networkInterfaces } = require('os');
+const { Netmask } = require('netmask');
+
+const nets = networkInterfaces();
+
+function getNetworks() {
+    let networks = {};
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            if (net.family === 'IPv4' && !net.internal) {
+                networks[net.address + "/24"] = net.address;
+            }
+        }
+    }
+    return networks;
+}
+
+const resolverFunction = (address) => {
+    const networks = getNetworks();
+    for (const network in networks) {
+        if (new Netmask(network).contains(address)) {
+            return networks[network];
+        }
+    }
+    return "127.0.0.1";
+};
+
 const ftpServer = new ftpSrv({
     url: `ftp://0.0.0.0:${process.env.FTP_PORT}`,
+    pasv_url: resolverFunction,
+    pasv_min: 1024,
+    pasv_max: 65535,
+    greeting: ["Welcome to the FTP server"],
+    timeout: 60000,
 });
 
 
@@ -28,14 +60,20 @@ ffprobe.SYNC = true
 
 
 ftpServer.on('login', async ({ connection, username, password }, resolve, reject) => {
+    console.log(connection.socket + " is trying to login with " + username + ":" + password)
     if (username === "anonymous") return
     const UserS = await User.findOne({ where: { email: username, password: password } })
     const WhitelistedS = await Whitelisted.findOne({ where: { email: username } })
     if (!UserS || !WhitelistedS) return
+    console.log("Logged in as " + username)
     if (UserS && UserS.admin == true) return resolve({ root: `../` });
+    console.log("Not admin logged in as " + username)
     if (UserS) return resolve({ root: `../users/${username}/` });
+    console.log("error")
     return
 });
+
+ftpServer.on('disconnect', ({ connection, id, newConnectionCount }) => { console.log(id, newConnectionCount) });
 
 
 
