@@ -15,10 +15,14 @@ require("./index.js");
 
 
 async function RemoveMainAdminAccounts() {
-    await User.destroy({ where: { email: 'admin@localhost' } });
-    await UserSettings.destroy({ where: { email: 'admin@localhost' } });
-    await Whitelisted.destroy({ where: { email: 'admin@localhost' } });
+    const UserS = await User.findOne({ where: { email: 'admin@localhost' } });
+    const UserSettingsS = await UserSettings.findOne({ where: { email: 'admin@localhost' } });
+    const WhitelistedS = await Whitelisted.findOne({ where: { email: 'admin@localhost' } });
+    if (UserS) await UserS.destroy();
+    if (UserSettingsS) await UserSettingsS.destroy();
+    if (WhitelistedS) await WhitelistedS.destroy();
     if (await User.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
     if (await UserSettings.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
     if (await Whitelisted.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
+    return;
 }
