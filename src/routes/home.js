@@ -79,7 +79,7 @@ module.exports = {
 
                 const extnameS = extname(entry).toLowerCase()
 
-                if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif") {
+                if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif" || extnameS === ".webp") {
                     relativePath = `/image?image=${entryRelativePath}`
                     url = "icons/image.png"
                     type = "image";
