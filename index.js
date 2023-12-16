@@ -47,17 +47,15 @@ const UrlEncodedParser = require("body-parser").urlencoded({ extended: false })
 const nocache = require('nocache');
 
 const { readdirSync } = require('fs')
-const database = require("./database.js")
 
 const User = require("./src/models/User.js")
 const Whitelisted = require("./src/models/Whitelisted.js")
 
 const ffprobe = require('node-ffprobe')
-const ffprobeInstaller = require('@ffprobe-installer/ffprobe')
+const ffprobeInstaller = require('@ffprobe-installer/ffprobe');
 
 ffprobe.FFPROBE_PATH = ffprobeInstaller.path
 ffprobe.SYNC = true
-
 
 ftpServer.on('login', async ({ connection, username, password }, resolve, reject) => {
     console.log(connection.socket + " is trying to login with " + username + ":" + password)
@@ -75,9 +73,7 @@ ftpServer.on('login', async ({ connection, username, password }, resolve, reject
 
 ftpServer.on('disconnect', ({ connection, id, newConnectionCount }) => { console.log(id, newConnectionCount) });
 
-
-
-database.execute().then(async () => {
+require("./database.js").execute().then(() => {
     app.enable("trust proxy")
     app.disable('x-powered-by')
     app.disable('x-content-type-options')
@@ -107,7 +103,10 @@ database.execute().then(async () => {
     console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT}`));
     app.listen(process.env.PORT, () => console.log(gray("[SITE]: ") + cyan(`Webpage listening on port ${process.env.PORT}`)))
     ftpServer.listen(process.env.FTP_PORT).then(() => console.log(gray("[SITE]: ") + cyan(`Ftp server listening on port ${process.env.FTP_PORT}`)))
-});
+}).catch((err) => {
+    console.log(err)
+    process.exit(1)
+})
 
 process.on('unhandledRejection', (reason, error) => {
     console.error(gray("[SITE]: ") + red('Unhandled Rejection reason:', reason));
