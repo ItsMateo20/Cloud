@@ -23,6 +23,7 @@ async function connectDatabase() {
 
 async function synchronizeModels(sequelize) {
     try {
+        console.log(gray('[SITE]: ') + cyan('Synchronizing models...'));
         await sequelize.sync({ alter: true });
         console.log(gray('[SITE]: ') + cyan('Database synchronized successfully!'));
 
@@ -39,7 +40,7 @@ async function synchronizeModels(sequelize) {
     } catch (error) {
         console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
         console.log(gray('[SITE]: ') + cyan('Trying automatic fixes...'));
-        require('./debug.js').execute().catch(console.error);
+        await require('./debug.js')
         throw error;
     }
 }
