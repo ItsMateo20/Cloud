@@ -5,7 +5,13 @@ const sequelize = new Sequelize({
     storage: 'database.sqlite'
 });
 
-const User = sequelize.define('User', {
+const User = sequelize.define('Users', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true,
+    },
     token: {
         type: Sequelize.TEXT,
         unique: true,

@@ -6,6 +6,12 @@ const sequelize = new Sequelize({
 });
 
 const UserSettings = sequelize.define('UserSettings', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true,
+    },
     email: {
         type: Sequelize.STRING,
     },

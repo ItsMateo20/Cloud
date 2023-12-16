@@ -5,7 +5,13 @@ const sequelize = new Sequelize({
     storage: 'database.sqlite'
 });
 
-const Whitelisted = sequelize.define('Whitelisted', {
+const Whitelisted = sequelize.define('Whitelisteds', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true,
+    },
     email: {
         type: Sequelize.STRING,
     }
