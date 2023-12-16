@@ -7,12 +7,10 @@ module.exports = {
     name: "Api",
     url: "/api/:id",
     run: async (req, res) => {
-        const { decoded, data, userFolder, userFolderPath, folderPath } = await Auth(req, res);
-        ApiFunction(req, res);
+        await ApiFunction(req, res, await Auth(req, res));
     },
     run2: async (req, res) => {
-        const { decoded, data, userFolder, userFolderPath, folderPath } = await Auth(req, res);
-        ApiFunction(req, res);
+        await ApiFunction(req, res, await Auth(req, res));
     }
 }
 
@@ -44,12 +42,22 @@ async function Auth(req, res) {
     return { decoded, data, userFolder, userFolderPath, folderPath }
 }
 
-async function ApiFunction(req, res) {
-    if (req.params.id == "admin") {
+async function ApiFunction(req, res, { decoded, data, userFolder, userFolderPath, folderPath }) {
+    if (req.params.id == "user") {
+        if (req.query.action == "password-set") {
+            const { oldpassword1, oldpassword2, newpassword } = req.body;
+            if (!oldpassword1 || !oldpassword2 || !newpassword) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+            if (oldpassword1 != oldpassword2) return res.status(500).json({ success: false, message: "PASSWORDS_NOT_MATCH" });
+            if (!data) return res.status(500).json({ success: false, message: "USER_NOT_FOUND" });
+            data.password = newpassword;
+            await data.save();
+            return res.status(200).json({ success: true, message: "PASSWORD_CHANGED" });
+        }
+    } else if (req.params.id == "admin") {
         async function getAllEmails() {
-            const data = await User.findAll({ where: { admin: true } });
+            const adminData = await User.findAll({ where: { admin: true } });
             const admins = [];
-            data.forEach((user) => {
+            adminData.forEach((user) => {
                 admins.push({ id: user.id, email: user.email });
             });
             admins.sort((a, b) => a.id - b.id);
@@ -58,7 +66,8 @@ async function ApiFunction(req, res) {
         if (req.query.action == "add") {
             const { email } = req.body;
             if (!email) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
-            const data = await User.findOne({ where: { email } });
+            const data = await User.findOne({ where: { email: email.toLowerCase() } });
+            if (!data) return res.status(500).json({ success: false, message: "EMAIL_NOT_FOUND" });
             if (data.admin) return res.status(500).json({ success: false, message: "EMAIL_ALREADY_ADMIN" });
             data.admin = true;
             await data.save();
@@ -67,7 +76,8 @@ async function ApiFunction(req, res) {
         } else if (req.query.action == "remove") {
             const { email } = req.body;
             if (!email) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
-            const data = await User.findOne({ where: { email } });
+            const data = await User.findOne({ where: { email: email.toLowerCase() } });
+            if (!data) return res.status(500).json({ success: false, message: "EMAIL_NOT_FOUND" });
             if (!data.admin) return res.status(500).json({ success: false, message: "EMAIL_NOT_ADMIN" });
             data.admin = false
             await data.save();
