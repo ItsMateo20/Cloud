@@ -77,6 +77,74 @@ function loadSettings() {
         });
 }
 
+// handle validation for change password
+const oldPassword1Input = document.getElementById('oldpassword1');
+const oldPassword2Input = document.getElementById('oldpassword2');
+const newPasswordInput = document.getElementById('newpassword');
+const changePasswordBtn = document.getElementById('changePasswordBtn');
+
+oldPassword1Input.addEventListener('input', handleOldPasswordInput);
+oldPassword2Input.addEventListener('input', handleOldPasswordInput);
+
+changePasswordBtn.addEventListener('click', handleChangePasswordClick, { passive: true });
+
+function handleChangePasswordClick(event) {
+    const oldPassword1 = oldPassword1Input.value;
+    const oldPassword2 = oldPassword2Input.value;
+    const newPassword = newPasswordInput.value;
+
+    if (oldPassword1.trim() !== oldPassword2.trim()) {
+        if (oldPassword1Input.classList.contains('is-valid')) oldPassword1Input.classList.remove('is-valid');
+        if (oldPassword2Input.classList.contains('is-valid')) oldPassword2Input.classList.remove('is-valid');
+        if (!oldPassword1Input.classList.contains('is-invalid')) oldPassword1Input.classList.add('is-invalid');
+        if (!oldPassword2Input.classList.contains('is-invalid')) oldPassword2Input.classList.add('is-invalid');
+    }
+
+    if (oldPassword1.trim() === oldPassword2.trim()) {
+        if (oldPassword1Input.classList.contains('is-invalid')) oldPassword1Input.classList.remove('is-invalid');
+        if (oldPassword2Input.classList.contains('is-invalid')) oldPassword2Input.classList.remove('is-invalid');
+        oldPassword1Input.classList.add('is-valid');
+        oldPassword2Input.classList.add('is-valid');
+    }
+
+    if (oldPassword1.trim() === oldPassword2.trim() && newPassword.trim().length >= 5) {
+        loadingDiv("show");
+        fetch("/api/user?action=password-set", {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ oldpassword1: oldPassword1.trim(), oldpassword2: oldPassword2.trim(), newpassword: newPassword.trim() }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    getSuccessMessage(data.message);
+                    document.location.href = "/login";
+                } else {
+                    getErrorMessage(data.message);
+                }
+                loadingDiv("hide");
+            });
+    }
+}
+
+
+function handleOldPasswordInput() {
+    const oldPassword1 = oldPassword1Input.value;
+    const oldPassword2 = oldPassword2Input.value;
+    console.log(oldPassword1, oldPassword2)
+
+    if (oldPassword1.trim() !== oldPassword2.trim()) {
+        if (oldPassword1Input.classList.contains('is-valid')) oldPassword1Input.classList.remove('is-valid');
+        if (oldPassword2Input.classList.contains('is-valid')) oldPassword2Input.classList.remove('is-valid');
+        if (!oldPassword1Input.classList.contains('is-invalid')) oldPassword1Input.classList.add('is-invalid');
+        if (!oldPassword2Input.classList.contains('is-invalid')) oldPassword2Input.classList.add('is-invalid');
+    } else {
+        if (oldPassword1Input.classList.contains('is-invalid')) oldPassword1Input.classList.remove('is-invalid');
+        if (oldPassword2Input.classList.contains('is-invalid')) oldPassword2Input.classList.remove('is-invalid');
+        oldPassword1Input.classList.add('is-valid');
+        oldPassword2Input.classList.add('is-valid');
+    }
+}
+
 // dark/light theme
 
 const body = document.body
