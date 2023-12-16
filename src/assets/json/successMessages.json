@@ -5,6 +5,7 @@
     "FOLDER_RENAMED": "Foldera nazwa została zmieniona",
     "FILE_RENAMED": "Nazwa pliku została zmieniona",
     "UPDATED_SETTING": "Ustawienie zostało zaktualizowane",
+    "PASSWORD_CHANGED": "Hasło zostało zmienione",
     "EMAIL_ADMINED": "Email został dodany do listy administratorów",
     "EMAIL_UNADMINED": "Email został usunięty z listy administratorów",
     "EMAIL_WHITELISTED": "Email został dodany do białej listy",

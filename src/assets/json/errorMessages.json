@@ -27,5 +27,7 @@
     "EMAIL_NOT_ADMIN": "Przepraszamy, podany adres e-mail nie jest administratorem. Spróbuj ponownie.",
     "EMAIL_ALREADY_WHITELISTED": "Przepraszamy, podany adres e-mail jest już na białej liście. Spróbuj ponownie.",
     "EMAIL_NOT_WHITELISTED": "Przepraszamy, podany adres e-mail nie jest na białej liście. Spróbuj ponownie.",
+    "9": "",
+    "PASSWORD_NOT_MATCH": "Przepraszamy, wprowadzone hasła nie są takie same. Spróbuj ponownie.",
     "UNKNOWN_ERROR": "Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie."
 }
