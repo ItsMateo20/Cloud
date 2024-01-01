@@ -1,12 +1,44 @@
-## ⚠️ WARNING: CSRF Vulnerability
+# Vulnerability Disclosure Policy
 
-This project is currently susceptible to [CSRF (Cross-Site Request Forgery)](https://wikipedia.org/wiki/Cross-site_request_forgery) attacks.
+I appreciate the efforts of security researchers and users in helping me maintain the security of my project. If you discover a security vulnerability, please follow the steps below:
+
+## Reporting Process
+
+- Send an email to [itsmateo20@gmail.com](mailto:itsmateo20@gmail.com) with details of the vulnerability.
+- Provide a clear and concise description of the issue, including steps to reproduce if possible.
+
+## Expectations
+
+- I will acknowledge the receipt of your report promptly.
+- I will investigate and assess the reported vulnerability.
+- I aim to provide regular updates on the progress of the investigation.
+- Once a fix is developed, I will coordinate the disclosure of the vulnerability.
+
+## Acknowledgment
+
+I appreciate responsible disclosure and may publicly acknowledge individuals who report security vulnerabilities, subject to their preference.
+
+## Scope
+
+This vulnerability disclosure policy applies to the "Cloud Storage" project, covering all its components, modules, or scripts.
+
+## Legal Protections
+
+I commit not to take legal action against individuals who report security vulnerabilities responsibly and adhere to the guidelines outlined in this policy.
+
+Thank you for helping me ensure the security of this project.
+
+---
+
+# List of Vulnerabilities
+
+## CSRF Vulnerability
 
 ### What it means:
 
 Cross-Site Request Forgery (CSRF) is a serious security vulnerability where an attacker tricks a user's browser into making unwanted requests to a web application where the user is authenticated. This can lead to unintended actions being performed on behalf of the user without their consent.
 
-### Potential Consequences:
+#### Potential Consequences:
 
 1. **Unauthorized Actions:** An attacker may force authenticated users to perform unintended actions, such as changing account settings, making financial transactions, or even performing actions with administrative privileges.
 
@@ -18,10 +50,6 @@ Cross-Site Request Forgery (CSRF) is a serious security vulnerability where an a
 
 In an upcoming release, efforts will be made to address and mitigate this vulnerability to prevent potential data leaks, including sensitive information such as passwords, emails, and files. Users are strongly encouraged to stay informed about updates and apply them promptly to enhance the security of the application.
 
-## Reporting security issues:
+---
 
-If you discover any security vulnerabilities or have concerns, please responsibly disclose them by contacting me at [itsmateo20@gmail.com](mailto:itsmateo20@gmail.com). We appreciate your efforts in helping me maintain the security of our project.
-
-### Vulnerability Disclosure Policy:
-
-We are committed to addressing security issues promptly. Our vulnerability disclosure policy outlines the process for reporting and our commitment to keeping users informed about security matters. Please review my [Vulnerability Disclosure Policy](./VULNERABILITY_DISCLOSURE_POLICY.md) for more details.
+*Please note that the information provided here is subject to change as the investigation and mitigation efforts progress.*
