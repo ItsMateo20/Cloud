@@ -81,6 +81,7 @@ This project was created for fun but will be used by me to store my files, elimi
 ## How to Report Issues
 
 - To ask a question, [click here](https://github.com/ItsMateo20/Cloud/issues/new?labels=question&template=QUESTION.yml&title=%5BQuestion%5D%3A+).
+- To publish a feature request, [click here](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=enhancement&template=FEATURE-REQUEST.yml&title=%5BFeature+Request%5D%3A+).
 - To report a bug, [click here](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=bug&template=BUG-REPORT.yml&title=%5BBug%5D%3A+).
 - To report a vulnerability, [click here](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=vulnerability&template=VULNERABILTY.yml&title=%5BVulnerability%5D%3A+).
 
@@ -89,7 +90,7 @@ This project was created for fun but will be used by me to store my files, elimi
 For security-related matters, please refer to our [Security Policy](./SECURITY.md).
 
 ## Contributing
-Contributions are welcome! If you have any ideas or improvements, feel free to submit a pull request or ask anything [here](https://github.com/ItsMateo20/Cloud/issues/new?labels=question&template=QUESTION.yml&title=%5BQuestion%5D%3A+).
+Contributions are welcome! If you have any ideas or improvements, feel free to [submit a feature request](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=enhancement&template=FEATURE-REQUEST.yml&title=%5BFeature+Request%5D%3A+) (optionally with a repository fork that contains your feature).
 
 ## License
 This project is licensed under the [MIT License](https://github.com/ItsMateo20/Cloud/blob/main/LICENSE.md).
