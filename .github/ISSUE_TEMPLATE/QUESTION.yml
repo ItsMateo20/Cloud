@@ -17,5 +17,5 @@ body:
     attributes:
       label: Read FAQ
       options:
-        - label: I have read the README and FAQ sections for the question I have and not found it.
+        - label: I have read the README and FAQ sections for the question I have and have not found it.
           required: true
