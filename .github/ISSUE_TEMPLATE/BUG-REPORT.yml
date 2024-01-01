@@ -5,10 +5,6 @@ labels: ["bug"]
 assignees:
   - ItsMateo20
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report! Please provide the following details to help us identify and address the issue.
   - type: textarea
     id: what-happened
     attributes:
