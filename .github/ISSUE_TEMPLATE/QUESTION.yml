@@ -1,0 +1,14 @@
+name: Question
+description: Ask a question
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: user-question
+    attributes:
+      label: Your Question
+      description: Ask your question here.
+      placeholder: Type your question...
+      value: "I have a question..."
+    validations:
+      required: true
