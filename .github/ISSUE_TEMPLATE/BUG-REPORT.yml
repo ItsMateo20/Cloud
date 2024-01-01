@@ -33,6 +33,7 @@ body:
       description: Check the solutions you have tried before reporting the bug.
       options:
         - label: "I'm on the most recent release of Cloud Storage"
+          required: true
         - label: I have tried reinstalling Cloud Storage.
           required: true
         - label: I have read the README and FAQ sections for a solution.
@@ -41,7 +42,7 @@ body:
     id: logs
     attributes:
       label: Relevant log output
-      description: Copy and paste any relevant log output to assist with debugging.
+      description: Copy and paste your hole log output to assist with debugging.
       render: shell
     validations:
       required: true
