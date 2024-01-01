@@ -34,8 +34,9 @@ body:
       description: Check the solutions you have tried before reporting the bug.
       options:
         - label: I have tried reinstalling Cloud Storage.
+        - required: true
         - label: I have read the README and FAQ sections for a solution.
-        required: true
+        - required: true
   - type: textarea
     id: logs
     attributes:
