@@ -27,13 +27,22 @@ body:
       value: "A bug happened!"
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: browser
     attributes:
       label: Browser
       description: What browser are you using?
       placeholder: Enter the browser you are using
     validations:
+      required: true
+  - type: checkboxes
+    id: tried-solutions
+    attributes:
+      label: Tried Solutions
+      description: Check the solutions you have tried before reporting the bug.
+      options:
+        - label: I have tried reinstalling Cloud Storage.
+        - label: I have read the README and FAQ sections for a solution.
       required: true
   - type: textarea
     id: logs
