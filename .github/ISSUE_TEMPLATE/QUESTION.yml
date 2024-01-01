@@ -12,3 +12,10 @@ body:
       value: "I have a question..."
     validations:
       required: true
+  - type: checkboxes
+    id: read-faq
+    attributes:
+      label: Read FAQ
+      options:
+        - label: I have read the README and FAQ sections for the question I have and not found it.
+          required: true
