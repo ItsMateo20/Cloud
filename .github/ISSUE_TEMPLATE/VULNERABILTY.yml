@@ -1,0 +1,32 @@
+name: Vulnerability Report
+description: Report a security vulnerability
+title: "[Vulnerability]: "
+labels: ["vulnerability"]
+assignees:
+  - ItsMateo20
+body:
+  - type: textarea
+    id: vulnerability-description
+    attributes:
+      label: Vulnerability Description
+      description: Describe the security vulnerability in detail.
+      placeholder: Describe the vulnerability...
+      value: "I have found a security vulnerability..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Provide steps to reproduce the vulnerability.
+      placeholder: Explain how to reproduce the issue...
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact
+      description: Describe the potential impact of the vulnerability.
+      placeholder: Explain the potential consequences...
+    validations:
+      required: true
