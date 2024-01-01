@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Email
+    url: mainto:itsmateo20@gmail.com
+    about: Contact me via email
+  - name: Discord
+    url: https://discord.com/users/630812692659044352
+    about: Contact me via discord
+  - name: Issues
+    url: https://github.com/ItsMateo20/Cloud/issues/new/choose
+    about: Contact me via issues tab on github
