@@ -2,15 +2,14 @@
 
 I appreciate the efforts of security researchers and users in helping me maintain the security of my project. If you discover a security vulnerability, please follow the steps below:
 
-## How you can report a vulnerabilty
+## How you can report issues
 
-- Send an email to [itsmateo20@gmail.com](mailto:itsmateo20@gmail.com) with details of the vulnerability. (Provide a clear and concise description of the issue, including steps to reproduce if possible.)
-- Click on the [Security tab](https://github.com/ItsMateo20/Cloud/security) and follow [these](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability#privately-reporting-a-security-vulnerability) steps if your lost.
+- You can [report bugs](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=bug&template=BUG-REPORT.yml&title=%5BBug%5D%3A+) and [vulnerabilities](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=vulnerability&template=VULNERABILTY.yml&title=%5BVulnerability%5D%3A+) through the [Issues tab](https://github.com/ItsMateo20/Cloud/issues).
 
 ## Expectations
 
 - I will acknowledge the receipt of your report promptly.
-- I will investigate and assess the reported vulnerability.
+- I will investigate and assess the reported vulnerability or issue.
 - I aim to provide regular updates on the progress of the investigation.
 - Once a fix is developed, I will coordinate the disclosure of the vulnerability.
 
