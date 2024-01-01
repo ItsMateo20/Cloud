@@ -54,10 +54,10 @@ This project was created for fun but will be used by me to store my files, elimi
 - A: You log in the same way you would log in on the webpage (using your mail as the username and password as the password)
 
 - **Q: How can I access the webpage?..**
-- A: You can access the webpage using the url http://localhost:3001
+- A: You can access the webpage using the url http://localhost:3000
 
 - **Q: How can I access the webpage/cloud while not being connected to my home internet?..**
-- A: You would have to port forward the system that your running the cloud on your router, [click here to search for solutions](https://www.google.com/search?q=how+to+port+forward+on+a+router). And then you can access your cloud using [your public ip](https://www.google.com/search?q=whats+my+ip) + the port that you have forwarded, for example http://67.273.965.234:3001 (not a real ip).
+- A: You would have to port forward the system that your running the cloud on your router, [click here to search for solutions](https://www.google.com/search?q=how+to+port+forward+on+a+router). And then you can access your cloud using [your public ip](https://www.google.com/search?q=whats+my+ip) + the port that you have forwarded, for example http://67.273.965.234:3000 (not a real ip).
 
 - **Q: I want to report something where do I do that?..**
 - A: I have given instuctions [here](#how-to-report-issues)
