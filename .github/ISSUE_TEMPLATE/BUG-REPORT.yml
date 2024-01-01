@@ -35,7 +35,7 @@ body:
       options:
         - label: I have tried reinstalling Cloud Storage.
         - label: I have read the README and FAQ sections for a solution.
-        - required: true
+        required: true
   - type: textarea
     id: logs
     attributes:
