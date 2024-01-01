@@ -2,10 +2,10 @@
 
 I appreciate the efforts of security researchers and users in helping me maintain the security of my project. If you discover a security vulnerability, please follow the steps below:
 
-## Reporting Process
+## How you can report a vulnerabilty
 
-- Send an email to [itsmateo20@gmail.com](mailto:itsmateo20@gmail.com) with details of the vulnerability.
-- Provide a clear and concise description of the issue, including steps to reproduce if possible.
+- Send an email to [itsmateo20@gmail.com](mailto:itsmateo20@gmail.com) with details of the vulnerability. (Provide a clear and concise description of the issue, including steps to reproduce if possible.)
+- Click on the [Security tab](https://github.com/ItsMateo20/Cloud/security) and follow [these](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability#privately-reporting-a-security-vulnerability) steps if your lost.
 
 ## Expectations
 
@@ -30,17 +30,17 @@ Thank you for helping me ensure the security of this project.
 
 ---
 
-# List of Vulnerabilities
+# List of Vulnerabilities in this project
 
 ## CSRF Vulnerability
 
 ### What it means:
 
-Cross-Site Request Forgery (CSRF) is a serious security vulnerability where an attacker tricks a user's browser into making unwanted requests to a web application where the user is authenticated. This can lead to unintended actions being performed on behalf of the user without their consent.
+[Cross-Site Request Forgery (CSRF)](https://wikipedia.org/wiki/Cross-site_request_forgery) is a serious security vulnerability where an attacker tricks a user's browser into making unwanted requests to a web application where the user is authenticated. This can lead to unintended actions being performed on behalf of the user without their consent.
 
 #### Potential Consequences:
 
-1. **Unauthorized Actions:** An attacker may force authenticated users to perform unintended actions, such as changing account settings, making financial transactions, or even performing actions with administrative privileges.
+1. **Unauthorized Actions:** An attacker may force authenticated users to perform unintended actions, such as changing account settings and password.
 
 2. **Data Manipulation:** CSRF attacks can lead to the manipulation of user data, potentially causing data loss or corruption.
 
