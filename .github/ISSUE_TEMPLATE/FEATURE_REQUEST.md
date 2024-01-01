@@ -1,0 +1,35 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature Request]: "
+labels: ["enhancement"]
+assignees:
+  - ItsMateo20
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Please provide the following details to help us understand and consider your idea.
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Describe the new feature or improvement you'd like to see.
+      placeholder: Provide a detailed description of the suggested feature.
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Explain the scenarios or situations where this feature would be beneficial.
+      placeholder: Describe how users would benefit from this feature.
+    validations:
+      required: true
+  - type: input
+    id: benefits
+    attributes:
+      label: Benefits
+      description: Highlight any specific advantages or benefits of implementing this feature.
+      placeholder: Explain how this feature adds value to the project.
+    validations:
+      required: false
