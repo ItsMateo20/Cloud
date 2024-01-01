@@ -53,21 +53,30 @@ This project was created for fun but will be used by me to store my files, elimi
 - **Q: What do I use to log into the FTP server?..**
 - A: You log in the same way you would log in on the webpage (using your mail as the username and password as the password)
 
+- **Q: How can I access the webpage?..**
+- A: You can access the webpage using the url http://localhost:3001
+
+- **Q: How can I access the webpage/cloud while not being connected to my home internet?..**
+- A: You would have to port forward the system that your running the cloud on your router, [click here to search for solutions](https://www.google.com/search?q=how+to+port+forward+on+a+router). And then you can access your cloud using [your public ip](https://www.google.com/search?q=whats+my+ip) + the port that you have forwarded, for example http://67.273.965.234:3001 (not a real ip).
+
+- **Q: I want to report something where do I do that?..**
+- A: I have given instuctions [here](#how-to-report-issues)
+
 ## Technologies Used
 
-- **Node.js:** <img src="/ReadmeImages/nodejs.svg" alt="Node.js" width="auto" height="25">
-- **Express.js:** <img src="/ReadmeImages/expressjs.svg" alt="Express.js" width="auto" height="25">
-- **Sqlite3:** <img src="/ReadmeImages/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
-- **Sequelize:** <img src="/ReadmeImages/sequelize.svg" alt="Sequelize" width="auto" height="25">
-- **Ejs:** <img src="/ReadmeImages/ejs.svg" alt="Ejs" width="auto" height="25">
-- **Css:** <img src="/ReadmeImages/css.svg" alt="Css" width="auto" height="25">
-- **FFmpeg:** <img src="/ReadmeImages/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
-- **JSON:** <img src="/ReadmeImages/json.svg" alt="JSON" width="auto" height="25">
-- **JavaScript:** <img src="/ReadmeImages/javascript.svg" alt="JavaScript" width="auto" height="25">
-- **Bootstrap:** <img src="/ReadmeImages/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
-- **Bootstrap Icons:** <img src="/ReadmeImages/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
+- **Node.js:** <img src="./ReadmeImages/nodejs.svg" alt="Node.js" width="auto" height="25">
+- **Express.js:** <img src="./ReadmeImages/expressjs.svg" alt="Express.js" width="auto" height="25">
+- **Sqlite3:** <img src="./ReadmeImages/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
+- **Sequelize:** <img src="./ReadmeImages/sequelize.svg" alt="Sequelize" width="auto" height="25">
+- **Ejs:** <img src="./ReadmeImages/ejs.svg" alt="Ejs" width="auto" height="25">
+- **Css:** <img src="./ReadmeImages/css.svg" alt="Css" width="auto" height="25">
+- **FFmpeg:** <img src="./ReadmeImages/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
+- **JSON:** <img src="./ReadmeImages/json.svg" alt="JSON" width="auto" height="25">
+- **JavaScript:** <img src="./ReadmeImages/javascript.svg" alt="JavaScript" width="auto" height="25">
+- **Bootstrap:** <img src="./ReadmeImages/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
+- **Bootstrap Icons:** <img src="./ReadmeImages/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
 
-- And some other [**npm**](https://npmjs.com) packages (full list in [**package.json**](https://github.com/ItsMateo20/Cloud/blob/main/package.json))
+- And some other [**npm**](https://npmjs.com) packages (full list in [**package.json**](./package.json))
 
 ## How to Report Issues
 
