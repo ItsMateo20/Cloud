@@ -33,3 +33,11 @@ body:
       placeholder: Explain how this feature adds value to the project.
     validations:
       required: false
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: You can also try to make the feature by forking this repository and adding your feature.
+      placeholder: A link to a public repository containing the feature.
+    validations:
+      required: false
