@@ -22,19 +22,21 @@ function handleAdminModeClick(event) {
 
     setDisabledState(true);
 
-    fetch("/settings/adminMode", {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'post',
-        body: JSON.stringify({ _csrf: csrfToken, value: adminModeBtn.dataset.value.toString() }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success === false) {
-                getErrorMessage(data.message);
-            } else {
-                location.reload()
-            }
-        });
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/settings/adminMode", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: adminModeBtn.dataset.value.toString() }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                } else {
+                    location.reload()
+                }
+            });
+    })
 }
 
 adminBtn.addEventListener("click", adminButtonClick, { passive: true });
@@ -43,18 +45,20 @@ function adminButtonClick() {
     var adminInput = document.getElementById("adminInput");
     var adminEmailList = document.getElementById("adminEmailList");
     loadingDiv("show")
-    fetch("/api/admin?action=add", {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'post',
-        body: JSON.stringify({ _csrf: csrfToken, email: adminInput.value }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                getSuccessMessage(data.message);
-                adminEmailList.innerHTML = "";
-                data.list.forEach(user => {
-                    adminEmailList.innerHTML += `
+
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/admin?action=add", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, email: adminInput.value }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    getSuccessMessage(data.message);
+                    adminEmailList.innerHTML = "";
+                    data.list.forEach(user => {
+                        adminEmailList.innerHTML += `
                     <tr>
                         <td>
                             ${user.email}
@@ -64,31 +68,34 @@ function adminButtonClick() {
                         </td>
                     </tr>
                     `
-                });
-            } else {
-                getErrorMessage(data.message);
-            }
-            adminInput.value = "";
-            loadingDiv("hide")
-        });
+                    });
+                } else {
+                    getErrorMessage(data.message);
+                }
+                adminInput.value = "";
+                loadingDiv("hide")
+            });
+    })
 }
 
 function removeadminButton({ dataset }) {
     var email = dataset.email;
     var adminEmailList = document.getElementById("adminEmailList");
     loadingDiv("show")
-    fetch("/api/admin?action=remove", {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'post',
-        body: JSON.stringify({ _csrf: csrfToken, email: email }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                getSuccessMessage(data.message);
-                adminEmailList.innerHTML = "";
-                data.list.forEach(user => {
-                    adminEmailList.innerHTML += `
+
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/admin?action=remove", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, email: email }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    getSuccessMessage(data.message);
+                    adminEmailList.innerHTML = "";
+                    data.list.forEach(user => {
+                        adminEmailList.innerHTML += `
                     <tr>
                         <td>
                             ${user.email}
@@ -98,12 +105,13 @@ function removeadminButton({ dataset }) {
                         </td>
                     </tr>
                     `
-                });
-            } else {
-                getErrorMessage(data.message);
-            }
-            loadingDiv("hide")
-        });
+                    });
+                } else {
+                    getErrorMessage(data.message);
+                }
+                loadingDiv("hide")
+            });
+    })
 }
 
 
@@ -113,18 +121,20 @@ function whitelistButtonClick() {
     var whitelistInput = document.getElementById("whitelistInput");
     var whitelistEmailList = document.getElementById("whitelistEmailList");
     loadingDiv("show")
-    fetch("/api/whitelist?action=add", {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'post',
-        body: JSON.stringify({ _csrf: csrfToken, email: whitelistInput.value }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                getSuccessMessage(data.message);
-                whitelistEmailList.innerHTML = "";
-                data.list.forEach(user => {
-                    whitelistEmailList.innerHTML += `
+
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/whitelist?action=add", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, email: whitelistInput.value }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    getSuccessMessage(data.message);
+                    whitelistEmailList.innerHTML = "";
+                    data.list.forEach(user => {
+                        whitelistEmailList.innerHTML += `
                     <tr>
                         <td>
                             ${user.email}
@@ -134,31 +144,33 @@ function whitelistButtonClick() {
                         </td>
                     </tr>
                     `
-                });
-            } else {
-                getErrorMessage(data.message);
-            }
-            whitelistInput.value = "";
-            loadingDiv("hide")
-        });
+                    });
+                } else {
+                    getErrorMessage(data.message);
+                }
+                whitelistInput.value = "";
+                loadingDiv("hide")
+            });
+    })
 }
 
 function unwhitelistButton({ dataset }) {
     var email = dataset.email;
     var whitelistEmailList = document.getElementById("whitelistEmailList");
     loadingDiv("show")
-    fetch("/api/whitelist?action=remove", {
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        method: 'post',
-        body: JSON.stringify({ _csrf: csrfToken, email: email }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success) {
-                getSuccessMessage(data.message);
-                whitelistEmailList.innerHTML = "";
-                data.list.forEach(user => {
-                    whitelistEmailList.innerHTML += `
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/whitelist?action=remove", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, email: email }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    getSuccessMessage(data.message);
+                    whitelistEmailList.innerHTML = "";
+                    data.list.forEach(user => {
+                        whitelistEmailList.innerHTML += `
                     <tr>
                         <td>
                             ${user.email}
@@ -168,10 +180,11 @@ function unwhitelistButton({ dataset }) {
                         </td>
                     </tr>
                     `
-                });
-            } else {
-                getErrorMessage(data.message);
-            }
-            loadingDiv("hide")
-        });
+                    });
+                } else {
+                    getErrorMessage(data.message);
+                }
+                loadingDiv("hide")
+            });
+    })
 }
