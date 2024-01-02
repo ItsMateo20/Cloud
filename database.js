@@ -48,8 +48,12 @@ module.exports = {
     name: 'database',
     description: 'Database',
     async execute() {
+        const isDev = process.argv.includes('--dev');
         const sequelize = await connectDatabase();
-        await synchronizeModels(sequelize);
+
+        if (isDev) {
+            await synchronizeModels(sequelize);
+        }
 
         setTimeout(async () => {
             const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
