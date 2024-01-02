@@ -4,10 +4,10 @@ const { gray, cyan, red } = require("chalk")
 if (config.CheckVersion == true) {
     require("./src/CheckVersion.js")().then(() => {
         console.log(gray("[VERSION]: ") + cyan("Version check complete\n") + gray("<------------------------------------------------------>"))
-        StartServer()
+        return StartServer()
     }).catch((err) => {
         console.log(err)
-        process.exit(1)
+        return process.exit(1)
     })
 } else {
     StartServer()
@@ -15,6 +15,7 @@ if (config.CheckVersion == true) {
 
 function StartServer() {
     const express = require('express')
+    const expressSession = require('express-session')
     const app = express()
 
     const ftpSrv = require("ftp-srv");
@@ -55,8 +56,9 @@ function StartServer() {
     });
 
 
+
     const CookieParser = require("cookie-parser")
-    const UrlEncodedParser = require("body-parser").urlencoded({ extended: false })
+    const TinyCsrf = require("tiny-csrf")
     const nocache = require('nocache');
 
     const { readdirSync } = require('fs')
@@ -71,20 +73,14 @@ function StartServer() {
     ffprobe.SYNC = true
 
     ftpServer.on('login', async ({ connection, username, password }, resolve, reject) => {
-        console.log(connection.socket + " is trying to login with " + username + ":" + password)
         if (username === "anonymous") return
         const UserS = await User.findOne({ where: { email: username, password: password } })
         const WhitelistedS = await Whitelisted.findOne({ where: { email: username } })
         if (!UserS || !WhitelistedS) return
-        console.log("Logged in as " + username)
         if (UserS && UserS.admin == true) return resolve({ root: `../` });
-        console.log("Not admin logged in as " + username)
         if (UserS) return resolve({ root: `../users/${username}/` });
-        console.log("error")
         return
-    });
-
-    ftpServer.on('disconnect', ({ connection, id, newConnectionCount }) => { console.log(id, newConnectionCount) });
+    })
 
     require("./database.js").execute().then(() => {
         app.enable("trust proxy")
@@ -92,11 +88,13 @@ function StartServer() {
         app.disable('x-content-type-options')
         app.set("etag", false)
 
-        app.use(nocache())
-        app.use(CookieParser())
-        app.use(UrlEncodedParser)
-
+        app.use(require("body-parser").urlencoded({ extended: false }))
         app.use(express.json());
+        app.use(CookieParser(process.env.COOKIE_SECRET))
+        app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }))
+        app.use(TinyCsrf(process.env.CSRF_SECRET, ["POST"]));
+        app.use(nocache())
+
         app.set("view engine", "ejs")
         app.set("views", __dirname + "/src/pages")
         app.use(express.static(__dirname + '/src/assets/'))
@@ -108,9 +106,12 @@ function StartServer() {
             if (file && file.url) {
                 app.get(file.url, file.run)
                 if (file.run2) app.post(file.url, file.run2)
-                console.log(gray("[SITE]: ") + cyan(`Loaded /${file.name.toLowerCase()}`))
+                console.log(gray("[SITE]: ") + cyan(`Loaded ${file.url}`))
             }
         })
+        app.use(function (req, res, next) {
+            res.status(404).render("404.ejs", { body: ["404 | Chmura"], loggedIn: false })
+        });
         console.log(gray("[SITE]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
 
         console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT}`));
@@ -118,7 +119,7 @@ function StartServer() {
         ftpServer.listen(process.env.FTP_PORT).then(() => console.log(gray("[SITE]: ") + cyan(`Ftp server listening on port ${process.env.FTP_PORT}`)))
     }).catch((err) => {
         console.log(err)
-        process.exit(1)
+        return process.exit(1)
     })
 
     process.on('unhandledRejection', (reason, error) => {
