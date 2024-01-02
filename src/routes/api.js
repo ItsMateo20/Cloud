@@ -81,6 +81,7 @@ async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder,
                 await UserSettingsS.save()
                 res.status(200).json({ success: true, message: "UPDATED_SETTING" })
             } else if (req.query.action2 === "adminMode") {
+                if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
                 const { value } = req.body;
                 if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
                 let newValue

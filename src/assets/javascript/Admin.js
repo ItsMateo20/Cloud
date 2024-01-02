@@ -23,7 +23,7 @@ function handleAdminModeClick(event) {
     setDisabledState(true);
 
     GetCsrfToken().then((csrfToken) => {
-        fetch("/settings/adminMode", {
+        fetch("/api/user?action=settings&action2=adminMode", {
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             method: 'post',
