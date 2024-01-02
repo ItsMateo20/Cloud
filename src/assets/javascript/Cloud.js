@@ -1,5 +1,20 @@
 const html = document.querySelector('html');
 
+async function GetCsrfToken() {
+    return fetch("/api/csrfToken", {
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        method: 'get',
+    }).then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                return data.csrfToken
+            } else {
+                return false
+            }
+        });
+}
+
 //settings
 
 let settings = {}
@@ -25,9 +40,10 @@ window.onresize = Adjust;
 //load settings
 
 function loadSettings() {
-    fetch("/settings/settings", {
-        method: 'get',
+    fetch("/api/user?action=settings&action2=get", {
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
+        method: 'get',
     }).then((response) => response.json())
         .then((data) => {
             if (data.success) {
@@ -109,20 +125,23 @@ function handleChangePasswordClick(event) {
 
     if (oldPassword1.trim() === oldPassword2.trim() && newPassword.trim().length >= 5) {
         loadingDiv("show");
-        fetch("/api/user?action=password-set", {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ oldpassword1: oldPassword1.trim(), oldpassword2: oldPassword2.trim(), newpassword: newPassword.trim() }),
-        }).then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    getSuccessMessage(data.message);
-                    document.location.href = "/login";
-                } else {
-                    getErrorMessage(data.message);
-                }
-                loadingDiv("hide");
-            });
+        GetCsrfToken().then((csrfToken) => {
+            fetch("/api/user?action=password-set", {
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                body: JSON.stringify({ _csrf: csrfToken, oldpassword1: oldPassword1.trim(), oldpassword2: oldPassword2.trim(), newpassword: newPassword.trim() }),
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        getSuccessMessage(data.message);
+                        document.location.href = "/login";
+                    } else {
+                        getErrorMessage(data.message);
+                    }
+                    loadingDiv("hide");
+                });
+        })
     }
 }
 
@@ -384,9 +403,13 @@ function handleFileSelect(event) {
         for (let i = 0; i < selectedFiles.length; i++) {
             formData.append('files', selectedFiles[i]);
         }
+        GetCsrfToken().then((csrfToken) => {
+            formData.append('_csrf', csrfToken);
+        })
 
 
         fetch('/file/upload', {
+            credentials: 'same-origin',
             method: 'post',
             body: formData,
         }).then((response) => response.json())
@@ -427,25 +450,28 @@ function handleRenameClick(event) {
 
     if (newName !== null) {
         if (newName.trim() !== "") {
-            fetch('/file/rename', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString(), newName: newName.toString() }),
-            }).then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
-                        selectedFile.querySelector('h1').textContent = newFileName
-                        console.log(newName)
-                        selectedFile.dataset.filename = newFileName
-                        selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
-                        selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
-                        getSuccessMessage(data.message);
-                    } else {
-                        getErrorMessage(data.message);
-                    }
-                    loadingDiv("hide");
-                });
+            GetCsrfToken().then((csrfToken) => {
+                fetch('/file/rename', {
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'post',
+                    body: JSON.stringify({ _csrf: csrfToken, name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString(), newName: newName.toString() }),
+                }).then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
+                            selectedFile.querySelector('h1').textContent = newFileName
+                            console.log(newName)
+                            selectedFile.dataset.filename = newFileName
+                            selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
+                            selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
+                            getSuccessMessage(data.message);
+                        } else {
+                            getErrorMessage(data.message);
+                        }
+                        loadingDiv("hide");
+                    });
+            })
         }
     }
 }
@@ -476,20 +502,23 @@ function handleDeleteClick(event) {
     loadingDiv("show");
 
     if (confirm(confirmMessage) === true) {
-        fetch("/file/delete", {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString() }),
-        }).then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    selectedFile.remove();
-                    getSuccessMessage(data.message);
-                } else {
-                    getErrorMessage(data.message);
-                }
-                loadingDiv("hide");
-            })
+        GetCsrfToken().then((csrfToken) => {
+            fetch("/file/delete", {
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                body: JSON.stringify({ _csrf: csrfToken, name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString() }),
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        selectedFile.remove();
+                        getSuccessMessage(data.message);
+                    } else {
+                        getErrorMessage(data.message);
+                    }
+                    loadingDiv("hide");
+                })
+        })
     }
 }
 
@@ -532,16 +561,20 @@ function handleDarkThemeClick(event) {
     }
     setTheme();
 
-    fetch("/settings/darkMode", {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: body.classList.contains("app-dark-theme") ? "true" : "false" }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success === false) {
-                getErrorMessage(data.message);
-            }
-        });
+
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/user?action=settings&action2=darkMode", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: body.classList.contains("app-dark-theme") ? "true" : "false" }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                }
+            });
+    })
 }
 
 //handle show image button
@@ -566,14 +599,17 @@ function handleShowImageClick(event) {
     setDisabledState(true);
     Adjust();
 
-    fetch("/settings/showImage", {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: showImageBtn.dataset.value.toString() }),
-    }).then((response) => response.json())
-        .then((data) => {
-            if (data.success === false) {
-                getErrorMessage(data.message);
-            }
-        });
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/user?action=settings&action2=showImage", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: showImageBtn.dataset.value.toString() }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                }
+            });
+    })
 }
