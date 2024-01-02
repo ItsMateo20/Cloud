@@ -31,24 +31,7 @@ Thank you for helping me ensure the security of this project.
 
 # List of Vulnerabilities in this project
 
-## CSRF Vulnerability
-
-### What it means:
-
-[Cross-Site Request Forgery (CSRF)](https://wikipedia.org/wiki/Cross-site_request_forgery) is a serious security vulnerability where an attacker tricks a user's browser into making unwanted requests to a web application where the user is authenticated. This can lead to unintended actions being performed on behalf of the user without their consent.
-
-#### Potential Consequences:
-
-1. **Unauthorized Actions:** An attacker may force authenticated users to perform unintended actions, such as changing account settings and password.
-
-2. **Data Manipulation:** CSRF attacks can lead to the manipulation of user data, potentially causing data loss or corruption.
-
-3. **Session Hijacking:** Attackers may attempt to hijack user sessions, gaining unauthorized access to the victim's account.
-
-### Future Update:
-
-In an upcoming release, efforts will be made to address and mitigate this vulnerability to prevent potential data leaks, including sensitive information such as passwords, emails, and files. Users are strongly encouraged to stay informed about updates and apply them promptly to enhance the security of the application.
-
+### None found/reported yet
 ---
 
 *Please note that the information provided here is subject to change as the investigation and mitigation efforts progress.*
