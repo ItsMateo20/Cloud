@@ -88,7 +88,7 @@ function StartServer() {
         app.disable('x-content-type-options')
         app.set("etag", false)
 
-        app.use(require("body-parser").urlencoded({ extended: false }))
+        app.use(express.urlencoded({ extended: false }))
         app.use(express.json());
         app.use(CookieParser(process.env.COOKIE_SECRET))
         app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }))
