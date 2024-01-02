@@ -91,7 +91,7 @@ function StartServer() {
         app.use(express.urlencoded({ extended: false }))
         app.use(express.json());
         app.use(CookieParser(process.env.COOKIE_SECRET))
-        app.use(expressSession({ secret: process.env.SESSION_SECRET, httpOnly: true, resave: false, saveUninitialized: true }))
+        app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true, cookie: { secure: true, sameSite: "strict", maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true } }))
         app.use(TinyCsrf(process.env.CSRF_SECRET, ["POST"]));
         app.use(nocache())
 
