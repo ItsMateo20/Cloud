@@ -10,7 +10,7 @@ const UserSettings = sequelize.define('UserSettings', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         unique: true,
-        autoIncrement: true,
+        autoIncrement: false,
     },
     email: {
         type: Sequelize.STRING,

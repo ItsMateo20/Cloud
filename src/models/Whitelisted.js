@@ -10,7 +10,7 @@ const Whitelisted = sequelize.define('Whitelisteds', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         unique: true,
-        autoIncrement: true,
+        autoIncrement: false,
     },
     email: {
         type: Sequelize.STRING,

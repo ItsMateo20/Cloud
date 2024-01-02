@@ -10,7 +10,7 @@ const User = sequelize.define('Users', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         unique: true,
-        autoIncrement: true,
+        autoIncrement: false,
     },
     token: {
         type: Sequelize.TEXT,

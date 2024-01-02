@@ -40,8 +40,7 @@ async function synchronizeModels(sequelize) {
     } catch (error) {
         console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
         console.log(gray('[SITE]: ') + cyan('Trying automatic fixes...'));
-        await require('./debug.js')
-        throw error;
+        return require('./debug.js')
     }
 }
 
