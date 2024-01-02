@@ -1,4 +1,5 @@
 const User = require("../models/User.js")
+const UserSettings = require("../models/UserSettings.js")
 const Whitelisted = require("../models/Whitelisted.js")
 const jwt = require("jsonwebtoken");
 const { readdirSync } = require("fs");
@@ -26,7 +27,10 @@ async function Auth(req, res) {
         where: { email: decoded.email, password: decoded.password },
     });
     if (!data) return res.status(500).json({ success: false, message: "FAILED_AUTHENTICATION" });
-    if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
+    const UserSettingsS = await UserSettings.findOne({
+        where: { email: decoded.email },
+    });
+    if (!UserSettingsS) return res.status(500).json({ success: false, message: "FAILED_AUTHENTICATION" });
 
     const folder = req.cookies.folder || "";
 
@@ -39,11 +43,16 @@ async function Auth(req, res) {
     const userFolderPath = `../../.././Users/${decoded.email}`;
     const folderPath = `${userFolderPath}${folder}`;
 
-    return { decoded, data, userFolder, userFolderPath, folderPath }
+    return { decoded, data, UserSettingsS, userFolder, userFolderPath, folderPath }
 }
 
-async function ApiFunction(req, res, { decoded, data, userFolder, userFolderPath, folderPath }) {
-    if (req.params.id == "user") {
+async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder, userFolderPath, folderPath }) {
+    if (req.params.id == "csrfToken") {
+        const csrfToken = req.csrfToken();
+        return res.status(200).json({ success: true, csrfToken });
+    } else if (req.params.id == "cookies") {
+        return res.status(200).json({ success: true, cookiesSigned: req.signedCookies, cookiesUnsigned: req.cookies });
+    } else if (req.params.id == "user") {
         if (req.query.action == "password-set") {
             const { oldpassword1, oldpassword2, newpassword } = req.body;
             if (!oldpassword1 || !oldpassword2 || !newpassword) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
@@ -52,8 +61,38 @@ async function ApiFunction(req, res, { decoded, data, userFolder, userFolderPath
             data.password = newpassword;
             await data.save();
             return res.status(200).json({ success: true, message: "PASSWORD_CHANGED" });
-        }
+        } else if (req.query.action == "settings") {
+            if (req.query.action2 === "showImage") {
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.showImage = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "darkMode") {
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.darkMode = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "adminMode") {
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.adminMode = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "get") return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
+        } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     } else if (req.params.id == "admin") {
+        if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
         async function getAllEmails() {
             const adminData = await User.findAll({ where: { admin: true } });
             const admins = [];
