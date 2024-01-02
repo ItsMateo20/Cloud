@@ -26,6 +26,7 @@ module.exports = {
         let args = {
             body: ["Signup | Chmura"],
             email: "",
+            csrfToken: req.csrfToken(),
 
             loggedIn: false,
         }
