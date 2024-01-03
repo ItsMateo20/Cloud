@@ -48,8 +48,15 @@ async function Auth(req, res) {
 
 async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder, userFolderPath, folderPath }) {
     if (req.params.id == "csrfToken") {
-        const csrfToken = req.csrfToken();
-        return res.status(200).json({ success: true, csrfToken });
+        if (req.query.action == "get") {
+            const csrfToken = req.csrfToken();
+            return res.status(200).json({ success: true, csrfToken });
+        } else if (req.query.action == "check") {
+            const { csrfToken } = req.body;
+            if (!csrfToken) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+            if (csrfToken !== req.csrfToken()) return res.status(500).json({ success: false, message: "INVALID_CSRF_TOKEN" });
+            return res.status(200).json({ success: true, message: "VALID_CSRF_TOKEN" });
+        } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     } else if (req.params.id == "cookies") {
         return res.status(200).json({ success: true, cookiesSigned: req.signedCookies, cookiesUnsigned: req.cookies });
     } else if (req.params.id == "user") {
