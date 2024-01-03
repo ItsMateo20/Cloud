@@ -1,19 +1,31 @@
 require("dotenv").config()
-const config = require("./config.json")
 const { gray, cyan, red } = require("chalk")
-if (config.CheckVersion == true) {
-    require("./src/CheckVersion.js")().then(() => {
-        console.log(gray("[VERSION]: ") + cyan("Version check complete\n") + gray("<------------------------------------------------------>"))
-        return StartServer()
-    }).catch((err) => {
-        console.log(err)
-        return process.exit(1)
-    })
-} else {
-    StartServer()
+
+async function BeforeStart() {
+    if (process.env.CHECKVERSION == "true") {
+        await require("./src/CheckVersion.js")().then(() => {
+            console.log(gray("[VERSION]: ") + cyan("Version check complete\n") + gray("<------------------------------------------------------>"))
+        }).catch((err) => {
+            console.log(err)
+        })
+    } else console.log(gray("[VERSION]: ") + cyan("Version check disabled\n") + gray("<------------------------------------------------------>"))
+
+    if (process.argv.includes("--setup")) {
+        await require("./src/setup.js")().then((success) => {
+            if (success) console.log(gray("[SETUP]: ") + cyan("Setup complete\n") + gray("<------------------------------------------------------>"))
+            return process.exit(0)
+        }).catch((err) => {
+            console.log(err)
+            console.log(gray("[SETUP]: ") + cyan("Setup failed\n") + gray("<------------------------------------------------------>") + red("Please check the error above"))
+            return process.exit(0)
+        })
+    } else if (process.argv.includes("--debug")) {
+        await require("./src/debug.js")
+        return process.exit(0)
+    }
 }
 
-function StartServer() {
+BeforeStart().then(() => {
     const express = require('express')
     const expressSession = require('express-session')
     const app = express()
@@ -92,7 +104,7 @@ function StartServer() {
         app.use(express.json());
         app.use(CookieParser(process.env.COOKIE_SECRET))
         app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true, cookie: { secure: true, sameSite: "strict", maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true } }))
-        app.use(TinyCsrf(process.env.CSRF_SECRET, ["POST"]));
+        app.use(TinyCsrf(process.env.CSRF_SECRET, ["POST"], ["/file/upload"]));
         app.use(nocache())
 
         app.set("view engine", "ejs")
@@ -126,4 +138,4 @@ function StartServer() {
         console.error(gray("[SITE]: ") + red('Unhandled Rejection reason:', reason));
         console.error(error);
     });
-}
+})
