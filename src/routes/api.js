@@ -35,12 +35,12 @@ async function Auth(req, res) {
     const folder = req.cookies.folder || "";
 
 
-    const userFolder = readdirSync("../../.././Users/").some(
+    const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
         (userFolder) => userFolder.toLowerCase() === decoded.email
     );
 
     if (!userFolder) return res.status(500).json({ success: false, message: "INVALID_FOLDER" });
-    const userFolderPath = `../../.././Users/${decoded.email}`;
+    const userFolderPath = `${process.env.USERS_DIR}${decoded.email}`;
     const folderPath = `${userFolderPath}${folder}`;
 
     return { decoded, data, UserSettingsS, userFolder, userFolderPath, folderPath }

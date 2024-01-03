@@ -1,7 +1,7 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmdirSync, rmSync } = require("fs");
+const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmdirSync, rmSync, unlink } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
@@ -156,13 +156,18 @@ module.exports = {
         } else if (req.params.file === "delete") {
             const { name, path, type } = req.body;
 
-            if (!name || !path || !type) return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            if (!name || !path || !type) {
+                return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
+            }
+
+            console.log(`${folderPath}/${name}`, `${userFolderPath}${path}`, existsSync(`${folderPath}/${name}`), existsSync(`${userFolderPath}${path}`));
+
             if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                 if (type == "folder") {
                     rmdirSync(`${userFolderPath}${path}`, { force: true });
                     return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
                 } else {
-                    rmSync(`${userFolderPath}${path}`, { force: true });
+                    unlinkSync(`${userFolderPath}${path}`);
                     return res.status(200).json({ success: true, message: "FILE_DELETED" });
                 }
             } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
@@ -190,15 +195,15 @@ async function auth(req, res) {
     let folder = req.cookies.folder || "";
 
     const email = decoded.email
-    const userFolder = readdirSync("../../.././Users/").some(
+    const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
         (userFolder) => userFolder.toLowerCase() === email
     );
 
     if (!userFolder) return res.redirect("/");
-    let userFolderPath = `../../.././Users/${email}/`;
+    let userFolderPath = `${process.env.USERS_DIR}${email}/`;
 
     if (UserSettingsS.adminMode) {
-        userFolderPath = `../../.././Users/`;
+        userFolderPath = `${process.env.USERS_DIR}`;
     }
 
     const folderPath = `${userFolderPath}${folder}`;
