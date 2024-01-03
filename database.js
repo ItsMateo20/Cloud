@@ -23,24 +23,25 @@ async function connectDatabase() {
 
 async function synchronizeModels(sequelize) {
     try {
-        console.log(gray('[SITE]: ') + cyan('Synchronizing models...'));
+        const isDev = process.argv.includes('--dev');
+        if (isDev) console.log(gray('[SITE]: ') + cyan('Synchronizing models...'));
         await sequelize.sync({ alter: true });
-        console.log(gray('[SITE]: ') + cyan('Database synchronized successfully!'));
+        if (isDev) console.log(gray('[SITE]: ') + cyan('Database synchronized successfully!'));
 
         await User.sync({ alter: true });
-        console.log(gray('[SITE]: ') + cyan('User model synchronized successfully!'));
+        if (isDev) console.log(gray('[SITE]: ') + cyan('User model synchronized successfully!'));
 
         await UserSettings.sync({ alter: true });
-        console.log(gray('[SITE]: ') + cyan('UserSettings model synchronized successfully!'));
+        if (isDev) console.log(gray('[SITE]: ') + cyan('UserSettings model synchronized successfully!'));
 
         await Whitelisted.sync({ alter: true });
-        console.log(gray('[SITE]: ') + cyan('Whitelisted model synchronized successfully!'));
+        if (isDev) console.log(gray('[SITE]: ') + cyan('Whitelisted model synchronized successfully!'));
 
         console.log(gray('[SITE]: ') + cyan('All models synchronized successfully!\n') + gray('[SITE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
     } catch (error) {
         console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
         console.log(gray('[SITE]: ') + cyan('Trying automatic fixes...'));
-        return require('./debug.js')
+        require('./src/debug.js')
     }
 }
 
@@ -48,12 +49,9 @@ module.exports = {
     name: 'database',
     description: 'Database',
     async execute() {
-        const isDev = process.argv.includes('--dev');
         const sequelize = await connectDatabase();
 
-        if (isDev) {
-            await synchronizeModels(sequelize);
-        }
+        await synchronizeModels(sequelize);
 
         setTimeout(async () => {
             const adminFind = await User.findOne({ where: { email: 'admin@localhost' } })
