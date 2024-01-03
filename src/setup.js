@@ -16,7 +16,7 @@ function setup() {
 
             const content = `
 
-USERS_DIR="./Users/"
+USERS_DIR=".././Users/"
 CHECKVERSION="true"
 
 PORT="3000"
@@ -31,7 +31,7 @@ JWTSECRET="${generateSecret(32)}"
 JWTEXPIRESIN="1d"
 `;
 
-            fs.mkdir('./Users', (err) => {
+            fs.mkdir('../Users', (err) => {
                 if (err) {
                     console.error(err);
                     reject(err);

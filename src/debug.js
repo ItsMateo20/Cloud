@@ -10,31 +10,39 @@ async function RemoveMainAdminAccounts() {
     if (UserS) await UserS.destroy();
     if (UserSettingsS) await UserSettingsS.destroy();
     if (WhitelistedS) await WhitelistedS.destroy();
-    if (await User.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
-    if (await UserSettings.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
-    if (await Whitelisted.findAll({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
+    if (await User.findOne({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
+    if (await UserSettings.findOne({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
+    if (await Whitelisted.findOne({ where: { email: 'admin@localhost' } })) return RemoveMainAdminAccounts();
     return;
 }
 
-function debug() {
-    console.log(gray("[SITE]: ") + cyan("Starting debug script..."));
+async function debug() {
+    console.log(gray("[SITE]: ") + cyan("Starting debug script...\n"));
     console.log(gray("[SITE]: ") + cyan("Removing admin account..."));
-    RemoveMainAdminAccounts();
+    await RemoveMainAdminAccounts();
     console.log(gray("[SITE]: ") + cyan("Admin account removed!\n"));
 
     console.log(gray("[SITE]: ") + cyan("Creating admin account..."));
-    User.create({
+    const UserS = await User.create({
         email: 'admin@localhost',
         password: 'admin',
         admin: true,
         token: 'admin',
     })
-    UserSettings.create({ email: 'admin@localhost' })
-    Whitelisted.create({ email: 'admin@localhost' })
+    await UserS.save()
+    const UserSettingsS = await UserSettings.create({ email: 'admin@localhost' })
+    await UserSettingsS.save()
+    const WhitelistedsS = await Whitelisted.create({ email: 'admin@localhost' })
+    await WhitelistedsS.save()
     console.log(gray("[SITE]: ") + cyan("Admin account created!\n"));
 
     console.log(gray("[SITE]: ") + cyan("Syncing models..."));
-    const sequelize = require("./database.js");
+    const Sequelize = require("sequelize");
+    const sequelize = new Sequelize({
+        dialect: 'sqlite',
+        logging: false,
+        storage: '../database.sqlite',
+    });
     sequelize.sync({ alter: true });
     User.sync({ alter: true });
     UserSettings.sync({ alter: true });
@@ -42,7 +50,6 @@ function debug() {
     console.log(gray("[SITE]: ") + cyan("Models synced!"));
 
     console.log(gray("[SITE]: ") + cyan("Debug script finished!\n") + gray("<------------------------------------------------------>"));
-    resolve(true);
 }
 
 module.exports = debug;

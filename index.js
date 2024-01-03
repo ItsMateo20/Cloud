@@ -20,7 +20,7 @@ async function BeforeStart() {
             return process.exit(0)
         })
     } else if (process.argv.includes("--debug")) {
-        await require("./src/debug.js")
+        await require("./src/debug.js")()
         return process.exit(0)
     }
 }
