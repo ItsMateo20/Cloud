@@ -1,7 +1,7 @@
 const html = document.querySelector('html');
 
 async function GetCsrfToken() {
-    return fetch("/api/csrfToken", {
+    return fetch("/api/csrfToken?action=get", {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         method: 'get',
@@ -405,29 +405,27 @@ function handleFileSelect(event) {
         }
         GetCsrfToken().then((csrfToken) => {
             formData.append('_csrf', csrfToken);
-        })
-
-
-        fetch('/file/upload', {
-            credentials: 'same-origin',
-            method: 'post',
-            body: formData,
-        }).then((response) => response.json())
-            .then(async (data) => {
-                if (data.success) {
-                    const files = data.files;
-                    const rowToAddTo = document.querySelector('.app-row');
-                    for (let i = 0; i < files.length; i++) {
-                        const newItemElement = await createItemElement(files[i]);
-                        rowToAddTo.appendChild(newItemElement);
+            fetch('/file/upload', {
+                credentials: 'same-origin',
+                method: 'post',
+                body: formData,
+            }).then((response) => response.json())
+                .then(async (data) => {
+                    if (data.success) {
+                        const files = data.files;
+                        const rowToAddTo = document.querySelector('.app-row');
+                        for (let i = 0; i < files.length; i++) {
+                            const newItemElement = await createItemElement(files[i]);
+                            rowToAddTo.appendChild(newItemElement);
+                        }
+                        handleItemEventListener("respawn");
+                        getSuccessMessage(data.message);
+                    } else {
+                        getErrorMessage(data.message);
                     }
-                    handleItemEventListener("respawn");
-                    getSuccessMessage(data.message);
-                } else {
-                    getErrorMessage(data.message);
-                }
-                loadingDiv("hide");
-            });
+                    loadingDiv("hide");
+                });
+        })
     } else {
         loadingDiv("hide");
     }
