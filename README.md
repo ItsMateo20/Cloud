@@ -43,6 +43,24 @@ This project was created for fun but will be used by me to store my files, elimi
 3. Move the database.sqlite and .env file in the folder that you extracted the files into.
 4. And run it, and you're migrated!
 
+## Setup
+1. Run the ```node index.js --setup``` command
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/84220beb-8388-4bc5-9f68-991c2bfdfa9a)
+2. Edit the file to your likings
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/d28468e9-ce5e-4e73-b226-4baf666e38eb)
+3. Now run ```node index.js```
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/ba218946-dc12-4ae1-84d4-95d43e9d8095)
+4. Login to the admin account ```(email: admin@loacalhost, password: admin)```
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/5f293e89-b4e6-4903-8dd6-a770eacc56d2)
+5. Add Your emails to whitelist and change admin password
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/f1d07ccc-9c64-4c0e-9a57-ffc159418a6a)
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/c535222f-cf6a-4f74-bab9-b4c65455631c)
+6. Signup with your whitelisted email and login
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/15dca0d5-939e-4230-be9f-6201e403cfc7)
+7. And enjoy a Cloud Storage
+> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/f4dac306-c37f-44e0-8a04-ae501cdb3933)
+
+
 ## FAQ
 - **Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should I do?..**
 - A: Run the command "npm run fix" and that should fix the error you're having!
