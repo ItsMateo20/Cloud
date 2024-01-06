@@ -160,7 +160,6 @@ module.exports = {
                 return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
             }
 
-            console.log(`${folderPath}/${name}`, `${userFolderPath}${path}`, existsSync(`${folderPath}/${name}`), existsSync(`${userFolderPath}${path}`));
 
             if (existsSync(`${folderPath}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                 if (type == "folder") {
