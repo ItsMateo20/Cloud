@@ -3,12 +3,19 @@ const { gray, cyan, red } = require("chalk")
 
 async function BeforeStart() {
     if (process.env.CHECKVERSION == "true") {
-        await require("./src/CheckVersion.js")().then(() => {
+        const { checkForUpdates } = require("./src/CheckVersion.js")
+        await checkForUpdates().then(() => {
             console.log(gray("[VERSION]: ") + cyan("Version check complete\n") + gray("<------------------------------------------------------>"))
         }).catch((err) => {
             console.log(err)
         })
     } else console.log(gray("[VERSION]: ") + cyan("Version check disabled\n") + gray("<------------------------------------------------------>"))
+
+    if (process.env.DISCORD_ACTIVITY == "true") {
+        const { deploy } = require("./src/DiscordActivity.js")
+        await deploy()
+        console.log(gray("[DISCORD]: ") + cyan("Discord activity enabled\n") + gray("<------------------------------------------------------>"))
+    } else console.log(gray("[DISCORD]: ") + cyan("Discord activity disabled\n") + gray("<------------------------------------------------------>"))
 
     if (process.argv.includes("--setup")) {
         await require("./src/setup.js")().then((success) => {

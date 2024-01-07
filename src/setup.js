@@ -1,11 +1,16 @@
 const fs = require('fs');
 const crypto = require('crypto');
 
+
 function generateSecret(value) {
     return crypto.randomBytes(value).toString('hex');
 }
 
 function setup() {
+    if (process.env.DISCORD_ACTIVITY === "true") {
+        const { updateState } = require("./src/DiscordActivity.js")
+        updateState("Setting up Cloud Server...")
+    }
     return new Promise((resolve, reject) => {
         fs.rename('./.env.example', './.env', (err) => {
             if (err) {
@@ -18,6 +23,7 @@ function setup() {
 
 USERS_DIR=".././Users/"
 CHECKVERSION="true"
+DISCORD_ACTIVITY="false"
 
 PORT="3000"
 FTP_PORT="3001"

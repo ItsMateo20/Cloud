@@ -60,4 +60,11 @@ async function checkForUpdates() {
     }
 }
 
-module.exports = checkForUpdates;
+let functions = {
+    getCurrentVersion: getCurrentVersion,
+    fetchLatestVersion: fetchLatestVersion,
+    isOutdated: isOutdated,
+    checkForUpdates: checkForUpdates
+}
+
+module.exports = functions;
