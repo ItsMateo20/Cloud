@@ -13,10 +13,10 @@ async function connectDatabase() {
 
     try {
         await sequelize.authenticate();
-        console.log(gray('[SITE]: ') + cyan('Database connected!'));
+        console.log(gray('[DATABASE]: ') + cyan('Database connected!'));
         return sequelize;
     } catch (error) {
-        console.error(gray('[SITE]: ') + red('Database connection error:'), error);
+        console.error(gray('[DATABASE]: ') + red('Database connection error:'), error);
         throw error;
     }
 }
@@ -24,23 +24,23 @@ async function connectDatabase() {
 async function synchronizeModels(sequelize) {
     try {
         const isDev = process.argv.includes('--dev');
-        if (isDev) console.log(gray('[SITE]: ') + cyan('Synchronizing models...'));
+        if (isDev) console.log(gray('[DATABASE]: ') + cyan('Synchronizing models...'));
         await sequelize.sync({ alter: true });
-        if (isDev) console.log(gray('[SITE]: ') + cyan('Database synchronized successfully!'));
+        if (isDev) console.log(gray('[DATABASE]: ') + cyan('Database synchronized successfully!'));
 
         await User.sync({ alter: true });
-        if (isDev) console.log(gray('[SITE]: ') + cyan('User model synchronized successfully!'));
+        if (isDev) console.log(gray('[DATABASE]: ') + cyan('User model synchronized successfully!'));
 
         await UserSettings.sync({ alter: true });
-        if (isDev) console.log(gray('[SITE]: ') + cyan('UserSettings model synchronized successfully!'));
+        if (isDev) console.log(gray('[DATABASE]: ') + cyan('UserSettings model synchronized successfully!'));
 
         await Whitelisted.sync({ alter: true });
-        if (isDev) console.log(gray('[SITE]: ') + cyan('Whitelisted model synchronized successfully!'));
+        if (isDev) console.log(gray('[DATABASE]: ') + cyan('Whitelisted model synchronized successfully!'));
 
-        console.log(gray('[SITE]: ') + cyan('All models synchronized successfully!\n') + gray('[SITE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
+        console.log(gray('[DATABASE]: ') + cyan('All models synchronized successfully!\n') + gray('[DATABASE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
     } catch (error) {
-        console.error(gray('[SITE]: ') + red('Error synchronizing models:'), error);
-        console.log(gray('[SITE]: ') + cyan('Trying automatic fixes...'));
+        console.error(gray('[DATABASE]: ') + red('Error synchronizing models:'), error);
+        console.log(gray('[DATABASE]: ') + cyan('Trying automatic repairs...'));
         require('./src/debug.js')
     }
 }
