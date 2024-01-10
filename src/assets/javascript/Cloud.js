@@ -293,7 +293,7 @@ function handleItemClick(event) {
     const clickedItem = event.currentTarget;
     const clickedItemType = clickedItem.dataset.filetype || "other";
     const clickedItemPath = clickedItem.dataset.fileredirect;
-    const clickedItemHeight = clickedItem.dataset.fileheight || 200;
+    const clickedItemHeight = clickedItem.dataset.fileheight || 150;
     const clickedItemWidth = clickedItem.dataset.filewidth || 300;
 
     if (clickedItem.classList.contains('cloudItemContainerSelected')) {
@@ -382,6 +382,7 @@ function createItemElement(file) {
     if (type === "folder") img.src = 'icons/folder.png';
     else if (type === "image") img.src = 'icons/image.png';
     else if (type === "video") img.src = 'icons/video.png';
+    else if (type === "audio") img.src = 'icons/audio.png';
 
     const h1 = document.createElement('h1');
     h1.textContent = file.name;
@@ -491,6 +492,8 @@ function handleDeleteClick(event) {
         confirmMessage = `Czy na pewno chcesz usunąć obraz ${selectedFileName}?`
     } else if (selectedFileType === "video") {
         confirmMessage = `Czy na pewno chcesz usunąć film ${selectedFileName}?`
+    } else if (selectedFileType === "audio") {
+        confirmMessage = `Czy na pewno chcesz usunąć plik audio ${selectedFileName}?`
     } else {
         confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`
     }
@@ -516,6 +519,8 @@ function handleDeleteClick(event) {
                     loadingDiv("hide");
                 })
         })
+    } else {
+        loadingDiv("hide");
     }
 }
 
