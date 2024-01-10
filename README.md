@@ -12,56 +12,74 @@ This project was created for fun but will be used by me to store my files, elimi
 ## Features
 
 - **User Authentication**: Users can create accounts, log in securely, and access their own cloud storage space.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/2caa6185-e227-4ce2-9cea-fe469a86973f)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/2caa6185-e227-4ce2-9cea-fe469a86973f" alt="User Authentication" width="auto" height="250">
 
 - **File Management**: Easily upload, download, and delete files and folders.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda" alt="File Management" width="auto" height="300">
 
 - **Folder Navigation**: Navigate through your folder structure and access nested folders.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/c3b8150b-9fd9-4ab9-9aac-f276131bc5e8)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/c3b8150b-9fd9-4ab9-9aac-f276131bc5e8" alt="Folder Navigation" width="auto" height="50">
 
 - **File Preview**: View images and videos directly within the web interface.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/5ad4e947-b5b9-4976-ae33-3ad2cd1d35dc)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/5ad4e947-b5b9-4976-ae33-3ad2cd1d35dc" alt="File Preview" width="auto" height="300">
 
 - **Security**: Secure access to your files and folders with user authentication.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/8006b5d9-e806-4a8e-861b-b8f2e48e52ca)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/8006b5d9-e806-4a8e-861b-b8f2e48e52ca" alt="Security" width="auto" height="250">
 
 - **Responsive Design**: The app is responsive and works seamlessly on both desktop and mobile devices.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/30b138fb-50e4-4d57-976f-db0d2476f699)  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/6765f26a-26fd-47ca-8017-bbfad9f37625)
-     ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/30b138fb-50e4-4d57-976f-db0d2476f699" alt="Responsive Design" width="auto" height="515">  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/6765f26a-26fd-47ca-8017-bbfad9f37625" alt="Responsive Design" width="auto" height="515"> <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/e03be5cf-c636-4d5c-882b-43915eadefda" alt="Responsive Design" width="auto" height="300">
 
 - **Dark theme**: Dark theme provides a sleek and visually appealing option for users who prefer it.
-  >  ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/89ce5857-f195-42ff-9885-5edc28077663)
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/89ce5857-f195-42ff-9885-5edc28077663" alt="Dark theme" width="auto" height="300">
 
-- **FTP**: By using FTP (File Transfer Protocol) you can access user/server files by local ip not public ip (yet)
+- **FTP**: By using FTP (File Transfer Protocol) you can access user/server files by local IP not public IP (yet)
   >  **(Admin view)**
-     ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/12b2865b-6536-4678-a140-c20aa3f021a0)
+  > 
+  >  <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/12b2865b-6536-4678-a140-c20aa3f021a0" alt="FTP (Admin view)" width="auto" height="300">
+
 
 ## How to migrate to newer versions of this project
-1. Move your database.sqlite and .env file outside of the folder and clear the content of the folder.
-2. Download the new version and extract the files from it.
-3. Move the database.sqlite and .env file in the folder that you extracted the files into.
-4. And run it, and you're migrated!
+<details>
+<summary>Migration</summary>
+  
+  1. Move your database.sqlite and .env file outside of the folder and clear the content of the folder.
+  2. Download the new version and extract the files from it.
+  3. Move the database.sqlite and .env file in the folder that you extracted the files into.
+  4. And run it, and you're migrated!
+</details>
 
 ## Setup
-1. Run the ```node index.js --setup``` command
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/84220beb-8388-4bc5-9f68-991c2bfdfa9a)
-2. Edit the file to your likings
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/d28468e9-ce5e-4e73-b226-4baf666e38eb)
-3. Now run ```node index.js```
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/ba218946-dc12-4ae1-84d4-95d43e9d8095)
-4. Login to the admin account ```(email: admin@loacalhost, password: admin)```
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/5f293e89-b4e6-4903-8dd6-a770eacc56d2)
-5. Add Your emails to whitelist and change admin password
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/f1d07ccc-9c64-4c0e-9a57-ffc159418a6a)
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/c535222f-cf6a-4f74-bab9-b4c65455631c)
-6. Signup with your whitelisted email and login
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/15dca0d5-939e-4230-be9f-6201e403cfc7)
-7. And enjoy a Cloud Storage
-> ![image](https://github.com/ItsMateo20/Cloud/assets/84156177/f4dac306-c37f-44e0-8a04-ae501cdb3933)
+<details>
+  <summary>Setup Instructions</summary>
+
+  1. Run the ```node index.js --setup``` command
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/84220beb-8388-4bc5-9f68-991c2bfdfa9a" alt="Step 1" width="auto" height="100">
+
+  2. Edit the file to your likings
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/d28468e9-ce5e-4e73-b226-4baf666e38eb" alt="Step 2" width="auto" height="250">
+
+  3. Now run ```node index.js```
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/ba218946-dc12-4ae1-84d4-95d43e9d8095" alt="Step 3" width="auto" height="300">
+
+  4. Login to the admin account ```(email: admin@localhost, password: admin)```
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/5f293e89-b4e6-4903-8dd6-a770eacc56d2" alt="Step 4" width="auto" height="200">
+
+  5. Add Your emails to whitelist and change the admin password
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/f1d07ccc-9c64-4c0e-9a57-ffc159418a6a" alt="Step 5a" width="auto" height="100">
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/c535222f-cf6a-4f74-bab9-b4c65455631c" alt="Step 5b" width="auto" height="100">
+
+  6. Signup with your whitelisted email and login
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/15dca0d5-939e-4230-be9f-6201e403cfc7" alt="Step 6" width="auto" height="200">
+
+  7. And enjoy Cloud Storage
+  > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/f4dac306-c37f-44e0-8a04-ae501cdb3933" alt="Step 7" width="auto" height="300">
+</details>
 
 
 ## FAQ
+<details>
+<summary>Frequently asked questions</summary>
+
 - **Q: I keep getting an error containing "users_backup, usersettings_backup, whitelists_backup" what should I do?..**
 - A: Run the command "npm run fix" and that should fix the error you're having!
 
@@ -79,6 +97,7 @@ This project was created for fun but will be used by me to store my files, elimi
 
 - **Q: I want to report something where do I do that?..**
 - A: I have given instuctions [here](#how-to-report-issues)
+</details>
 
 ## Technologies Used
 
