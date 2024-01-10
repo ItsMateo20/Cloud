@@ -2,6 +2,21 @@ require("dotenv").config()
 const { gray, cyan, red } = require("chalk")
 
 async function BeforeStart() {
+    if (process.argv.includes("--setup")) {
+        await require("./src/setup.js")().then((success) => {
+            if (success) console.log(gray("[SETUP]: ") + cyan("Setup complete.\n") + gray("<------------------------------------------------------>"))
+            return process.exit(0)
+        }).catch((err) => {
+            console.log(err)
+            console.log(gray("[SETUP]: ") + cyan("Setup failed.\n") + gray("<------------------------------------------------------>") + red("Please check the error above"))
+            return process.exit(0)
+        })
+    } else if (process.argv.includes("--debug")) {
+        await require("./src/debug.js")()
+        return process.exit(0)
+    }
+
+
     if (process.env.CHECKVERSION == "true") {
         const { checkForUpdates } = require("./src/CheckVersion.js")
         await checkForUpdates().then(() => {
@@ -16,20 +31,6 @@ async function BeforeStart() {
         await deploy()
         console.log(gray("[DISCORD]: ") + cyan("Discord activity connection complete.\n") + gray("<------------------------------------------------------>"))
     } else console.log(gray("[DISCORD]: ") + cyan("Discord activity disabled.\n") + gray("<------------------------------------------------------>"))
-
-    if (process.argv.includes("--setup")) {
-        await require("./src/setup.js")().then((success) => {
-            if (success) console.log(gray("[SETUP]: ") + cyan("Setup complete.\n") + gray("<------------------------------------------------------>"))
-            return process.exit(0)
-        }).catch((err) => {
-            console.log(err)
-            console.log(gray("[SETUP]: ") + cyan("Setup failed.\n") + gray("<------------------------------------------------------>") + red("Please check the error above"))
-            return process.exit(0)
-        })
-    } else if (process.argv.includes("--debug")) {
-        await require("./src/debug.js")()
-        return process.exit(0)
-    }
 }
 
 BeforeStart().then(() => {
