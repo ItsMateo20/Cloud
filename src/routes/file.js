@@ -1,7 +1,7 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmdirSync, rmSync, unlink } = require("fs");
+const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmdirSync, unlink } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
@@ -102,6 +102,7 @@ module.exports = {
                     const { originalname, mimetype } = file;
                     const isImage = mimetype.startsWith('image');
                     const isVideo = mimetype.startsWith('video');
+                    const isAudio = mimetype.startsWith('audio');
 
                     if (isImage) {
                         const dimensions = await sharp(file.path).metadata();
@@ -110,14 +111,20 @@ module.exports = {
                         newFile.type = "image";
                         newFile.height = height;
                         newFile.width = width;
-                        newFile.redirect = `/image/?image=${folder}/${originalname}`;
+                        newFile.redirect = `/image/?path=${folder}/${originalname}`;
                     } else if (isVideo) {
                         const metadata = await ffprobe(file.path);
                         const dimensions = metadata.streams[0];
                         newFile.type = "video";
                         newFile.height = dimensions.height;
                         newFile.width = dimensions.width;
-                        newFile.redirect = `/video/?video=${folder}/${originalname}`;
+                        newFile.redirect = `/video/?path=${folder}/${originalname}`;
+                    } else if (isAudio) {
+                        newFile.type = "audio";
+                        newFile.redirect = `/audio/?path=${folder}/${originalname}`;
+                    } else {
+                        newFile.type = "other";
+                        newFile.redirect = `/file/download?name=${originalname}&path=${folder}/${originalname}&type=other`;
                     }
 
                     newFile.name = originalname;
@@ -166,7 +173,10 @@ module.exports = {
                     rmdirSync(`${userFolderPath}${path}`, { force: true });
                     return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
                 } else {
-                    unlinkSync(`${userFolderPath}${path}`);
+                    unlink(`${userFolderPath}${path}`).catch((err) => {
+                        console.log(gray("[SITE]: ") + red('Error during deleting file:', err));
+                        return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+                    });
                     return res.status(200).json({ success: true, message: "FILE_DELETED" });
                 }
             } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
