@@ -195,12 +195,13 @@ function Adjust() {
     cloudItems.forEach((item) => {
         const dataFileHeight = parseFloat(item.getAttribute('data-fileheight'));
         const dataFileWidth = parseFloat(item.getAttribute('data-filewidth'));
+        const fileType = item.dataset.filetype;
         if (settings.showImage == true) {
-            if (!item.dataset.filetype === "image" || item.dataset.filetype === "video") {
+            if (!fileType === "image" || fileType === "video") {
                 if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) {
                     item.querySelector("img").classList.add('cloudItemContainerImg');
                 }
-            } else if (item.dataset.filetype === "image") {
+            } else if (fileType === "image") {
                 if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
                 if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
                     if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
@@ -209,7 +210,7 @@ function Adjust() {
                 }
                 item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
             }
-            // else if (item.dataset.filetype === "video") {
+            // else if (fileType === "video") {
             //     if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
             //     if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
             //         if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
@@ -222,10 +223,8 @@ function Adjust() {
             if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.add('cloudItemContainerImg');
             if (item.querySelector("img").classList.contains('cloudItemContainerPortrait')) item.querySelector("img").classList.remove('cloudItemContainerPortrait');
             if (item.querySelector("img").classList.contains('cloudItemContainerLandscape')) item.querySelector("img").classList.remove('cloudItemContainerLandscape');
-            if (item.dataset.filetype == "image") item.querySelector("img").src = 'icons/image.png';
-            if (item.dataset.filetype == "video") item.querySelector("img").src = 'icons/video.png';
-            if (item.dataset.filetype == "folder") item.querySelector("img").src = 'icons/folder.png';
-            if (item.dataset.filetype == "other") item.querySelector("img").src = 'icons/other.png';
+            if (fileType == "image") item.querySelector("img").src = 'icons/image.png';
+            if (fileType == "video") item.querySelector("img").src = 'icons/video.png';
         }
 
         if (dataFileHeight && dataFileWidth) {
@@ -292,10 +291,10 @@ function setDisabledState(value) {
 
 function handleItemClick(event) {
     const clickedItem = event.currentTarget;
-    const clickedItemType = clickedItem.dataset.filetype;
+    const clickedItemType = clickedItem.dataset.filetype || "other";
     const clickedItemPath = clickedItem.dataset.fileredirect;
-    const clickedItemHeight = clickedItem.dataset.fileheight;
-    const clickedItemWidth = clickedItem.dataset.filewidth;
+    const clickedItemHeight = clickedItem.dataset.fileheight || 200;
+    const clickedItemWidth = clickedItem.dataset.filewidth || 300;
 
     if (clickedItem.classList.contains('cloudItemContainerSelected')) {
         if (clickedItemType === "folder" || clickedItemType === "other") {
