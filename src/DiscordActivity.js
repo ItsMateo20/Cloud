@@ -1,5 +1,22 @@
+const { red, gray, cyan } = require('chalk');
+const { wait } = require('./Utils.js');
 const { getCurrentVersion } = require('./CheckVersion.js');
 const client = require('discord-rich-presence')('1193532736925876384');
+let connected = false;
+
+client.on('error', (err) => {
+    if (err.message === 'RPC_CONNECTION_TIMEOUT') {
+        connected = false;
+        console.log(gray('[DISCORD]: ') + red('Discord activity connection has disconnected, retrying...'));
+        client.destroy();
+        deploy();
+    }
+})
+
+client.on('connected', () => {
+    connected = true;
+    console.log(gray('[DISCORD]: ') + cyan('Discord activity connected!'));
+})
 
 let SystemOS
 
@@ -37,8 +54,6 @@ if (SystemOS !== '' || SystemOS !== null || SystemOS !== undefined) {
     SystemOS = `on ${SystemOS}`;
 }
 
-let version = `${getCurrentVersion()}`;
-
 const Activity = {
     details: `Running Cloud Server (${getCurrentVersion()}) ${SystemOS}`,
     largeImageKey: 'webicon',
@@ -54,8 +69,13 @@ function disconnect() {
     return client.disconnect();
 }
 
-function deploy() {
-    return client.updatePresence(Activity);
+async function deploy() {
+    client.updatePresence(Activity)
+    console.log(gray('[DISCORD]: ') + cyan('Connecting Discord activity to your client...'))
+    while (!connected) {
+        await wait(1000);
+    }
+    return client;
 }
 
 function updateState(state, timeout, newState) {
