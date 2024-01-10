@@ -81,7 +81,7 @@ module.exports = {
                 const extnameS = extname(entry).toLowerCase()
 
                 if (extnameS === ".jpg" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif" || extnameS === ".webp") {
-                    relativePath = `/image?image=${entryRelativePath}`
+                    relativePath = `/image?path=${entryRelativePath}`
                     url = "icons/image.png"
                     type = "image";
 
@@ -91,7 +91,7 @@ module.exports = {
 
                     dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
-                    relativePath = `/video?video=${entryRelativePath}`
+                    relativePath = `/video?path=${entryRelativePath}`
                     url = "icons/video.png";
                     type = "video";
 
@@ -101,6 +101,10 @@ module.exports = {
                     width = dimensions.width;
 
                     dateModified = statSync(entryPath).mtimeMs;
+                } else if (extnameS === ".mp3" || extnameS === ".wav" || extnameS === ".ogg" || extnameS === ".flac" || extnameS === ".m4a") {
+                    relativePath = `/audio?path=${entryRelativePath}`
+                    url = "icons/audio.png";
+                    type = "audio";
                 } else if (isDirectory) {
                     relativePath = `/folder/folder?path=${entryRelativePath}`
                     url = "icons/folder.png";

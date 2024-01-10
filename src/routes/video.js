@@ -26,25 +26,25 @@ module.exports = {
         });
         if (!UserSettingsS) return res.redirect("/login");
 
-        if (!req.query.video) return res.redirect("/");
-        req.query.video = req.query.video.replace(/"/g, "").replace(/'/g, "")
+        if (!req.query.path) return res.redirect("/");
+        req.query.path = req.query.path.replace(/"/g, "").replace(/'/g, "")
 
 
-        const userFolder = readdirSync("../../.././Users/").some(
+        const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
             (folder) => folder.toLowerCase() === decoded.email
         );
 
         if (!userFolder) {
-            mkdirSync(`../../.././Users/${decoded.email}`);
+            mkdirSync(`${process.env.USERS_DIR}${decoded.email}`);
         }
 
-        let userFolderPath = `../../.././Users/${decoded.email}/`;
+        let userFolderPath = `${process.env.USERS_DIR}${decoded.email}/`;
 
         if (UserSettingsS.adminMode) {
-            userFolderPath = `../../.././Users/`;
+            userFolderPath = `${process.env.USERS_DIR}`;
         }
 
-        const videoPath = `${userFolderPath}${req.query.video}`;
+        const videoPath = `${userFolderPath}${req.query.path}`;
         const getVideo = existsSync(videoPath);
 
         if (!getVideo) return res.redirect("/?error=FILE_DOESNT_EXIST");

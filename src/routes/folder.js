@@ -32,14 +32,14 @@ module.exports = {
 
 
 
-        const userFolder = readdirSync("../../.././Users/").some(
+        const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
             (folder) => folder.toLowerCase() === decoded.email
         );
 
-        let userFolderPath = `../../.././Users/${decoded.email}/`;
+        let userFolderPath = `${process.env.USERS_DIR}${decoded.email}/`;
 
         if (UserSettingsS.adminMode) {
-            userFolderPath = `../../.././Users/`;
+            userFolderPath = `${process.env.USERS_DIR}`;
         }
 
         if (!userFolder) return res.redirect("/");
