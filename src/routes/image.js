@@ -26,7 +26,7 @@ module.exports = {
         if (!UserSettingsS) return res.redirect("/login");
 
         if (!req.query.path) return res.redirect("/");
-        req.query.path = req.query.oath.replace(/"/g, "").replace(/'/g, "")
+        req.query.path = req.query.path.replace(/"/g, "").replace(/'/g, "")
 
         const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
             (folder) => folder.toLowerCase() === decoded.email
