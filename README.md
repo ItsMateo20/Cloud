@@ -101,17 +101,17 @@ This project was created for fun but will be used by me to store my files, elimi
 
 ## Technologies Used
 
-- **Node.js:** <img src="./ReadmeImages/nodejs.svg" alt="Node.js" width="auto" height="25">
-- **Express.js:** <img src="./ReadmeImages/expressjs.svg" alt="Express.js" width="auto" height="25">
-- **Sqlite3:** <img src="./ReadmeImages/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
-- **Sequelize:** <img src="./ReadmeImages/sequelize.svg" alt="Sequelize" width="auto" height="25">
-- **Ejs:** <img src="./ReadmeImages/ejs.svg" alt="Ejs" width="auto" height="25">
-- **Css:** <img src="./ReadmeImages/css.svg" alt="Css" width="auto" height="25">
-- **FFmpeg:** <img src="./ReadmeImages/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
-- **JSON:** <img src="./ReadmeImages/json.svg" alt="JSON" width="auto" height="25">
-- **JavaScript:** <img src="./ReadmeImages/javascript.svg" alt="JavaScript" width="auto" height="25">
-- **Bootstrap:** <img src="./ReadmeImages/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
-- **Bootstrap Icons:** <img src="./ReadmeImages/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
+- **Node.js:** <img src="./src/README/nodejs.svg" alt="Node.js" width="auto" height="25">
+- **Express.js:** <img src="./src/README/expressjs.svg" alt="Express.js" width="auto" height="25">
+- **Sqlite3:** <img src="./src/README/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
+- **Sequelize:** <img src="./src/README/sequelize.svg" alt="Sequelize" width="auto" height="25">
+- **Ejs:** <img src="./src/README/ejs.svg" alt="Ejs" width="auto" height="25">
+- **Css:** <img src="./src/README/css.svg" alt="Css" width="auto" height="25">
+- **FFmpeg:** <img src="./src/README/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
+- **JSON:** <img src="./src/README/json.svg" alt="JSON" width="auto" height="25">
+- **JavaScript:** <img src="./src/README/javascript.svg" alt="JavaScript" width="auto" height="25">
+- **Bootstrap:** <img src="./src/README/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
+- **Bootstrap Icons:** <img src="./src/README/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
 
 - And some other [**npm**](https://npmjs.com) packages (full list in [**package.json**](./package.json))
 
