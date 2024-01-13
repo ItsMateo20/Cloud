@@ -149,7 +149,6 @@ function handleChangePasswordClick(event) {
 function handleOldPasswordInput() {
     const oldPassword1 = oldPassword1Input.value;
     const oldPassword2 = oldPassword2Input.value;
-    console.log(oldPassword1, oldPassword2)
 
     if (oldPassword1.trim() !== oldPassword2.trim()) {
         if (oldPassword1Input.classList.contains('is-valid')) oldPassword1Input.classList.remove('is-valid');
