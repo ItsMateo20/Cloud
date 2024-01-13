@@ -147,7 +147,7 @@ module.exports = {
         await getSubfolders(folderPath, items);
 
         let args = {
-            body: [`Głowna strona | Chmura`],
+            body: [`Główna strona | Chmura`],
             email: data.email,
             items: items,
             directory: folder,
