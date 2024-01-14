@@ -314,7 +314,8 @@
 
     <script type="text/javascript">
         function checkRedirect() {
-            if (document.cookie.split('; ').find(row => row.startsWith('email=')) && !document.cookie.split('; ').find(row => row.startsWith('email=')).split('=')[1]) {
+            const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email=')) || '';
+            if (!emailCookie && !emailCookie.split('=')[1]) {
                 document.cookie = '';
                 window.location.href = '/Cloud/login';
             }
