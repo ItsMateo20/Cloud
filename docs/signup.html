@@ -48,7 +48,7 @@
                         Prosze powtórzyć hasło!
                     </div>
                 </div>
-                <a href="/login" class="text-muted">Masz już konto? Zaloguj się!</a>
+                <a href="/Cloud/login" class="text-muted">Masz już konto? Zaloguj się!</a>
                 <br>
                 <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
             </form>
@@ -64,7 +64,7 @@
         function checkRedirect() {
             const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email='));
             if (emailCookie && emailCookie.split('=')[1]) {
-                window.location.href = '/';
+                window.location.href = '/Cloud';
             }
         }
 
@@ -73,19 +73,13 @@
             const password1 = document.getElementById('password1').value;
             const password2 = document.getElementById('password2').value;
 
-            if (!email || !password1 || !password2) {
-                document.getElementById('message').innerText = 'Wprowadź email i hasła.';
-                return;
-            }
-
-            if (password1 !== password2) {
-                document.getElementById('message').innerText = 'Hasła nie pasują do siebie.';
+            if (!email) {
                 return;
             }
 
             document.cookie = `email=${email}; max-age=86400`;
 
-            window.location.href = '/';
+            window.location.href = '/Cloud';
         }
 
         document.addEventListener('DOMContentLoaded', function () {

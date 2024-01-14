@@ -105,7 +105,7 @@
                                     </li>
 
                                     <li class="dropdown-item text-danger user-select-none"
-                                        onclick="window.location.href = '/logout'">
+                                        onclick="window.location.href = '/Cloud/logout'">
                                         Wyloguj
                                     </li>
                                 </ul>
@@ -314,9 +314,7 @@
 
     <script type="text/javascript">
         function checkRedirect() {
-            const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email='))
-            console.log(emailCookie, emailCookie.split('=')[1])
-            if (emailCookie && !emailCookie.split('=')[1]) {
+            if (document.cookie.split('; ').find(row => row.startsWith('email=')) && !document.cookie.split('; ').find(row => row.startsWith('email=')).split('=')[1]) {
                 document.cookie = '';
                 window.location.href = '/Cloud/login';
             }

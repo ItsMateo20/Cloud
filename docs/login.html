@@ -32,12 +32,12 @@
                 <div class="form-group mb-2">
                     <label for="password">Hasło <strong class="text-danger">*</strong></label>
                     <input type="password" autocomplete="current-password" class="form-control" id="password"
-                        placeholder="Hasło" required>
+                        placeholder="Hasło" disabled>
                     <div class="invalid-feedback">
                         Prosze wpisać hasło!
                     </div>
                 </div>
-                <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
+                <a href="/Cloud/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
                 <br>
                 <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
             </form>
@@ -53,21 +53,19 @@
         function checkRedirect() {
             const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email='));
             if (emailCookie && emailCookie.split('=')[1]) {
-                window.location.href = '/';
+                window.location.href = '/Cloud';
             }
         }
 
         function login() {
             const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
 
-            if (!email || !password) {
-                document.getElementById('message').innerText = 'Wpisz email i hasło.';
+            if (!email) {
                 return;
             }
 
             document.cookie = `email=${email}; max-age=86400`;
-            window.location.href = '/';
+            window.location.href = '/Cloud';
         }
 
         document.addEventListener('DOMContentLoaded', function () {
