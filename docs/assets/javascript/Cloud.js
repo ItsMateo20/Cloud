@@ -228,8 +228,6 @@ function openFolder(path, lastFolderOpen) {
     const lastFolder = document.getElementById(lastFolderOpen);
     const directory = document.getElementById('directory').dataset;
 
-    console.log(path, lastFolderOpen, folder, lastFolder, directory)
-
     folderOpen = path
 
     if (folder) {
@@ -238,7 +236,6 @@ function openFolder(path, lastFolderOpen) {
         folder.classList.remove('d-none');
         handleItemEventListener("respawn");
         Adjust();
-        console.log("1")
         handleBackButton();
     }
     loadingDiv("hide");
