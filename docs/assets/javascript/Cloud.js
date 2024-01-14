@@ -316,7 +316,9 @@ function handleDeleteClick(event) {
     loadingDiv("show");
 
     if (confirm(confirmMessage) === true) {
-        document.getElementById(selectedFileName).remove();
+        if (selectedFileType == "folder") {
+            document.getElementById(selectedFileName).remove();
+        }
         selectedFile.remove();
         getSuccessMessage("FILE_DELETED")
     } else {
