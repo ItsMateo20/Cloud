@@ -128,8 +128,8 @@ function Adjust() {
             if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.add('cloudItemContainerImg');
             if (item.querySelector("img").classList.contains('cloudItemContainerPortrait')) item.querySelector("img").classList.remove('cloudItemContainerPortrait');
             if (item.querySelector("img").classList.contains('cloudItemContainerLandscape')) item.querySelector("img").classList.remove('cloudItemContainerLandscape');
-            if (fileType == "image") item.querySelector("img").src = '../src/assets/icons/image.png';
-            if (fileType == "video") item.querySelector("img").src = '../src/assets/icons/video.png';
+            if (fileType == "image") item.querySelector("img").src = './assets/icons/image.png';
+            if (fileType == "video") item.querySelector("img").src = './assets/icons/video.png';
         }
 
         if (dataFileHeight && dataFileWidth) {
