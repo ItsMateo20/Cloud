@@ -49,7 +49,7 @@
                         <ul class="navbar-nav ms-auto my-2 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
                             <li class="nav-item">
                                 <a type="button" class="btn user-select-none btn-outline-secondary disabled"
-                                    id="backButton" href="/folder/back">Powrót</a>
+                                    id="backButton">Powrót</a>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -315,9 +315,10 @@
     <script type="text/javascript">
         function checkRedirect() {
             const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email='))
+            console.log(emailCookie, emailCookie.split('=')[1])
             if (emailCookie && !emailCookie.split('=')[1]) {
-                document.cookies = '';
-                window.location.href = '/login';
+                document.cookie = '';
+                window.location.href = '/Cloud/login';
             }
         }
 

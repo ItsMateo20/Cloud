@@ -277,6 +277,16 @@ function handleBackButton() {
     }
 }
 
+//handle back button
+
+backBtn.addEventListener('click', handleBackClick, { passive: true });
+
+function handleBackClick(event) {
+    loadingDiv("show");
+    openFolder(lastFolder, folderOpen);
+}
+
+
 
 //handle rename button
 

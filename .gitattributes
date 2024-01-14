@@ -1,2 +1,3 @@
 ./src/preview export-ignore
+./docs export-ignore
 .github export-ignore
