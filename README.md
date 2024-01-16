@@ -1,5 +1,5 @@
 # Cloud Storage
-[![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray)](#) [![Last commit](https://img.shields.io/github/last-commit/itsmateo20/cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
+[![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray)](#) [![Last commit](https://img.shields.io/github/last-commit/ItsMateo20/Cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
  [![Release](https://img.shields.io/github/v/release/ItsMateo20/Cloud?include_prereleases&sort=date&display_name=tag&style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/releases/latest)
  [![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmateo20.github.io%2FCloud&up_message=ONLINE&down_message=OFFLINE&style=for-the-badge&label=Cloud%20Storage%20Preview%20Website&labelColor=white&color=gray)](https://itsmateo20.github.io/Cloud)
 
