@@ -35,7 +35,7 @@
                 <div class="form-group mb-2">
                     <label for="password1">Hasło <strong class="text-danger">*</strong></label>
                     <input type="password" autocomplete="new-password" class="form-control" id="password1"
-                        placeholder="Hasło" name="password1" maxlength="40" minlength="5" required>
+                        placeholder="Hasło" name="password1" maxlength="40" minlength="5" disabled>
                     <div class="invalid-feedback">
                         Prosze wpisać hasło!
                     </div>
@@ -43,7 +43,7 @@
                 <div class="form-group mb-2">
                     <label for="password2">Powtórz hasło <strong class="text-danger">*</strong></label>
                     <input type="password" autocomplete="new-password" class="form-control" id="password2"
-                        placeholder="Hasło" name="password2" maxlength="40" minlength="5" required>
+                        placeholder="Hasło" name="password2" maxlength="40" minlength="5" disabled>
                     <div class="invalid-feedback">
                         Prosze powtórzyć hasło!
                     </div>
@@ -70,8 +70,6 @@
 
         function signup() {
             const email = document.getElementById('email').value;
-            const password1 = document.getElementById('password1').value;
-            const password2 = document.getElementById('password2').value;
 
             if (!email) {
                 return;

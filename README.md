@@ -1,5 +1,8 @@
 # Cloud Storage
-![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge)
+[![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray)](#) [![Last commit](https://img.shields.io/github/last-commit/ItsMateo20/Cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
+ [![Release](https://img.shields.io/github/v/release/ItsMateo20/Cloud?include_prereleases&sort=date&display_name=tag&style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/releases/latest)
+ [![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmateo20.github.io%2FCloud&up_message=ONLINE&down_message=OFFLINE&style=for-the-badge&label=Cloud%20Storage%20Preview%20Website&labelColor=white&color=gray)](https://itsmateo20.github.io/Cloud)
+
 
 ![Header image](https://github.com/ItsMateo20/Cloud/assets/84156177/9fc28c5c-44df-4b75-a2da-699bd0ab7f8e)
 
@@ -8,6 +11,12 @@
 The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.
 
 This project was created for fun but will be used by me to store my files, eliminating the need for services like Google Photos or other web cloud storage solutions. The project was completed in just 2-3 weeks.
+
+You can preview what this project can do on the [Github page](https://itsmateo20.github.io/Cloud) or for a move advanced view there is a bit of information lower down [here](#Features)
+
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmateo20.github.io%2FCloud&up_message=ONLINE&down_message=OFFLINE&style=for-the-badge&label=Cloud%20Storage%20Preview%20Website&labelColor=white&color=gray)](https://itsmateo20.github.io/Cloud)
+
+
 
 ## Features
 
