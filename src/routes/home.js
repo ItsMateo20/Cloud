@@ -90,15 +90,16 @@ module.exports = {
                     width = dimensions.width;
 
                     dateModified = statSync(entryPath).mtimeMs;
-                } else if (extnameS === ".mp4" || extnameS === ".avi" || extnameS === ".mov") {
+                } else if (extnameS === ".mp4" || extnameS === ".mp4a" || extnameS === ".avi" || extnameS === ".mov") {
                     relativePath = `/video?path=${entryRelativePath}`
                     url = "icons/video.png";
                     type = "video";
 
                     const metadata = await ffprobe(entryPath);
-                    const dimensions = metadata.streams[0];
-                    height = dimensions.height;
-                    width = dimensions.width;
+                    const dimensions = metadata.streams[0]
+                    const dimensions2 = metadata.streams[1]
+                    height = dimensions.height || dimensions2.height || 100;
+                    width = dimensions.width || dimensions2.width || 300;
 
                     dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp3" || extnameS === ".wav" || extnameS === ".ogg" || extnameS === ".flac" || extnameS === ".m4a") {

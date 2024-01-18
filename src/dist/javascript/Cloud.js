@@ -196,11 +196,7 @@ function Adjust() {
         const dataFileWidth = parseFloat(item.getAttribute('data-filewidth'));
         const fileType = item.dataset.filetype;
         if (settings.showImage == true) {
-            if (!fileType === "image" || fileType === "video") {
-                if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) {
-                    item.querySelector("img").classList.add('cloudItemContainerImg');
-                }
-            } else if (fileType === "image") {
+            if (fileType === "image") {
                 if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
                 if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
                     if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
@@ -208,16 +204,20 @@ function Adjust() {
                     if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
                 }
                 item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
+            } else if (fileType === "video") {
+                console.log(item, dataFileHeight, dataFileWidth)
+                if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
+                if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
+                    if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+                    if (dataFileHeight < dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerLandscape');
+                    if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
+                }
+                item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
+            } else {
+                if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) {
+                    item.querySelector("img").classList.add('cloudItemContainerImg');
+                }
             }
-            // else if (fileType === "video") {
-            //     if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
-            //     if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
-            //         if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
-            //         if (dataFileHeight < dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerLandscape');
-            //         if (dataFileHeight == dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
-            //     }
-            //     item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
-            // }
         } else {
             if (!item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.add('cloudItemContainerImg');
             if (item.querySelector("img").classList.contains('cloudItemContainerPortrait')) item.querySelector("img").classList.remove('cloudItemContainerPortrait');

@@ -2,9 +2,10 @@ const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
 const { readdirSync, mkdirSync, existsSync } = require("fs");
-const { resolve } = require("path");
+const { resolve, basename } = require("path");
 
-const ffprobe = require('node-ffprobe')
+const sharp = require("sharp");
+const ffmpeg = require('fluent-ffmpeg');
 
 module.exports = {
     name: "video",
@@ -12,6 +13,7 @@ module.exports = {
     run: async (req, res) => {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;
+
         try {
             decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM });
         } catch (e) { }
@@ -50,12 +52,25 @@ module.exports = {
         if (!getVideo) return res.redirect("/?error=FILE_DOESNT_EXIST");
         const video = resolve(videoPath);
 
-        // if (req.query.preview && req.query.preview == "true") {
-        //     const metadata = await ffprobe(video);
-        //     const dimensions = metadata.streams[0];
-        //     let height = dimensions.height;
-        //     let width = dimensions.width;
-        // } else 
-        res.sendFile(video);
+        if (req.query.preview && req.query.preview == "true") {
+            let filename = basename(video);
+            const tempFolder = existsSync(__dirname + `/../../temp/`);
+            if (!tempFolder) mkdirSync(__dirname + `/../../temp`);
+            const tempUserFolder = existsSync(__dirname + `/../../temp/${decoded.email}/`);
+            if (!tempUserFolder) mkdirSync(__dirname + `/../../temp/${decoded.email}`);
+            const tempPath = __dirname + `/../../temp/${decoded.email}/`;
+            const tempImagePath = resolve(tempPath + filename + '.png')
+            if (!existsSync(tempImagePath)) await ffmpeg(video).takeScreenshots({ count: 1, timemarks: ['0'], filename: filename + '.png' }, tempPath)
+            if (existsSync(tempImagePath)) {
+                const imageInfo = await sharp(tempImagePath).metadata();
+                const originalWidth = imageInfo.width;
+                const originalHeight = imageInfo.height;
+                const resizedWidth = Math.round(originalWidth / 4);
+                const resizedHeight = Math.round(originalHeight / 4);
+
+                const resizedImage = await sharp(tempImagePath).resize(resizedWidth, resizedHeight).toBuffer();
+                res.type("image/png").send(resizedImage);
+            }
+        } else res.sendFile(video);
     },
 };
