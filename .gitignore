@@ -5,4 +5,4 @@ database.sqlite-journal
 *env
 runCloud.bat
 src/assets/icons/webpageicon.ico
-temp/*
+temp
