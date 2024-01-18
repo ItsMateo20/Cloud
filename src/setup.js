@@ -24,6 +24,7 @@ function setup() {
 USERS_DIR=".././Users/"
 CHECKVERSION="true"
 DISCORD_ACTIVITY="false"
+FTP_SERVER="false"
 
 PORT="3000"
 FTP_PORT="3001"

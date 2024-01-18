@@ -137,7 +137,7 @@ BeforeStart().then(() => {
 
         console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT}`));
         app.listen(process.env.PORT, () => console.log(gray("[SITE]: ") + cyan(`Webpage listening on port ${process.env.PORT}`)))
-        ftpServer.listen(process.env.FTP_PORT).then(() => console.log(gray("[SITE]: ") + cyan(`Ftp server listening on port ${process.env.FTP_PORT}`)))
+        if (process.env.FTP_SERVER === "true") ftpServer.listen(process.env.FTP_PORT).then(() => console.log(gray("[SITE]: ") + cyan(`Ftp server listening on port ${process.env.FTP_PORT}`)))
     }).catch((err) => {
         console.log(err)
         return process.exit(1)
