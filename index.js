@@ -118,6 +118,7 @@ BeforeStart().then(() => {
         app.set("view engine", "ejs")
         app.set("views", __dirname + "/src/pages")
         app.use(express.static(__dirname + '/src/assets/'))
+        app.use(express.static(__dirname + '/src/dist/'))
 
         let files = readdirSync(__dirname + '/src/routes/')
         console.log(gray("[SITE]: ") + cyan(`Started loading ${files.length} routes`));

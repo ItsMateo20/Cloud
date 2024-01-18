@@ -1,3 +1,4 @@
-./src/preview export-ignore
+./src/assets/README export-ignore
 ./docs export-ignore
 .github export-ignore
+.git export-ignore
