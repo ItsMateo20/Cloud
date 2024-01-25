@@ -67,6 +67,9 @@ You can preview what this project can do on the [Github page](https://itsmateo20
   2. Edit the file to your likings
   > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/d28468e9-ce5e-4e73-b226-4baf666e38eb" alt="Step 2" width="auto" height="250">
 
+  3. Download FFMpeg (Required for generating video preview images and may cause errors if not installed)
+  > Installing FFMpeg can be a bit complex for some users. To simplify the process, I recommend using [Chocolatey](https://chocolatey.org/install) and then executing the following command ```choco install -y ffmpeg```
+
   3. Now run ```node index.js```
   > <img src="https://github.com/ItsMateo20/Cloud/assets/84156177/ba218946-dc12-4ae1-84d4-95d43e9d8095" alt="Step 3" width="auto" height="300">
 
@@ -110,17 +113,17 @@ You can preview what this project can do on the [Github page](https://itsmateo20
 
 ## Technologies Used
 
-- **Node.js:** <img src="./src/preview/README/nodejs.svg" alt="Node.js" width="auto" height="25">
-- **Express.js:** <img src="./src/preview/README/expressjs.svg" alt="Express.js" width="auto" height="25">
-- **Sqlite3:** <img src="./src/preview/README/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
-- **Sequelize:** <img src="./src/preview/README/sequelize.svg" alt="Sequelize" width="auto" height="25">
-- **Ejs:** <img src="./src/preview/README/ejs.svg" alt="Ejs" width="auto" height="25">
-- **Css:** <img src="./src/preview/README/css.svg" alt="Css" width="auto" height="25">
-- **FFmpeg:** <img src="./src/preview/README/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
-- **JSON:** <img src="./src/preview/README/json.svg" alt="JSON" width="auto" height="25">
-- **JavaScript:** <img src="./src/preview/README/javascript.svg" alt="JavaScript" width="auto" height="25">
-- **Bootstrap:** <img src="./src/preview/README/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
-- **Bootstrap Icons:** <img src="./src/preview/README/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
+- **Node.js:** <img src="./src/assets/README/nodejs.svg" alt="Node.js" width="auto" height="25">
+- **Express.js:** <img src="./src/assets/README/expressjs.svg" alt="Express.js" width="auto" height="25">
+- **Sqlite3:** <img src="./src/assets/README/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
+- **Sequelize:** <img src="./src/assets/README/sequelize.svg" alt="Sequelize" width="auto" height="25">
+- **Ejs:** <img src="./src/assets/README/ejs.svg" alt="Ejs" width="auto" height="25">
+- **Css:** <img src="./src/assets/README/css.svg" alt="Css" width="auto" height="25">
+- **FFmpeg:** <img src="./src/assets/README/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
+- **JSON:** <img src="./src/assets/README/json.svg" alt="JSON" width="auto" height="25">
+- **JavaScript:** <img src="./src/assets/README/javascript.svg" alt="JavaScript" width="auto" height="25">
+- **Bootstrap:** <img src="./src/assets/README/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
+- **Bootstrap Icons:** <img src="./src/assets/README/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
 
 - And some other [**npm**](https://npmjs.com) packages (full list in [**package.json**](./package.json))
 
