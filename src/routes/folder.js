@@ -68,12 +68,12 @@ module.exports = {
             if (req.query.name) {
                 if (readdirSync(`${userFolderPath}${folder}`)) {
                     if (readdirSync(`${userFolderPath}${folder}`).includes(req.query.name)) {
-                        res.cookie('folder', folder + req.query.name)
+                        res.cookie('folder', folder + "/" + req.query.name)
                     } else {
                         await mkdirSync(`${userFolderPath}${folder}/${req.query.name}`)
 
                         if (readdirSync(`${userFolderPath}${folder}/${req.query.name}`)) {
-                            res.cookie('folder', folder + req.query.name);
+                            res.cookie('folder', folder + "/" + req.query.name);
                         }
                     }
                 }
