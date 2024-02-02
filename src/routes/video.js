@@ -75,6 +75,6 @@ module.exports = {
                 const resizedImage = await sharp(tempImagePath).resize(resizedWidth, resizedHeight).toBuffer();
                 res.type("image/png").send(resizedImage);
             }
-        } else res.type("video/mp4").sendFile(video);
+        } else res.sendFile(video);
     },
 };
