@@ -8,7 +8,7 @@ client.on('error', (err) => {
     if (err.message === 'RPC_CONNECTION_TIMEOUT') {
         connected = false;
         console.log(gray('[DISCORD]: ') + red('Discord activity connection has disconnected, retrying...'));
-        client.destroy();
+        client.disconnect();
         deploy();
     }
 })
