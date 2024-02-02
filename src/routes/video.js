@@ -52,6 +52,7 @@ module.exports = {
         if (!getVideo) return res.redirect("/?error=FILE_DOESNT_EXIST");
         const video = resolve(videoPath);
 
+
         if (req.query.preview && req.query.preview == "true") {
             let filename = basename(video);
             const tempFolder = existsSync(__dirname + `/../../temp/`);
@@ -61,6 +62,9 @@ module.exports = {
             const tempPath = __dirname + `/../../temp/${decoded.email}/`;
             const tempImagePath = resolve(tempPath + filename + '.png')
             if (!existsSync(tempImagePath)) await ffmpeg(video).takeScreenshots({ count: 1, timemarks: ['0'], filename: filename + '.png' }, tempPath)
+            while (!existsSync(tempImagePath)) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
             if (existsSync(tempImagePath)) {
                 const imageInfo = await sharp(tempImagePath).metadata();
                 const originalWidth = imageInfo.width;
@@ -71,6 +75,6 @@ module.exports = {
                 const resizedImage = await sharp(tempImagePath).resize(resizedWidth, resizedHeight).toBuffer();
                 res.type("image/png").send(resizedImage);
             }
-        } else res.sendFile(video);
+        } else res.type("video/mp4").sendFile(video);
     },
 };
