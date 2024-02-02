@@ -121,19 +121,19 @@ BeforeStart().then(() => {
         app.use(express.static(__dirname + '/src/dist/'))
 
         let files = readdirSync(__dirname + '/src/routes/')
-        console.log(gray("[SITE]: ") + cyan(`Started loading ${files.length} routes`));
+        console.log(gray("[ROUTING]: ") + cyan(`Started loading ${files.length} routes`));
         files.forEach(f => {
             const file = require(`./src/routes/${f}`)
             if (file && file.url) {
                 app.get(file.url, file.run)
                 if (file.run2) app.post(file.url, file.run2)
-                console.log(gray("[SITE]: ") + cyan(`Loaded ${file.url}`))
+                console.log(gray("[ROUTING]: ") + cyan(`Loaded ${file.url}`))
             }
         })
         app.use(function (req, res, next) {
             res.status(404).render("404.ejs", { body: ["404 | Chmura"], loggedIn: false })
         });
-        console.log(gray("[SITE]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
+        console.log(gray("[ROUTING]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
 
         console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT}`));
         app.listen(process.env.PORT, () => console.log(gray("[SITE]: ") + cyan(`Webpage listening on port ${process.env.PORT}`)))
