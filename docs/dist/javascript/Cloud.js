@@ -3,6 +3,7 @@ const html = document.querySelector('html');
 
 let settings = {
     darkMode: false,
+    localization: "pl_PL",
     showImage: true
 }
 let info = {}
@@ -36,6 +37,10 @@ function loadSettings() {
         html.setAttribute('data-bs-theme', 'light');
         darkThemeBtn.querySelector('i').classList.add('bi-sun');
     }
+
+    const localButton = document.querySelector(`[data-local="${settings.localization}"]`);
+    if (localButton) localButton.classList.add('active');
+    document.getElementById('localButtonImage').src = `./assets/icons/${settings.localization}.png`;
 
     if (settings.showImage == true) {
         showImageBtn.dataset.value = "true";
@@ -255,14 +260,14 @@ function handleBodyClick(event) {
 
 //handle the back button so its disabled when on root folder
 
-function handleBackButton() {
+async function handleBackButton() {
     const directoryElement = document.getElementById('directory')
     if (directoryElement.dataset.directory == "/" || directoryElement.dataset.directory == "/root" || folderOpen == "root") {
         backBtn.classList.add('disabled');
-        directoryElement.innerHTML = `<span class="navbar-text me-3">Katalog: ./</span>`
+        directoryElement.innerHTML = `<span class="navbar-text me-3"><span data-localize="Directory">${await getLocalizedText("Directory")}</span>: ./</span>`
     } else {
         backBtn.classList.remove('disabled');
-        directoryElement.innerHTML = `<span class="navbar-text me-3">Katalog: <a class="navbar-text" id="folderLink">./</a>
+        directoryElement.innerHTML = `<span class="navbar-text me-3"><span data-localize="Directory">${await getLocalizedText("Directory")}</span>: <a class="navbar-text" id="folderLink">./</a>
                     <span class="navbar-text">
                         ${folderOpen}
                     </span>
@@ -289,7 +294,7 @@ function handleBackClick(event) {
 
 deleteBtn.addEventListener('click', handleDeleteClick, { passive: true });
 
-function handleDeleteClick(event) {
+async function handleDeleteClick() {
     const selectedFile = document.querySelector('.cloudItemContainerSelected');
     const selectedFilePath = selectedFile.dataset.filepath;
     const selectedFileName = selectedFile.dataset.filename;
@@ -298,15 +303,9 @@ function handleDeleteClick(event) {
     let confirmMessage;
 
     if (selectedFileType === "folder") {
-        confirmMessage = `Czy na pewno chcesz usunąć folder ${selectedFileName}?`;
-    } else if (selectedFileType === "image") {
-        confirmMessage = `Czy na pewno chcesz usunąć obraz ${selectedFileName}?`;
-    } else if (selectedFileType === "video") {
-        confirmMessage = `Czy na pewno chcesz usunąć film ${selectedFileName}?`;
-    } else if (selectedFileType === "audio") {
-        confirmMessage = `Czy na pewno chcesz usunąć plik audio ${selectedFileName}?`;
+        confirmMessage = `${await getLocalizedText("ConfirmDeletionOfFolder")} ${selectedFileName}?`
     } else {
-        confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`;
+        confirmMessage = `${await getLocalizedText("ConfirmDeletionOfFile")} ${selectedFileName}?`
     }
 
     setDisabledState(true);
@@ -328,7 +327,7 @@ function handleDeleteClick(event) {
 
 renameBtn.addEventListener('click', handleRenameClick, { passive: true });
 
-function handleRenameClick(event) {
+async function handleRenameClick() {
     const selectedFile = document.querySelector('.cloudItemContainerSelected');
     const selectedFilePath = selectedFile.dataset.filepath;
     const selectedFileName = selectedFile.dataset.filename;
@@ -337,26 +336,21 @@ function handleRenameClick(event) {
     setDisabledState(true);
     loadingDiv("show");
 
-    let newName = prompt("Podaj nową nazwę");
+    let newName = prompt(await getLocalizedText("EnterNewName") + " " + selectedFileName, selectedFileName);
 
-    if (newName !== null) {
-        if (newName.trim() !== "") {
-            selectedFile.querySelector('h1').textContent = newName;
-            selectedFile.dataset.filename = newName;
-            selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newName);
-            selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newName);
-            if (selectedFileType === "folder") {
-                document.getElementById(selectedFileName).id = newName;
-                getSuccessMessage("FOLDER_RENAMED");
-            } else {
-                getSuccessMessage("FILE_RENAMED");
-            }
-            loadingDiv("hide");
+    if (newName !== null && newName.trim() !== "") {
+        selectedFile.querySelector('h1').textContent = newName;
+        selectedFile.dataset.filename = newName;
+        selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newName);
+        selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newName);
+        if (selectedFileType === "folder") {
+            document.getElementById(selectedFileName).id = newName;
+            getSuccessMessage("FOLDER_RENAMED");
         } else {
-            getErrorMessage("UNKNOWN_ERROR");
-            loadingDiv("hide");
+            getSuccessMessage("FILE_RENAMED");
         }
     }
+    loadingDiv("hide");
 }
 
 //handle dark theme button

@@ -166,7 +166,9 @@ a.navbar-text:hover {
     transition: 0.3s;
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover,
+.dropdown-item:active,
+.dropdown-item.active {
     color: var(--app-dropdownitem-hover-text);
     background-color: var(--app-dropdownitem-hover);
     transition: 0.3s;
