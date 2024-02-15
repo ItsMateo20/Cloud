@@ -7,7 +7,7 @@
     "fix": "node index.js --debug"
   },
   "name": "cloud",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Cloud files",
   "main": "index.js",
   "repository": {
