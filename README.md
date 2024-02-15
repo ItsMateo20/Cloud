@@ -138,6 +138,10 @@ You can preview what this project can do on the [Github page](https://itsmateo20
 
 For security-related matters, please refer to our [Security Policy](./SECURITY.md).
 
+## Attributions
+
+All the free icons assets I have used can be found [here](./Attributions.md)
+
 ## Contributing
 Contributions are welcome! If you have any ideas or improvements, feel free to [submit a feature request](https://github.com/ItsMateo20/Cloud/issues/new?assignees=ItsMateo20&labels=enhancement&template=FEATURE-REQUEST.yml&title=%5BFeature+Request%5D%3A+) (optionally with a repository fork that contains your feature).
 
