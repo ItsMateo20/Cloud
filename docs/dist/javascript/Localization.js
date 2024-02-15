@@ -205,7 +205,6 @@ async function changeLocal(event) {
 async function localize() {
     const fetchPromises = Array.from(elements).map(async element => {
         let key = element.getAttribute('data-localize');
-        console.log(key, element.textContent, element)
         let value = localization[local].Main[key];
         if (value) {
             element.textContent = value;
