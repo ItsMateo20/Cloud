@@ -17,10 +17,6 @@ async function RemoveMainAdminAccounts() {
 }
 
 async function debug() {
-    if (process.env.DISCORD_ACTIVITY === "true") {
-        const { updateState } = require("./src/DiscordActivity.js")
-        updateState("Debugging Cloud Server...")
-    }
     console.log(gray("[SITE]: ") + cyan("Starting debug script...\n"));
     console.log(gray("[SITE]: ") + cyan("Removing admin account..."));
     await RemoveMainAdminAccounts();

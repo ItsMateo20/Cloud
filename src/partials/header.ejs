@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand user-select-none" href="/folder/root">Chmura</a>
+        <a class="navbar-brand user-select-none" href="/folder/root" data-localize="Title">Chmura</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,10 +10,10 @@
                 <li class="nav-item user-select-none" id="directory" data-directory="<%= directory %>">
 
                     <% if (directory==="/" || directory==="" ) { %>
-                        <span class="navbar-text me-3">Katalog: <span>./</span>
-                        </span>
+                        <span class="navbar-text me-3"><span data-localize="Directory">Katalog</span>: ./</span>
                         <% } else { %>
-                            <span class="navbar-text me-3">Katalog: <a class="navbar-text" href="/folder/root">./</a>
+                            <span class="navbar-text me-3"><span data-localize="Directory">Katalog</span>: <a
+                                    class="navbar-text" href="/folder/root">./</a>
                                 <% const folderNames=directory.split('/') %>
                                     <% folderNames.forEach((folder, index)=> { %>
                                         <% if (index===folderNames.length - 1) { %>
@@ -40,43 +40,64 @@
             <ul class="navbar-nav ms-auto my-2 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
                 <li class="nav-item">
                     <a type="button" class="btn btn-outline-secondary user-select-none" id="backButton"
-                        href="/folder/back">Powrót</a>
+                        href="/folder/back" data-localize="Back">Powrót</a>
                 </li>
                 <% if (admin==true) { %>
                     <li class="nav-item dropdown">
                         <a class="btn btn-outline-danger dropdown-toggle user-select-none" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Menu admina</a>
+                            data-bs-toggle="dropdown" aria-expanded="false" data-localize="AdminMenuTitle">Menu
+                            Administratora</a>
                         <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarAdminDropdown">
                             <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasAdminMenu" aria-controls="offcanvasAdminMenu">
-                                Admin menu
+                                data-bs-target="#offcanvasAdminMenu" aria-controls="offcanvasAdminMenu"
+                                data-localize="AdminMenuTitle">
+                                Menu Administratora
                             </li>
                             <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasWhitelistMenu" aria-controls="offcanvasWhitelistMenu">
-                                Whitelist menu
+                                data-bs-target="#offcanvasWhitelistMenu" aria-controls="offcanvasWhitelistMenu"
+                                data-localize="WhitelistMenuTitle">
+                                Menu Białej Listy
                             </li>
                         </ul>
                     </li>
                     <% } %>
                         <li class="nav-item dropdown">
                             <a class="btn btn-outline-secondary dropdown-toggle user-select-none" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">Menu
-                                plików</a>
+                                data-bs-toggle="dropdown" aria-expanded="false" data-localize="EditFiles">Edytuj
+                                Pliki</a>
                             <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownFiles">
-                                <li class="dropdown-item user-select-none" id="uploadFileButton">
-                                    Dodaj plik
+                                <li class="dropdown-item user-select-none" id="uploadFileButton"
+                                    data-localize="UploadFiles">
+                                    Wgraj Pliki
                                 </li>
-                                <li class="dropdown-item user-select-none disabled" id="renameFileButton">
-                                    Zmień nazwę
+                                <li class="dropdown-item user-select-none disabled" id="renameFileButton"
+                                    data-localize="Rename">
+                                    Zmień Nazwę
                                 </li>
-                                <li class="dropdown-item user-select-none" id="newFolderButton">
+                                <li class="dropdown-item user-select-none" id="newFolderButton"
+                                    data-localize="NewFolder">
                                     Nowy folder
                                 </li>
-                                <li class="dropdown-item user-select-none disabled" id="deleteButton">
+                                <li class="dropdown-item user-select-none disabled" id="deleteButton"
+                                    data-localize="Delete">
                                     Usuń
                                 </li>
-                                <li class="dropdown-item user-select-none disabled" id="downloadButton">
+                                <li class="dropdown-item user-select-none disabled" id="downloadButton"
+                                    data-localize="Download">
                                     Pobierz
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <img class="btn btn-outline-secondary dropdown-toggle user-select-none"
+                                id="localButtonImage" src="icons/pl_PL.png" height="30" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false"></img>
+                            <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownLocal">
+                                <li class="dropdown-item user-select-none" id="localButton" data-local="en_UK">
+                                    English UK
+                                </li>
+                                <li class="dropdown-item user-select-none" id="localButton" data-local="pl_PL">
+                                    Polski
                                 </li>
                             </ul>
                         </li>
@@ -85,34 +106,35 @@
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false"><img alt title
                                     src="icons/profile.png" width="35" height="35"></a>
                             <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownProfile">
-                                <h6 class="dropdown-header user-select-auto">Zalogowano jako
+                                <h6 class="dropdown-header user-select-auto"><span data-localize="LoggedInAs">Zalogowano
+                                        jako</span>
                                     <strong>
                                         <%= email %>
                                     </strong>
                                 </h6>
                                 <li class="dropdown-divider"></li>
                                 <li class="dropdown-item user-select-none" id="darkThemeSettingButton">
-                                    Tryb ciemny
+                                    <span data-localize="DarkTheme">Ciemny Motyw</span>
                                     <i class="bi"></i>
                                 </li>
                                 <li class="dropdown-item user-select-none" id="showImageSettingButton">
-                                    Pokaż obrazy
+                                    <span data-localize="ShowThumbnails">Pokaż Miniatury</span>
                                     <i class="bi"></i>
                                 </li>
                                 <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasChangePassMenu" aria-controls="offcanvasChangePassMenu">
-                                    Zmień hasło
+                                    <span data-localize="ChangePassword">Zmień Hasło</span>
                                     <i class="bi bi-key"></i>
                                 </li>
                                 <li class="dropdown-divider"></li>
                                 <% if (admin==true) { %>
                                     <li class="dropdown-item user-select-none" id="adminModeSettingButton">
-                                        Tryb admina
+                                        <span data-localize="AdminMode">Tryb Administratora</span>
                                         <i class="bi"></i>
                                     </li>
                                     <% } %>
                                         <li class="dropdown-item text-danger user-select-none"
-                                            onclick="window.location.href = '/logout'">
+                                            onclick="window.location.href = '/logout'" data-localize="Logout">
                                             Wyloguj
                                         </li>
                             </ul>

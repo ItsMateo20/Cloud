@@ -7,7 +7,7 @@
             <div id="loading">
                 <div class="text-center position-absolute top-50 start-50 translate-middle">
                     <div class="spinner-border" role="status"></div>
-                    <p>Wczytywanie...</p>
+                    <p data-localize="LoadingMessage">Wczytywanie...</p>
                 </div>
             </div>
             <div class="app-container">
@@ -56,32 +56,41 @@
             <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasChangePassMenu"
                 aria-labelledby="offcanvasChangePassMenuLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasChangePassMenuLabel">Zmiana Hasła Menu</h5>
+                    <h5 class="offcanvas-title" id="offcanvasChangePassMenuLabel"
+                        data-localize="ChangePasswordMenuTitle">Menu
+                        Zmiany Hasła</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <div class="form-group mb-2">
-                        <label for="oldpassword1">Stare Hasło <strong class="text-danger">*</strong></label>
+                        <label for="oldpassword1" data-localize="OldPassword">Stare Hasło <strong
+                                class="text-danger">*</strong></label>
                         <input type="password" autocomplete="current-password" class="form-control" id="oldpassword1"
-                            placeholder="Stare Hasło" name="password1" maxlength="40" minlength="5" required>
-                        <div class="invalid-feedback">
+                            placeholder="Stare Hasło" name="password1" maxlength="40" minlength="5"
+                            data-localize-placeholder="OldPassword" required>
+                        <div class="invalid-feedback" data-localize="PleaseEnterOldPassword">
                             Prosze wpisać stare hasło!
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="oldpassword2">Powtórz stare hasło <strong class="text-danger">*</strong></label>
+                        <label for="oldpassword2" data-localize="RepeatOldPassword">Powtórz stare
+                            hasło <strong class="text-danger">*</strong></label>
                         <input type="password" autocomplete="current-password" class="form-control" id="oldpassword2"
-                            placeholder="Powtórz stare hasło" name="password2" maxlength="40" minlength="5" required>
-                        <div class="invalid-feedback">
+                            placeholder="Powtórz stare hasło" name="password2" maxlength="40" minlength="5"
+                            data-localize-placeholder="RepeatOldPassword" required>
+                        <div class="invalid-feedback" data-localize="PleaseRepeatOldPassword">
                             Prosze powtórzyć stare hasło!
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="newpassword">Nowe hasło <strong class="text-danger">*</strong></label>
+                        <label for="newpassword" data-localize="NewPassword">Nowe hasło <strong
+                                class="text-danger">*</strong></label>
                         <input type="password" autocomplete="new-password" class="form-control" id="newpassword"
-                            placeholder="Nowe hasło" name="password3" maxlength="40" minlength="5" required>
+                            placeholder="Nowe hasło" name="password3" maxlength="40" minlength="5"
+                            data-localize-placeholder="NewPassword" required>
                     </div>
-                    <button type="button" class="btn btn-primary mt-3" id="changePasswordBtn">Zmień hasło</button>
+                    <button type="button" class="btn btn-primary mt-3" id="changePasswordBtn"
+                        data-localize="ChangePassword">Zmień hasło</button>
                     </form>
 
                 </div>
@@ -91,7 +100,6 @@
                     <% } %>
         </body>
 
-        <script src="javascript/Messages.js"></script>
         <% if (admin==true) { %>
             <script src="javascript/Admin.js"></script>
             <% } %>

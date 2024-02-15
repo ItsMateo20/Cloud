@@ -8,32 +8,36 @@
                 <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
                     action="/login" method="POST">
                     <input type="hidden" name="_csrf" value="<%=csrfToken%>">
-                    <h2 class="text-center">Zaloguj się</h2>
+                    <h2 class="text-center" data-localize="Login2">Zaloguj się</h2>
                     <h3 id="message" class="text-center fs-6"></h3>
                     <div class="form-group mb-2">
-                        <label for="email">Email adres <strong class="text-danger">*</strong></label>
+                        <label for="email"><span data-localize="EmailAdress">Adres E-mail</span> <strong
+                                class="text-danger">*</strong></label>
                         <input type="email" autocomplete="username" class="form-control" id="email"
-                            placeholder="Wpisz mail" name="email" required>
-                        <div class="invalid-feedback">
-                            Prosze wpisać maila!
+                            placeholder="Wprowadź adres e-mail" name="email" data-localize-placeholder="EnterEmail"
+                            required>
+                        <div class="invalid-feedback" data-localize="PleaseEnterEmail">
+                            Proszę podać adres e-mail!
                         </div>
                     </div>
                     <div class="form-group mb-2">
-                        <label for="password">Hasło <strong class="text-danger">*</strong></label>
+                        <label for="password"><span data-localize="Password">Hasło</span> <strong
+                                class="text-danger">*</strong></label>
                         <input type="password" autocomplete="current-password" class="form-control" id="password"
-                            placeholder="Hasło" name="password" maxlength="40" minlength="5" required>
-                        <div class="invalid-feedback">
+                            placeholder="Wprowadź hasło" name="password" maxlength="40" minlength="5"
+                            data-localize-placeholder="EnterPassword" required>
+                        <div class="invalid-feedback" data-localize="PleaseEnterPassword">
                             Prosze wpisać hasło!
                         </div>
                     </div>
-                    <a href="/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
+                    <a href="/signup" class="text-muted" data-localize="NoAccountSignup">Nie masz konta? Zarejestruj
+                        się!</a>
                     <br>
-                    <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
+                    <button type="submit" class="btn btn-primary mt-3" data-localize="Login">Zaloguj</button>
                 </form>
             </div>
         </body>
 
-        <script src="javascript/Messages.js"></script>
         <script src="javascript/Validate.js"></script>
         <%- include('../partials/scripts.ejs') %>
 

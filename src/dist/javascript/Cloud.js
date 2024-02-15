@@ -61,6 +61,10 @@ function loadSettings() {
                     darkThemeBtn.querySelector('i').classList.add('bi-sun');
                 }
 
+                const localButton = document.querySelector(`[data-local="${settings.localization}"]`);
+                if (localButton) localButton.classList.add('active');
+                document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
+
                 if (settings.showImage == true) {
                     showImageBtn.dataset.value = "true";
                     showImageBtn.querySelector('i').classList.add('bi-check');
@@ -82,7 +86,9 @@ function loadSettings() {
 
 
 
+
                 Adjust();
+                localize();
                 setTheme();
                 handleBackButton();
                 handleItemEventListener("spawn");
@@ -104,7 +110,7 @@ oldPassword2Input.addEventListener('input', handleOldPasswordInput);
 
 changePasswordBtn.addEventListener('click', handleChangePasswordClick, { passive: true });
 
-function handleChangePasswordClick(event) {
+function handleChangePasswordClick() {
     const oldPassword1 = oldPassword1Input.value;
     const oldPassword2 = oldPassword2Input.value;
     const newPassword = newPasswordInput.value;
@@ -434,7 +440,7 @@ function handleFileSelect(event) {
 
 renameBtn.addEventListener('click', handleRenameClick, { passive: true });
 
-function handleRenameClick(event) {
+async function handleRenameClick() {
     const selectedFile = document.querySelector('.cloudItemContainerSelected');
     const selectedFilePath = selectedFile.dataset.filepath;
     const selectedFileName = selectedFile.dataset.filename;
@@ -443,41 +449,43 @@ function handleRenameClick(event) {
     setDisabledState(true);
     loadingDiv("show");
 
-    let newName = prompt("Podaj nową nazwę");
+    let newName = prompt(await getLocalizedText("EnterNewName") + " " + selectedFileName, selectedFileName);
 
-    if (newName !== null) {
-        if (newName.trim() !== "") {
-            GetCsrfToken().then((csrfToken) => {
-                fetch('/file/rename', {
-                    credentials: 'same-origin',
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'post',
-                    body: JSON.stringify({ _csrf: csrfToken, name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString(), newName: newName.toString() }),
-                }).then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
-                            selectedFile.querySelector('h1').textContent = newFileName
-                            console.log(newName)
-                            selectedFile.dataset.filename = newFileName
-                            selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
-                            selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
-                            getSuccessMessage(data.message);
-                        } else {
-                            getErrorMessage(data.message);
-                        }
-                        loadingDiv("hide");
-                    });
-            })
-        }
+    if (newName !== null && newName.trim() !== "") {
+        GetCsrfToken().then((csrfToken) => {
+            fetch('/file/rename', {
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                body: JSON.stringify({ _csrf: csrfToken, name: selectedFileName.toString(), path: selectedFilePath.toString(), type: selectedFileType.toString(), newName: newName.toString() }),
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
+                        selectedFile.querySelector('h1').textContent = newFileName
+                        console.log(newName)
+                        selectedFile.dataset.filename = newFileName
+                        selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
+                        selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
+                        getSuccessMessage(data.message);
+                    } else {
+                        getErrorMessage(data.message);
+                    }
+                    loadingDiv("hide");
+                });
+        });
+    } else {
+        setDisabledState(false);
+        loadingDiv("hide");
     }
 }
+
 
 //handle delete button
 
 deleteBtn.addEventListener('click', handleDeleteClick, { passive: true });
 
-function handleDeleteClick(event) {
+async function handleDeleteClick() {
     const selectedFile = document.querySelector('.cloudItemContainerSelected');
     const selectedFilePath = selectedFile.dataset.filepath;
     const selectedFileName = selectedFile.dataset.filename;
@@ -486,15 +494,9 @@ function handleDeleteClick(event) {
     let confirmMessage
 
     if (selectedFileType === "folder") {
-        confirmMessage = `Czy na pewno chcesz usunąć folder ${selectedFileName}?`
-    } else if (selectedFileType === "image") {
-        confirmMessage = `Czy na pewno chcesz usunąć obraz ${selectedFileName}?`
-    } else if (selectedFileType === "video") {
-        confirmMessage = `Czy na pewno chcesz usunąć film ${selectedFileName}?`
-    } else if (selectedFileType === "audio") {
-        confirmMessage = `Czy na pewno chcesz usunąć plik audio ${selectedFileName}?`
+        confirmMessage = `${await getLocalizedText("ConfirmDeletionOfFolder")} ${selectedFileName}?`
     } else {
-        confirmMessage = `Czy na pewno chcesz usunąć plik ${selectedFileName}?`
+        confirmMessage = `${await getLocalizedText("ConfirmDeletionOfFile")} ${selectedFileName}?`
     }
 
     setDisabledState(true);

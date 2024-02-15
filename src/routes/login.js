@@ -28,11 +28,15 @@ module.exports = {
 
 
         let args = {
-            body: ["Login | Chmura"],
-            email: "",
+            body: ["Zaloguj się | Chmura"],
             csrfToken: req.csrfToken(),
 
             loggedIn: false,
+        }
+
+        if (data.settings) {
+            const localizationContent = await require("../dist/localization/" + data.settings.localization + ".json")
+            args.body = [`${localizationContent.Pages["Login"]} | ${localizationContent.Main["Title"]}`]
         }
 
         res.render("../pages/login.ejs", args)

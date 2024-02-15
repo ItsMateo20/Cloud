@@ -51,23 +51,38 @@ async function synchronizeModels(sequelize) {
 
 async function synchronizeModelWithRetry(sequelize, model) {
     const isDev = process.argv.includes('--dev');
-    const backupTableExists = await sequelize.getQueryInterface().showAllTables().then(tables => tables.includes(`${model.getTableName()}_backup`));
+    const backupTableName = `${model.getTableName()}_backup`;
+    const backupTableExists = await sequelize.getQueryInterface().showAllTables().then(tables => tables.includes(backupTableName));
     const maxRetries = 3;
     let retries = 0;
-
 
     if (backupTableExists) {
         while (retries < maxRetries) {
             try {
-                const isDataEqual = await areTablesEqual(model, sequelize);
+                // Fetch data from both the original and backup tables
+                const [originalData, backupData] = await Promise.all([
+                    model.findAll(),
+                    sequelize.query(`SELECT * FROM ${backupTableName};`, { type: sequelize.QueryTypes.SELECT })
+                ]);
 
-                if (!isDataEqual) {
-                    throw new Error(`Data in backup and original tables for ${model.name} is not the same.`);
+                // Migrate data from the backup table to the original table
+                for (const backupRecord of backupData) {
+                    const existingRecord = originalData.find(record => record.username === backupRecord.username);
+
+                    if (existingRecord) {
+                        // If the record exists in the original table, update it if necessary
+                        if (existingRecord.updatedAt < backupRecord.updatedAt) {
+                            await existingRecord.update(backupRecord);
+                        }
+                    } else {
+                        // If the record does not exist in the original table, create it
+                        await model.create(backupRecord);
+                    }
                 }
 
-                await sequelize.getQueryInterface().dropTable(`${model.getTableName()}_backup`);
+                // Drop the backup table after synchronization
+                await sequelize.getQueryInterface().dropTable(backupTableName);
 
-                await model.sync({ alter: true });
                 if (isDev) console.log(gray('[DATABASE]: ') + cyan(`${model.name} model synchronized successfully!`));
                 return;
             } catch (error) {
@@ -82,6 +97,7 @@ async function synchronizeModelWithRetry(sequelize, model) {
         }
     }
 }
+
 
 async function areTablesEqual(model, sequelize) {
     const [originalData, backupData] = await Promise.all([

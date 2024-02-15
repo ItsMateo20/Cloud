@@ -8,43 +8,46 @@
                 <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
                     action="/signup" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <h2 class="text-center">Zarejestruj się</h2>
+                    <h2 class="text-center" data-localize="Signup2">Zarejestruj się</h2>
                     <h3 id="message" class="text-center fs-6"></h3>
                     <div class="form-group mb-2">
-                        <label for="email">Email adres <strong class="text-danger">*</strong></label>
+                        <label for="email"><span data-localize="EmailAdress">Adres E-mail</span> <strong
+                                class="text-danger">*</strong></label>
                         <input type="email" autocomplete="username" class="form-control" id="email"
-                            aria-describedby="emailHelp" placeholder="Wpisz mail" name="email" required>
-                        <div class="invalid-feedback">
-                            Prosze wpisać maila!
+                            aria-describedby="emailHelp" placeholder="Wprowadź adres e-mail" name="email"
+                            data-localize-placeholder="EnterEmail" required>
+                        <div class="invalid-feedback" data-localize="PleaseEnterEmail">
+                            Proszę podać adres e-mail!
                         </div>
-                        <small id="emailHelp" class="form-text text-muted">Nie podamy Twojego adresu e-mail nikomu
-                            innemu.</small>
+                        <small id="emailHelp" class="form-text text-muted" data-localize="NotGiveAwayEmailAdress">Nie
+                            podajemy twojego adresu e-mail nikomu</small>
                         </br>
                     </div>
                     <div class="form-group mb-2">
                         <label for="password1">Hasło <strong class="text-danger">*</strong></label>
                         <input type="password" autocomplete="new-password" class="form-control" id="password1"
-                            placeholder="Hasło" name="password1" maxlength="40" minlength="5" required>
-                        <div class="invalid-feedback">
+                            placeholder="Wprowadź hasło" name="password1" maxlength="40" minlength="5"
+                            data-localize-placeholder="EnterPassword" required>
+                        <div class="invalid-feedback" data-localize="PleaseEnterPassword">
                             Prosze wpisać hasło!
                         </div>
                     </div>
                     <div class="form-group mb-2">
                         <label for="password2">Powtórz hasło <strong class="text-danger">*</strong></label>
                         <input type="password" autocomplete="new-password" class="form-control" id="password2"
-                            placeholder="Hasło" name="password2" maxlength="40" minlength="5" required>
-                        <div class="invalid-feedback">
+                            placeholder="Wprowadź hasło" name="password2" maxlength="40" minlength="5"
+                            data-localize-placeholder="EnterPassword" required>
+                        <div class="invalid-feedback" data-localize="PleaseRepeatPassword">
                             Prosze powtórzyć hasło!
                         </div>
                     </div>
-                    <a href="/login" class="text-muted">Masz już konto? Zaloguj się!</a>
+                    <a href="/login" class="text-muted" data-localize="YesAccountLogin">Masz już konto? Zaloguj się!</a>
                     <br>
-                    <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
+                    <button type="submit" class="btn btn-primary mt-3" data-localize="Signup">Zarejestruj</button>
                 </form>
             </div>
         </body>
 
-        <script src="javascript/Messages.js"></script>
         <script src="javascript/Validate.js"></script>
         <%- include('../partials/scripts.ejs') %>
 

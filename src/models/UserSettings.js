@@ -19,6 +19,10 @@ const UserSettings = sequelize.define('UserSettings', {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
     },
+    localization: {
+        type: Sequelize.STRING,
+        defaultValue: 'pl_PL',
+    },
     showImage: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,

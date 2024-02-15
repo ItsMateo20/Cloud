@@ -158,6 +158,9 @@ module.exports = {
             loggedIn: true,
         };
 
+        const localizationContent = await require("../dist/localization/" + UserSettingsS.localization + ".json")
+        args.body = [`${localizationContent.Pages["Home"]} | ${localizationContent.Main["Title"]}`]
+
         if (data.admin) {
             const whitelisted = await Whitelisted.findAll();
             const whitelist = [];

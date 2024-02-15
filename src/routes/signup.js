@@ -17,18 +17,24 @@ module.exports = {
             } catch (e) { }
             if (decoded) {
                 data = await User.findOne({ where: { email: decoded.email, password: decoded.password } })
-                if (!data) return res.redirect("/login?redirect=" + req.originalUrl)
+                data.settings = await UserSettings.findOne({ where: { email: decoded.email } })
+                if (data && data.settings) return res.redirect("/login")
+            } else {
+                res.clearCookie("token").reload()
             }
-            if (decoded && data) return res.redirect("/")
         }
 
 
         let args = {
-            body: ["Signup | Chmura"],
-            email: "",
+            body: ["Zarejestruj się | Chmura"],
             csrfToken: req.csrfToken(),
 
             loggedIn: false,
+        }
+
+        if (data.settings) {
+            const localizationContent = await require("../dist/localization/" + data.settings.localization + ".json")
+            args.body = [`${localizationContent.Pages["SignUp"]} | ${localizationContent.Main["Title"]}`]
         }
 
         res.render("../pages/signup.ejs", args)

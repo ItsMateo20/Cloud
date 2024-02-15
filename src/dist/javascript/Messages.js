@@ -1,8 +1,5 @@
 const urlParams = new URLSearchParams(window.location.search);
-const errorMessagesURL = "json/errorMessages.json";
-const successMessagesURL = "json/successMessages.json";
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+let localizationFile = `localization/${settings.language || 'pl_PL'}.json`;
 
 const textDiv = document.getElementById('message');
 
@@ -21,44 +18,43 @@ if (urlParams.has('error')) {
 }
 
 function getErrorMessage(error) {
-    if (error) {
-        fetch(errorMessagesURL)
-            .then((response) => response.json())
-            .then((errorMessages) => {
-                const errorMessage = errorMessages[error] || 'Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie.';
-                textDiv.classList.add('text-danger');
-                textDiv.textContent = errorMessage;
-            })
-            .catch((error) => {
-                console.error('Error fetching error messages:', error);
-
-                textDiv.classList.add('text-danger');
-                textDiv.textContent = 'Przepraszamy, wystąpił nieznany błąd. Spróbuj ponownie.';
-            });
-        wait(5000).then(() => {
-            textDiv.classList.remove('text-danger');
-            textDiv.textContent = '';
+    fetch(localizationFile)
+        .then((response) => response.json())
+        .then((localizationData) => {
+            const errorMessage = localizationData.Errors[error] || 'Sorry, an unknown error occurred. Please try again.';
+            textDiv.classList.add('text-danger');
+            textDiv.textContent = errorMessage;
+            waitAndClear();
         })
-    }
+        .catch((error) => {
+            console.error('Error fetching error messages:', error);
+            textDiv.classList.add('text-danger');
+            textDiv.textContent = 'Sorry, an unknown error occurred. Please try again.';
+            waitAndClear();
+        });
 }
 
 function getSuccessMessage(success) {
-    if (success) {
-        fetch(successMessagesURL)
-            .then((response) => response.json())
-            .then((successMessages) => {
-                const successMessage = successMessages[success] || 'Przepraszamy, coś poszło dobrze ależ i też wystąpił nieznany błąd.';
-                textDiv.classList.add('text-success');
-                textDiv.textContent = successMessage;
-            })
-            .catch((error) => {
-                console.error('Error fetching success messages:', error);
-                textDiv.classList.add('text-danger');
-                textDiv.textContent = 'Przepraszamy, coś poszło dobrze ależ i też wystąpił nieznany błąd.';
-            });
-        wait(5000).then(() => {
-            textDiv.classList.remove('text-success');
-            textDiv.textContent = '';
+    fetch(localizationFile)
+        .then((response) => response.json())
+        .then((localizationData) => {
+            const successMessage = localizationData.Successes[success] || 'Sorry, something went well but also an unknown error occurred.';
+            textDiv.classList.add('text-success');
+            textDiv.textContent = successMessage;
+            waitAndClear();
         })
-    }
+        .catch((error) => {
+            console.error('Error fetching success messages:', error);
+            textDiv.classList.add('text-danger');
+            textDiv.textContent = 'Sorry, something went well but also an unknown error occurred.';
+            waitAndClear();
+        });
+}
+
+function waitAndClear() {
+    setTimeout(() => {
+        textDiv.classList.remove('text-danger');
+        textDiv.classList.remove('text-success');
+        textDiv.textContent = '';
+    }, 5000);
 }

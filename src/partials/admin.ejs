@@ -1,14 +1,15 @@
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasAdminMenu"
     aria-labelledby="offcanvasAdminMenuLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasAdminMenuLabel">Admin Menu</h5>
+        <h5 class="offcanvas-title" id="offcanvasAdminMenuLabel" data-localize="AdminMenuTitle">Menu Administratora</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
 
         <div class="input-group mb-3">
-            <input type="email" class="form-control" id="adminInput" placeholder="Wpisz maila">
-            <button class="btn btn-outline-secondary" type="button" id="adminButton">Dodaj</button>
+            <input type="email" class="form-control" id="adminInput" data-localize-placeholder="EnterEmail"
+                placeholder="Wpisz maila">
+            <button class="btn btn-outline-secondary" type="button" id="adminButton" data-localize="Add">Dodaj</button>
         </div>
 
         <table class="table table-borderless">
@@ -19,7 +20,7 @@
                             <%= user.email %>
                                 </br>
                                 <button class="btn btn-outline-danger" type="button" onclick="removeadminButton(this)"
-                                    data-email="<%= user.email %>">Usuń</button>
+                                    data-email="<%= user.email %>" data-localize="Delete">Usuń</button>
                         </td>
                     </tr>
                     <% }); %>
@@ -30,16 +31,20 @@
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWhitelistMenu"
     aria-labelledby="offcanvasWhitelistMenuLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasWhitelistMenuLabel">Whitelist Menu</h5>
+        <h5 class="offcanvas-title" id="offcanvasWhitelistMenuLabel" data-localize="WhitelistMenuTitle">Menu Białej
+            Listy
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
 
         <div class="input-group mb-3">
-            <input type="email" class="form-control" id="whitelistInput" placeholder="Wpisz maila">
-            <button class="btn btn-outline-secondary" type="button" id="whitelistButton">Dodaj</button>
-            <div class="invalid-feedback">
-                Prosze wpisać maila!
+            <input type="email" class="form-control" id="whitelistInput" data-localize-placeholder="EnterEmail"
+                placeholder="Wpisz maila">
+            <button class="btn btn-outline-secondary" type="button" id="whitelistButton"
+                data-localize="Add">Dodaj</button>
+            <div class="invalid-feedback" data-localize="PleaseEnterEmail">
+                Proszę podać adres e-mail
             </div>
         </div>
 
@@ -51,7 +56,7 @@
                             <%= user.email %>
                                 </br>
                                 <button class="btn btn-outline-danger" type="button" onclick="unwhitelistButton(this)"
-                                    data-email="<%= user.email %>">Usuń</button>
+                                    data-email="<%= user.email %>" data-localize="Delete">Usuń</button>
                         </td>
                     </tr>
                     <% }); %>

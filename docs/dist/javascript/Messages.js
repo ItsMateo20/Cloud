@@ -1,6 +1,4 @@
 const urlParams = new URLSearchParams(window.location.search);
-const errorMessagesURL = "../json/errorMessages.json";
-const successMessagesURL = "../json/successMessages.json";
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
