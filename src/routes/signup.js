@@ -17,11 +17,14 @@ module.exports = {
             } catch (e) { }
             if (decoded) {
                 data = await User.findOne({ where: { email: decoded.email, password: decoded.password } })
+                const UserSettingS = await UserSettings.findOne({ where: { email: decoded.email } })
+                if (!UserSettingS) await UserSettings.create({ email: decoded.email })
                 data.settings = await UserSettings.findOne({ where: { email: decoded.email } })
                 if (data && data.settings) return res.redirect("/login")
             } else {
                 res.clearCookie("token").reload()
             }
+            if (decoded && data) return res.redirect("/")
         }
 
 
