@@ -13,7 +13,7 @@ layout:
     visible: true
 ---
 
-# ⬇ Downloading nessesary tools
+# 💾 Downloading nessesary tools
 
 ## Windows
 
