@@ -1,4 +1,7 @@
 ./src/assets/README export-ignore
+./README.md export-ignore
+./SECURITY.md export-ignore
+./Attributions.md export-ignore
 ./docs export-ignore
 .github export-ignore
 .git export-ignore
