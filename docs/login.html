@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="./assets/icons/webpageicon.png">
+
+        <title>
+            Login | Chmura Preview
+        </title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="./dist/styles/Main.css">
+    </head>
+
+    <body class="app-light-theme">
+        <div class="app-container">
+            <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate>
+                <h2 class="text-center">Zaloguj się</h2>
+                <h3 id="message" class="text-center fs-6"></h3>
+                <div class="form-group mb-2">
+                    <label for="email">Email adres <strong class="text-danger">*</strong></label>
+                    <input type="email" autocomplete="username" class="form-control" id="email" placeholder="Wpisz mail"
+                        required>
+                    <div class="invalid-feedback">
+                        Prosze wpisać maila!
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password">Hasło <strong class="text-danger">*</strong></label>
+                    <input type="password" autocomplete="current-password" class="form-control" id="password"
+                        placeholder="Hasło" disabled>
+                    <div class="invalid-feedback">
+                        Prosze wpisać hasło!
+                    </div>
+                </div>
+                <a href="/Cloud/signup" class="text-muted">Nie masz konta? Zarejestruj się!</a>
+                <br>
+                <button type="submit" class="btn btn-primary mt-3">Zaloguj</button>
+            </form>
+        </div>
+    </body>
+
+    <script src="./dist/javascript/Messages.js"></script>
+    <script src="./dist/javascript/Validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script>
+        function checkRedirect() {
+            const emailCookie = document.cookie.split('; ').find(row => row.startsWith('email='));
+            if (emailCookie && emailCookie.split('=')[1]) {
+                window.location.href = '/Cloud';
+            }
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+
+            if (!email) {
+                return;
+            }
+
+            document.cookie = `email=${email}; max-age=86400`;
+            window.location.href = '/Cloud';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            checkRedirect();
+        });
+
+        document.getElementById('auth').addEventListener('submit', function (event) {
+            event.preventDefault();
+            login();
+        });
+    </script>
+
+
+</html>
