@@ -42,6 +42,8 @@ async function changeLocal(event) {
 }
 
 async function localize() {
+    local = settings.localization || 'pl_PL';
+    localization = await fetch('localization/' + local + '.json').then((response) => response.json())
     const fetchPromises = Array.from(elements).map(async element => {
         let key = element.getAttribute('data-localize');
         let value = localization.Main[key];
