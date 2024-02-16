@@ -11,6 +11,7 @@ module.exports = {
 
         let decoded
         let data
+        let settings
         if (req.cookies.token) {
             try {
                 decoded = jwt.verify(req.cookies.token, process.env.JWTSECRET)
@@ -19,7 +20,7 @@ module.exports = {
                 data = await User.findOne({ where: { email: decoded.email, password: decoded.password } })
                 const UserSettingS = await UserSettings.findOne({ where: { email: decoded.email } })
                 if (!UserSettingS) await UserSettings.create({ email: decoded.email })
-                data.settings = await UserSettings.findOne({ where: { email: decoded.email } })
+                settings = await UserSettings.findOne({ where: { email: decoded.email } })
                 if (data && data.settings) return res.redirect("/login")
             } else {
                 res.clearCookie("token").reload()
@@ -35,8 +36,8 @@ module.exports = {
             loggedIn: false,
         }
 
-        if (data.settings) {
-            const localizationContent = await require("../dist/localization/" + data.settings.localization + ".json")
+        if (settings) {
+            const localizationContent = await require("../dist/localization/" + settings.localization + ".json")
             args.body = [`${localizationContent.Pages["SignUp"]} | ${localizationContent.Main["Title"]}`]
         }
 
