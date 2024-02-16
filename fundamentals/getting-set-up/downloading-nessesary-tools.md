@@ -24,7 +24,21 @@ We really suggest downloading this, It speeds up the downloading of everything. 
 {% endhint %}
 
 * Download chocolatey from the offical page at [https://chocolatey.org/install#individual](https://chocolatey.org/install#individual)
-* Open PowerShell as administrator and use the command`$`<mark style="color:yellow;">`choco`</mark>`install git nodejs ffmpeg`
+* Open PowerShell as administrator and run the command.
+
+{% tabs %}
+{% tab title="Command Prompt" %}
+```
+choco install git nodejs ffmpeg
+```
+{% endtab %}
+
+{% tab title="PowerShell" %}
+```powershell
+$ choco install git nodejs ffmpe
+```
+{% endtab %}
+{% endtabs %}
 
 ### Node.js
 
@@ -36,7 +50,21 @@ We really suggest downloading this, It speeds up the downloading of everything. 
 
 ### FFmpeg
 
-* The best way of installing this is through Chocolatey using the command `$`<mark style="color:yellow;">`choco`</mark>`install ffmpeg` I don't know other way because they didn't work for me.
+* The best way of installing this is through Chocolatey using the command
+
+{% tabs %}
+{% tab title="Command Prompt" %}
+```
+choco install ffmpeg
+```
+{% endtab %}
+
+{% tab title="PowerShell" %}
+```powershell
+$ choco install ffmpeg
+```
+{% endtab %}
+{% endtabs %}
 
 ### 7-zip or WinRAR
 
