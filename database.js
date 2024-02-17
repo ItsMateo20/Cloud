@@ -45,7 +45,6 @@ async function synchronizeModels(sequelize) {
         for (const model of modelsToSync) {
             await synchronizeModelWithRetry(sequelize, model);
         }
-        require('./src/debug.js')();
     }
 }
 
