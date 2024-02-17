@@ -11,11 +11,7 @@ async function BeforeStart() {
             console.log(gray("[SETUP]: ") + cyan("Setup failed.\n") + gray("<------------------------------------------------------>") + red("Please check the error above"))
             return process.exit(0)
         })
-    } else if (process.argv.includes("--debug")) {
-        await require("./src/debug.js")()
-        return process.exit(0)
     }
-
 
     if (process.env.CHECKVERSION == "true") {
         const { checkForUpdates } = require("./src/CheckVersion.js")
@@ -71,7 +67,6 @@ BeforeStart().then(() => {
         pasv_url: resolverFunction,
         pasv_min: 1024,
         pasv_max: 65535,
-        greeting: ["Welcome to the FTP server"],
         timeout: 60000,
     });
 
@@ -97,10 +92,18 @@ BeforeStart().then(() => {
         const UserS = await User.findOne({ where: { email: username, password: password } })
         const WhitelistedS = await Whitelisted.findOne({ where: { email: username } })
         if (!UserS || !WhitelistedS) return
-        if (UserS && UserS.admin == true) return resolve({ root: `../` });
-        if (UserS) return resolve({ root: `../users/${username}/` });
+        if (UserS && UserS.admin == true) return resolve({ root: process.env.USERS_ADMIN_FTP_DIR });
+        if (UserS) return resolve({ root: `${process.env.USERS_FTP_DIR}${username}/` });
         return
     })
+
+    ftpServer.on('server-error', ({ error }) => {
+        console.log(error)
+    });
+
+    ftpServer.on('client-error', ({ connection, context, error }) => {
+        console.log(error)
+    });
 
     require("./database.js").execute().then(() => {
         app.enable("trust proxy")
