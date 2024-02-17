@@ -2,9 +2,8 @@
   "scripts": {
     "start": "node index.js",
     "setup": "node index.js --setup",
-    "changeSettings": "node ./src/changeSettings.js",
     "dev": "nodemon index.js --dev",
-    "fix": "node index.js --debug"
+    "changeSettings": "node ./src/changeSettings.js"
   },
   "name": "cloud",
   "version": "1.4.3",
@@ -15,7 +14,16 @@
     "url": "git+https://github.com/ItsMateo20/Cloud.git"
   },
   "keywords": [
-    "cloud"
+    "cloud",
+    "files",
+    "storage",
+    "file",
+    "hosting",
+    "host",
+    "filehost",
+    "filehosting",
+    "filehoster",
+    "filehosting"
   ],
   "author": "ItsMateo20",
   "license": "MIT",
