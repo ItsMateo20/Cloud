@@ -1,7 +1,7 @@
 const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, unlink, rmSync } = require("fs");
+const { readdirSync, existsSync, unlinkSync, createWriteStream, renameSync, rmSync, unlink } = require("fs");
 const archiver = require('archiver');
 const { join } = require("path");
 const multer = require("multer");
@@ -173,9 +173,8 @@ module.exports = {
                     rmSync(`${userFolderPath}${path}`, { recursive: true, force: true });
                     return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
                 } else {
-                    unlink(`${userFolderPath}${path}`).catch((err) => {
-                        console.log(gray("[SITE]: ") + red('Error during deleting file:', err));
-                        return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+                    unlink(`${userFolderPath}${path}`, (err) => {
+                        if (err) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
                     });
                     return res.status(200).json({ success: true, message: "FILE_DELETED" });
                 }
