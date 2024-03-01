@@ -25,7 +25,7 @@ module.exports = {
             } else {
                 res.clearCookie("token").redirect("/login")
             }
-            if (decoded && data) return res.redirect("/")
+            if (decoded && data && settings) return res.redirect("/")
         }
 
 
@@ -59,7 +59,7 @@ module.exports = {
                 await UserSettings.create({ email: email })
             }
 
-            res.cookie("token", UserS.token, { maxAge: 86400000 })
+            res.cookie("token", UserS.token, { maxAge: process.env.LOGGED_IN_TIMEOUT_MS })
             res.redirect("/")
         } else if (!UserS) {
             res.redirect("/login?error=INCORRECT_DATA_LOGIN")
