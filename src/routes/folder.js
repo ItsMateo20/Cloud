@@ -60,9 +60,9 @@ module.exports = {
             res.clearCookie('folder');
         } else if (req.params.folder == "folder") {
             if (req.query.path.startsWith("/")) {
-                res.cookie("folder", `${req.query.path}`);
+                res.cookie("folder", `${req.query.path}`, { path: "/" });
             } else {
-                res.cookie("folder", `/${req.query.path}`);
+                res.cookie("folder", `/${req.query.path}`, { path: "/" });
             }
         } else if (req.params.folder === "new") {
             if (req.query.name) {
