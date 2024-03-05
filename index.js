@@ -127,6 +127,7 @@ BeforeStart().then(() => {
         let files = readdirSync(__dirname + '/src/routes/')
         console.log(gray("[ROUTING]: ") + cyan(`Started loading ${files.length} routes`));
         files.forEach(f => {
+            if (f.endsWith(".js") === false) return console.log(gray("[ROUTING]: ") + red(`Found folder inside routes folder: ${f} skipping...`))
             const file = require(`./src/routes/${f}`)
             if (file && file.url) {
                 app.get(file.url, file.run)

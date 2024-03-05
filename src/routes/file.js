@@ -102,7 +102,7 @@ module.exports = {
                     const { originalname, mimetype } = file;
                     const isImage = mimetype.startsWith('image');
                     const isVideo = mimetype.startsWith('video');
-                    const isDocument = mimetype.startsWith('application');
+                    const isDocument = mimetype.startsWith('text');
                     const isAudio = mimetype.startsWith('audio');
 
                     if (isImage) {
@@ -122,7 +122,7 @@ module.exports = {
                         newFile.redirect = `/video?path=${folder}/${originalname}`;
                     } else if (isDocument) {
                         newFile.type = "document";
-                        newFile.redirect = `/doc?path=${folder}/${originalname}`;
+                        newFile.redirect = `/document?path=${folder}/${originalname}`;
                     } else if (isAudio) {
                         newFile.type = "audio";
                         newFile.redirect = `/audio?path=${folder}/${originalname}`;

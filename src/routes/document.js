@@ -7,7 +7,7 @@ const hljs = require('highlight.js');
 
 module.exports = {
     name: "document",
-    url: "/doc",
+    url: "/document",
     run: async (req, res) => {
         if (!req.cookies.token) return res.redirect("/login");
         let decoded;

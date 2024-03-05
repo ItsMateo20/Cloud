@@ -113,7 +113,7 @@ module.exports = {
                     url = "icons/audio.png";
                     type = "audio";
                 } else if (textDocumentFiles.toString().includes(extnameS)) {
-                    relativePath = `/doc?path=${entryRelativePath}`
+                    relativePath = `/document?path=${entryRelativePath}`
                     url = "icons/document.png";
                     type = "document";
                 } else {
@@ -170,6 +170,13 @@ module.exports = {
 
         const items = [];
         await getSubfolders(folderPath, items);
+
+        if (folder.startsWith("/")) {
+            folder = folder.substring(1);
+        }
+        if (folder.includes("//")) {
+            folder = folder.replace("//", "/");
+        }
 
         let args = {
             body: [`Główna strona | Chmura`],
