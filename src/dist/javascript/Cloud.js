@@ -362,7 +362,7 @@ function handleUploadClick(event) {
     setDisabledState(true);
     const fileInput = document.createElement('input')
     fileInput.type = 'file';
-    fileInput.accept = 'image/*,video/*,audio/*';
+    fileInput.accept = '*/*';
     fileInput.multiple = true;
     fileInput.addEventListener('change', handleFileSelect);
     fileInput.click();
@@ -387,6 +387,7 @@ function createItemElement(file) {
     if (type === "folder") img.src = 'icons/folder.png';
     else if (type === "image") img.src = 'icons/image.png';
     else if (type === "video") img.src = 'icons/video.png';
+    else if (type === "document") img.src = 'icons/document.png';
     else if (type === "audio") img.src = 'icons/audio.png';
 
     const h1 = document.createElement('h1');
