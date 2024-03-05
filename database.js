@@ -58,28 +58,23 @@ async function synchronizeModelWithRetry(sequelize, model) {
     if (backupTableExists) {
         while (retries < maxRetries) {
             try {
-                // Fetch data from both the original and backup tables
                 const [originalData, backupData] = await Promise.all([
                     model.findAll(),
                     sequelize.query(`SELECT * FROM ${backupTableName};`, { type: sequelize.QueryTypes.SELECT })
                 ]);
 
-                // Migrate data from the backup table to the original table
                 for (const backupRecord of backupData) {
                     const existingRecord = originalData.find(record => record.username === backupRecord.username);
 
                     if (existingRecord) {
-                        // If the record exists in the original table, update it if necessary
                         if (existingRecord.updatedAt < backupRecord.updatedAt) {
                             await existingRecord.update(backupRecord);
                         }
                     } else {
-                        // If the record does not exist in the original table, create it
                         await model.create(backupRecord);
                     }
                 }
 
-                // Drop the backup table after synchronization
                 await sequelize.getQueryInterface().dropTable(backupTableName);
 
                 if (isDev) console.log(gray('[DATABASE]: ') + cyan(`${model.name} model synchronized successfully!`));
