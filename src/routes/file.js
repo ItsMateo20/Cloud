@@ -102,6 +102,7 @@ module.exports = {
                     const { originalname, mimetype } = file;
                     const isImage = mimetype.startsWith('image');
                     const isVideo = mimetype.startsWith('video');
+                    const isDocument = mimetype.startsWith('application');
                     const isAudio = mimetype.startsWith('audio');
 
                     if (isImage) {
@@ -111,17 +112,20 @@ module.exports = {
                         newFile.type = "image";
                         newFile.height = height;
                         newFile.width = width;
-                        newFile.redirect = `/image/?path=${folder}/${originalname}`;
+                        newFile.redirect = `/image?path=${folder}/${originalname}`;
                     } else if (isVideo) {
                         const metadata = await ffprobe(file.path);
                         const dimensions = metadata.streams[0];
                         newFile.type = "video";
                         newFile.height = dimensions.height;
                         newFile.width = dimensions.width;
-                        newFile.redirect = `/video/?path=${folder}/${originalname}`;
+                        newFile.redirect = `/video?path=${folder}/${originalname}`;
+                    } else if (isDocument) {
+                        newFile.type = "document";
+                        newFile.redirect = `/doc?path=${folder}/${originalname}`;
                     } else if (isAudio) {
                         newFile.type = "audio";
-                        newFile.redirect = `/audio/?path=${folder}/${originalname}`;
+                        newFile.redirect = `/audio?path=${folder}/${originalname}`;
                     } else {
                         newFile.type = "other";
                         newFile.redirect = `/file/download?name=${originalname}&path=${folder}/${originalname}&type=other`;
