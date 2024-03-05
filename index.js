@@ -93,7 +93,7 @@ BeforeStart().then(() => {
         const WhitelistedS = await Whitelisted.findOne({ where: { email: username } })
         if (!UserS || !WhitelistedS) return
         if (UserS && UserS.admin == true) return resolve({ root: process.env.USERS_ADMIN_FTP_DIR });
-        if (UserS) return resolve({ root: `${process.env.USERS_FTP_DIR}${username}/` });
+        if (UserS) return resolve({ root: __dirname + `/${process.env.USERS_FTP_DIR}${username}/` });
         return
     })
 
@@ -104,6 +104,7 @@ BeforeStart().then(() => {
     ftpServer.on('client-error', ({ connection, context, error }) => {
         console.log(error)
     });
+
 
     require("./database.js").execute().then(() => {
         app.enable("trust proxy")
