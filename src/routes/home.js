@@ -2,10 +2,12 @@ const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, mkdirSync, statSync, existsSync } = require("fs");
+const { readdirSync, mkdirSync, statSync, existsSync, readFileSync } = require("fs");
 const { join, extname, relative } = require("path");
 const sharp = require('sharp');
 const ffprobe = require('node-ffprobe')
+
+const textDocumentFiles = readFileSync(__dirname + "/../dist/json/txtDocumentExtensionMap.json")
 
 module.exports = {
     name: "Home",
@@ -80,7 +82,11 @@ module.exports = {
 
                 const extnameS = extname(entry).toLowerCase()
 
-                if (extnameS === ".jpg" || extnameS === ".jfif" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif" || extnameS === ".webp") {
+                if (isDirectory || extnameS === "" || extnameS === "." || !extnameS) {
+                    relativePath = `/folder/folder?path=${entryRelativePath}`
+                    url = "icons/folder.png";
+                    type = "folder";
+                } else if (extnameS === ".jpg" || extnameS === ".jfif" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif" || extnameS === ".webp") {
                     relativePath = `/image?path=${entryRelativePath}`
                     url = "icons/image.png"
                     type = "image";
@@ -106,10 +112,10 @@ module.exports = {
                     relativePath = `/audio?path=${entryRelativePath}`
                     url = "icons/audio.png";
                     type = "audio";
-                } else if (isDirectory) {
-                    relativePath = `/folder/folder?path=${entryRelativePath}`
-                    url = "icons/folder.png";
-                    type = "folder";
+                } else if (textDocumentFiles.toString().includes(extnameS)) {
+                    relativePath = `/doc?path=${entryRelativePath}`
+                    url = "icons/document.png";
+                    type = "document";
                 } else {
                     relativePath = `/file/download?name=${entry}&path=${entryRelativePath}&type=other`
                     url = "icons/other.png";
@@ -136,6 +142,24 @@ module.exports = {
                     return -1;
                 } else if (a.type !== "folder" && b.type === "folder") {
                     return 1;
+                } else if (a.type === "audio" && b.type !== "audio") {
+                    return 1;
+                } else if (a.type !== "audio" && b.type === "audio") {
+                    return -1;
+                } else if (a.type === "document" && b.type !== "document") {
+                    return 1;
+                } else if (a.type !== "document" && b.type === "document") {
+                    return -1;
+                }
+                if (b.dateModified - a.dateModified === 0) {
+                    const aNumbers = a.name.match(/\d+/g);
+                    const bNumbers = b.name.match(/\d+/g);
+                    const aSum = aNumbers ? aNumbers.map(Number).reduce((a, b) => a + b, 0) : 0;
+                    const bSum = bNumbers ? bNumbers.map(Number).reduce((a, b) => a + b, 0) : 0;
+                    if (aSum !== bSum) {
+                        return bSum - aSum;
+                    }
+                    return a.name.localeCompare(b.name);
                 }
                 return b.dateModified - a.dateModified;
             });
