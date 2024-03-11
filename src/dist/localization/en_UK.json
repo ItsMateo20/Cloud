@@ -12,6 +12,7 @@
         "ChangePasswordMenuTitle": "Change Password Menu",
         "AdminMenuTitle": "Admin Menu",
         "WhitelistMenuTitle": "Whitelist Menu",
+        "SortingMenuTitle": "Sorting Menu",
         "Add": "Add",
         "Back": "Back",
         "EditFiles": "Edit Files",
@@ -40,7 +41,18 @@
         "PleaseRepeatPassword": "Please repeat password",
         "ConfirmDeletionOfFolder": "Are you sure you want to delete the folder",
         "ConfirmDeletionOfFile": "Are you sure you want to delete the file",
-        "NotGiveAwayEmailAdress": "We do not give away your email address"
+        "NotGiveAwayEmailAdress": "We do not give away your email address",
+        "SortBy": "Sort by:",
+        "SortNames": "Names",
+        "SortTypes": "File Type",
+        "SortLengths": "Video Length",
+        "SortSizes": "File Size",
+        "SortDateModified": "Date Modified",
+        "SortDateCreated": "Date Created",
+        "SortDimentions": "Dimensions",
+        "SortDirection": "Sort direction:",
+        "SortAscending": "Ascending",
+        "SortDescending": "Descending"
     },
     "Pages": {
         "Home": "Home",

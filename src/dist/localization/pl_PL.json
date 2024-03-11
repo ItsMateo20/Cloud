@@ -12,6 +12,7 @@
         "ChangePasswordMenuTitle": "Menu Zmiany Hasła",
         "AdminMenuTitle": "Menu Administratora",
         "WhitelistMenuTitle": "Menu Białej Listy",
+        "SortingMenuTitle": "Menu Sortowania",
         "Add": "Dodaj",
         "Back": "Powrót",
         "EditFiles": "Edytuj Pliki",
@@ -40,7 +41,18 @@
         "PleaseRepeatPassword": "Proszę Powtórz Hasło",
         "ConfirmDeletionOfFolder": "Czy na pewno chcesz usunąć folder",
         "ConfirmDeletionOfFile": "Czy na pewno chcesz usunąć plik",
-        "NotGiveAwayEmailAdress": "Nie podajemy twojego adresu e-mail nikomu"
+        "NotGiveAwayEmailAdress": "Nie podajemy twojego adresu e-mail nikomu",
+        "SortBy": "Sortuj według:",
+        "SortNames": "Nazwy",
+        "SortTypes": "Typ pliku",
+        "SortLengths": "Długość wideo",
+        "SortSizes": "Rozmiar pliku",
+        "SortDateModified": "Daty modifikowania",
+        "SortDateCreated": "Daty utworzenia",
+        "SortDimentions": "Wymiary",
+        "SortDirection": "Kierunek sortowania:",
+        "SortAscending": "Rosnąco",
+        "SortDescending": "Malejąco"
     },
     "Pages": {
         "Home": "Strona główna",
