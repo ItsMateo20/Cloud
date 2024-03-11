@@ -1,6 +1,6 @@
 const elements = document.querySelectorAll('[data-localize]');
 const inputElements = document.querySelectorAll('[data-localize-placeholder]');
-let local = settings.localization || 'pl_PL';
+let local = 'pl_PL';
 let localization = {};
 
 const localButton = document.querySelectorAll('[id=localButton]');
@@ -15,12 +15,13 @@ async function changeLocal(event) {
         if (localButton) localButton.classList.remove('active');
 
         local = clickedItem.dataset.local;
-        settings.localization = local;
+        settings.localization = local || clickedItem.dataset.local;
         localization = await fetch('localization/' + local + '.json').then((response) => response.json())
 
         document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
         clickedItem.classList.add('active');
         document.title = `${localization.Pages["Home"]} | ${localization.Main["Title"]}`
+        localizationFile = `localization/${local}.json`
 
         loadingDiv('show');
         await GetCsrfToken().then(async csrfToken => {
@@ -43,6 +44,7 @@ async function changeLocal(event) {
 
 async function localize() {
     local = settings.localization || 'pl_PL';
+    localizationFile = `localization/${local}.json`
     localization = await fetch('localization/' + local + '.json').then((response) => response.json())
     const fetchPromises = Array.from(elements).map(async element => {
         let key = element.getAttribute('data-localize');
