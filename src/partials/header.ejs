@@ -90,7 +90,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <img class="btn btn-outline-secondary dropdown-toggle user-select-none"
-                                id="localButtonImage" src="icons/pl_PL.png" height="30" role="button"
+                                id="localButtonImage" src="icons/pl_PL.png" alt height="30" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false"></img>
                             <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdownLocal">
                                 <li class="dropdown-item user-select-none" id="localButton" data-local="en_UK">
@@ -120,6 +120,11 @@
                                 <li class="dropdown-item user-select-none" id="showImageSettingButton">
                                     <span data-localize="ShowThumbnails">Pokaż Miniatury</span>
                                     <i class="bi"></i>
+                                </li>
+                                <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasSortingMenu" aria-controls="offcanvasSortingMenu">
+                                    <span data-localize="Sorting">Sortuj</span>
+                                    <i class="bi bi-sort-down"></i>
                                 </li>
                                 <li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasChangePassMenu" aria-controls="offcanvasChangePassMenu">
