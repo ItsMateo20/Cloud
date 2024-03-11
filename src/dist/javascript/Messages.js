@@ -1,5 +1,5 @@
 const urlParams = new URLSearchParams(window.location.search);
-let localizationFile = `localization/${settings.language || 'pl_PL'}.json`;
+let localizationFile = `localization/pl_PL.json`
 
 const textDiv = document.getElementById('message');
 
