@@ -65,6 +65,14 @@ function loadSettings() {
                 if (localButton) localButton.classList.add('active');
                 document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
 
+                const SortingTypeButton = document.getElementById(settings.sortingBy);
+                if (SortingTypeButton) SortingTypeButton.checked = true;
+                const SortingDirectionButton = document.getElementById(settings.sortingDirection);
+                if (SortingDirectionButton) SortingDirectionButton.checked = true;
+
+                if (document.querySelector('[data-filetype="video"]')) document.getElementById('length').disabled = false;
+                if (document.querySelector('[data-filetype="image"]')) document.getElementById('dimensions').disabled = false;
+
                 if (settings.showImage == true) {
                     showImageBtn.dataset.value = "true";
                     showImageBtn.querySelector('i').classList.add('bi-check');
@@ -211,7 +219,6 @@ function Adjust() {
                 }
                 item.querySelector("img").src = item.dataset.fileredirect.trim() + "&preview=true";
             } else if (fileType === "video") {
-                console.log(item, dataFileHeight, dataFileWidth)
                 if (item.querySelector("img").classList.contains('cloudItemContainerImg')) item.querySelector("img").classList.remove('cloudItemContainerImg');
                 if (!item.querySelector("img").classList.contains('cloudItemContainerPortrait') || !item.querySelector("img").classList.contains('cloudItemContainerLandscape')) {
                     if (dataFileHeight > dataFileWidth) item.querySelector("img").classList.add('cloudItemContainerPortrait');
@@ -580,6 +587,62 @@ function handleDarkThemeClick(event) {
             });
     })
 }
+
+
+// handle sorting
+const sortingTypeBy = document.querySelectorAll('input[name="SortingTypeBy"]');
+sortingTypeBy.forEach((input) => {
+    input.addEventListener('change', handleSortingTypeByChange, { passive: true });
+});
+
+function handleSortingTypeByChange({ target }) {
+    if (settings.sortingBy === target.id) return;
+    loadingDiv("show");
+    settings.sortingBy = target.id;
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/user?action=settings&action2=sortingBy", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: settings.sortingBy }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                } else {
+                    location.reload()
+                }
+            });
+    });
+}
+
+// handle direction
+const sortingDirection = document.querySelectorAll('input[name="SortingDirection"]');
+sortingDirection.forEach((input) => {
+    input.addEventListener('change', handleSortingDirectionChange, { passive: true });
+});
+
+function handleSortingDirectionChange({ target }) {
+    if (settings.sortingDirection === target.id) return;
+    loadingDiv("show");
+    settings.sortingDirection = target.id;
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/user?action=settings&action2=sortingDirection", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: settings.sortingDirection }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                } else {
+                    location.reload()
+                }
+            });
+    });
+}
+
 
 //handle show image button
 
