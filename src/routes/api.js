@@ -102,7 +102,17 @@ async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder,
                 UserSettingsS.localization = value
                 await UserSettingsS.save()
                 res.status(200).json({ success: true, message: "UPDATED_SETTING" })
-            } else if (req.query.action2 === "get") return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, localization: UserSettingsS.localization, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
+            } else if (req.query.action2 === "sortingBy") {
+                const { value } = req.body;
+                UserSettingsS.sortingBy = value
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "sortingDirection") {
+                const { value } = req.body;
+                UserSettingsS.sortingDirection = value
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "get") return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, localization: UserSettingsS.localization, sortingBy: UserSettingsS.sortingBy, sortingDirection: UserSettingsS.sortingDirection, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     } else if (req.params.id == "admin") {
         if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
