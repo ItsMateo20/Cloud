@@ -178,9 +178,12 @@ module.exports = {
                     return res.status(200).json({ success: true, message: "FOLDER_DELETED" });
                 } else {
                     unlink(`${userFolderPath}${path}`, (err) => {
-                        if (err) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+                        if (err) {
+                            return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
+                        } else {
+                            return res.status(200).json({ success: true, message: "FILE_DELETED" });
+                        }
                     });
-                    return res.status(200).json({ success: true, message: "FILE_DELETED" });
                 }
             } else return res.status(500).json({ success: false, message: "FILE_DOESNT_EXIST" });
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
