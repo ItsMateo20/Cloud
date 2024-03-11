@@ -1,110 +1,166 @@
 <!DOCTYPE html>
 <html lang="pl" data-bs-theme="dark">
 
-    <%- include('../partials/head.ejs') %>
+	<%- include('../partials/head.ejs') %>
 
-        <body class="app-light-theme">
-            <div id="loading">
-                <div class="text-center position-absolute top-50 start-50 translate-middle">
-                    <div class="spinner-border" role="status"></div>
-                    <p data-localize="LoadingMessage">Wczytywanie...</p>
-                </div>
-            </div>
-            <div class="app-container">
-                <%- include('../partials/header.ejs') %>
-                    <div class="cloud">
-                        <div class="cloudBody app-row row-cols-auto">
-                            <% for (let i=0; i < items.length; i++) { %>
-                                <% if (items[i].type=="folder" ) { %>
-                                    <div class="col cloudItemContainer user-select-none"
-                                        data-filetype="<%= items[i].type %>" data-filename="<%= items[i].name %>"
-                                        data-filepath="<%= items[i].path%>"
-                                        data-fileredirect="<%= items[i].redirect %>">
-                                        <img title alt src="<%= items[i].imageurl %>" class="cloudItemContainerImg">
-                                        <h1>
-                                            <%= items[i].name %>
-                                        </h1>
-                                    </div>
-                                    <% } else if (items[i].type=="image" || items[i].type=="video" ) { %>
-                                        <div class="col cloudItemContainer user-select-none"
-                                            data-filetype="<%= items[i].type %>" data-filename="<%= items[i].name %>"
-                                            data-filepath="<%= items[i].path%>"
-                                            data-fileredirect="<%= items[i].redirect %>"
-                                            data-fileheight="<%= items[i].height %>"
-                                            data-filewidth="<%= items[i].width %>">
-                                            <img title alt src="<%= items[i].imageurl %>" class="cloudItemContainerImg">
-                                            <h1>
-                                                <%= items[i].name %>
-                                            </h1>
-                                        </div>
-                                        <% } else { %>
-                                            <div class="col cloudItemContainer user-select-none"
-                                                data-filetype="<%= items[i].type %>"
-                                                data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
-                                                data-fileredirect="<%= items[i].redirect %>">
-                                                <img title alt src="<%= items[i].imageurl %>"
-                                                    class="cloudItemContainerImg">
-                                                <h1>
-                                                    <%= items[i].name %>
-                                                </h1>
-                                            </div>
-                                            <% } %>
-                                                <% } %>
-                        </div>
-                    </div>
-            </div>
-            <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasChangePassMenu"
-                aria-labelledby="offcanvasChangePassMenuLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasChangePassMenuLabel"
-                        data-localize="ChangePasswordMenuTitle">Menu
-                        Zmiany Hasła</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="form-group mb-2">
-                        <label for="oldpassword1" data-localize="OldPassword">Stare Hasło <strong
-                                class="text-danger">*</strong></label>
-                        <input type="password" autocomplete="current-password" class="form-control" id="oldpassword1"
-                            placeholder="Stare Hasło" name="password1" maxlength="40" minlength="5"
-                            data-localize-placeholder="OldPassword" required>
-                        <div class="invalid-feedback" data-localize="PleaseEnterOldPassword">
-                            Prosze wpisać stare hasło!
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="oldpassword2" data-localize="RepeatOldPassword">Powtórz stare
-                            hasło <strong class="text-danger">*</strong></label>
-                        <input type="password" autocomplete="current-password" class="form-control" id="oldpassword2"
-                            placeholder="Powtórz stare hasło" name="password2" maxlength="40" minlength="5"
-                            data-localize-placeholder="RepeatOldPassword" required>
-                        <div class="invalid-feedback" data-localize="PleaseRepeatOldPassword">
-                            Prosze powtórzyć stare hasło!
-                        </div>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="newpassword" data-localize="NewPassword">Nowe hasło <strong
-                                class="text-danger">*</strong></label>
-                        <input type="password" autocomplete="new-password" class="form-control" id="newpassword"
-                            placeholder="Nowe hasło" name="password3" maxlength="40" minlength="5"
-                            data-localize-placeholder="NewPassword" required>
-                    </div>
-                    <button type="button" class="btn btn-primary mt-3" id="changePasswordBtn"
-                        data-localize="ChangePassword">Zmień hasło</button>
-                    </form>
-
-                </div>
-            </div>
-            <% if (admin==true) { %>
-                <%- include('../partials/admin.ejs') %>
-                    <% } %>
-        </body>
-
-        <% if (admin==true) { %>
-            <script src="javascript/Admin.js"></script>
-            <% } %>
-                <script src="javascript/Cloud.js"></script>
-                <%- include('../partials/scripts.ejs') %>
-
+		<body class="app-light-theme user-select-none">
+			<div id="loading">
+				<div class="text-center position-absolute top-50 start-50 translate-middle ">
+					<div class="spinner-border" role="status"></div>
+					<p data-localize="LoadingMessage">Wczytywanie...</p>
+				</div>
+			</div>
+			<div class="app-container">
+				<%- include('../partials/header.ejs') %>
+					<div class="cloud">
+						<div class="cloudBody app-row row-cols-auto" id="cloudBody">
+							<% for (let i=0; i < items.length; i++) { %>
+								<% if (items[i].type=="folder" ) { %>
+									<div class="col cloudItemContainer " data-filetype="<%= items[i].type %>"
+										data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
+										data-fileredirect="<%= items[i].redirect %>"
+										data-filedatemodified="<%= items[i].dateModified %>"
+										data-filedatecreated="<%= items[i].dateCreated %>"
+										data-filedateaccessed="<%= items[i].dateAccessed %>">
+										<img title alt src="<%= items[i].imageurl %>" class="cloudItemContainerImg">
+										<h1>
+											<%= items[i].name %>
+										</h1>
+									</div>
+									<% } else if (items[i].type=="image" || items[i].type=="video" ) { %>
+										<div class="col cloudItemContainer " data-filetype="<%= items[i].type %>"
+											data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
+											data-fileredirect="<%= items[i].redirect %>"
+											data-fileheight="<%= items[i].height %>"
+											data-filewidth="<%= items[i].width %>"
+											data-filedatemodified="<%= items[i].dateModified %>"
+											data-filedatecreated="<%= items[i].dateCreated %>"
+											data-filedateaccessed="<%= items[i].dateAccessed %>"
+											data-filesize="<%= items[i].size %>">
+											<img title alt src="<%= items[i].imageurl %>" class="cloudItemContainerImg">
+											<h1>
+												<%= items[i].name %>
+											</h1>
+										</div>
+										<% } else { %>
+											<div class="col cloudItemContainer " data-filetype="<%= items[i].type %>"
+												data-filename="<%= items[i].name %>" data-filepath="<%= items[i].path%>"
+												data-fileredirect="<%= items[i].redirect %>"
+												data-filedatemodified="<%= items[i].dateModified %>"
+												data-filedatecreated="<%= items[i].dateCreated %>"
+												data-filedateaccessed="<%= items[i].dateAccessed %>"
+												data-filesize="<%= items[i].size %>">
+												<img title alt src="<%= items[i].imageurl %>"
+													class="cloudItemContainerImg">
+												<h1>
+													<%= items[i].name %>
+												</h1>
+											</div>
+											<% } %>
+												<% } %>
+						</div>
+					</div>
+			</div>
+			<div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasSortingMenu"
+				aria-labelledby="offcanvasSortingMenuLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title " id="offcanvasSortingMenuLabel" data-localize="SortingMenuTitle"> Menu
+						Sortowania</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="form-group mb-2">
+						<h1 class="h6 " data-localize="SortBy">Sortuj według:</h1>
+						<div class="row">
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="name" autocomplete="off">
+							<label class="btn" for="name" data-localize="SortNames">Nazwy</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="type" autocomplete="off">
+							<label class="btn" for="type" data-localize="SortTypes">Typ pliku</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="length"
+								autocomplete="off" disabled>
+							<label class="btn" for="length" data-localize="SortLengths">Długość
+								wideo</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="dimensions"
+								autocomplete="off" disabled>
+							<label class="btn" for="dimensions" data-localize="SortDimentions">Wymiary</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="size" autocomplete="off">
+							<label class="btn" for="size" data-localize="SortSizes">Rozmiar pliku</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="dateModified"
+								autocomplete="off">
+							<label class="btn" for="dateModified" data-localize="SortDateModified">Daty
+								modifikowania</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="dateCreated"
+								autocomplete="off">
+							<label class="btn" for="dateCreated" data-localize="SortDateCreated">Daty
+								utworzenia</label>
+							<input type="radio" class="col btn-check" name="SortingTypeBy" id="dateAccessed"
+								autocomplete="off">
+						</div>
+						<h1 class="h6" data-localize="SortDirection">Kierunek sortowania:</h1>
+						<div class="row">
+							<input type="radio" class="col btn-check" name="SortingDirection" id="asc"
+								autocomplete="off">
+							<label class="btn" for="asc" data-localize="SortAscending">Rosnąco</label>
+							<input type="radio" class="col btn-check" name="SortingDirection" id="desc"
+								autocomplete="off">
+							<label class="btn" for="desc" data-localize="SortDescending">Malejąco</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasChangePassMenu"
+				aria-labelledby="offcanvasChangePassMenuLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasChangePassMenuLabel"
+						data-localize="ChangePasswordMenuTitle">
+						Menu
+						Zmiany Hasła</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="form-group mb-2">
+						<label for="oldpassword1" data-localize="OldPassword">Stare Hasło <strong
+								class="text-danger">*</strong></label>
+						<input type="password" autocomplete="current-password" class="form-control" id="oldpassword1"
+							placeholder="Stare Hasło" name="password1" maxlength="40" minlength="5"
+							data-localize-placeholder="OldPassword" required>
+						<div class="invalid-feedback" data-localize="PleaseEnterOldPassword">
+							Prosze wpisać stare hasło!
+						</div>
+					</div>
+					<div class="form-group mb-2">
+						<label for="oldpassword2" data-localize="RepeatOldPassword">Powtórz stare
+							hasło <strong class="text-danger">*</strong></label>
+						<input type="password" autocomplete="current-password" class="form-control" id="oldpassword2"
+							placeholder="Powtórz stare hasło" name="password2" maxlength="40" minlength="5"
+							data-localize-placeholder="RepeatOldPassword" required>
+						<div class="invalid-feedback" data-localize="PleaseRepeatOldPassword">
+							Prosze powtórzyć stare hasło!
+						</div>
+					</div>
+					<div class="form-group mb-2">
+						<label for="newpassword" data-localize="NewPassword">Nowe hasło <strong
+								class="text-danger">*</strong></label>
+						<input type="password" autocomplete="new-password" class="form-control" id="newpassword"
+							placeholder="Nowe hasło" name="password3" maxlength="40" minlength="5"
+							data-localize-placeholder="NewPassword" required>
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary mt-3" id="changePasswordBtn"
+					data-localize="ChangePassword">Zmień hasło</button>
+			</div>
+			<% if (admin==true) { %>
+				<%- include('../partials/admin.ejs') %>
+					<% } %>
+		</body>
+		<% if (admin==true) { %>
+			<script src="javascript/Admin.js"></script>
+			<% } %>
+				<script src="javascript/Cloud.js"></script>
+				<script src="javascript/Messages.js"></script>
+				<script src="javascript/Localization.js"></script>
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+					integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+					crossorigin="anonymous"></script>
 
 </html>
