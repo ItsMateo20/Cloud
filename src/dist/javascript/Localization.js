@@ -60,6 +60,11 @@ async function localize() {
         }
     });
 
+    let htmllang
+    if (local === 'pl_PL') htmllang = 'pl';
+    else if (local === 'en_UK') htmllang = 'en';
+    document.querySelector('html').setAttribute('lang', htmllang);
+
     Promise.all(fetchPromises)
         .catch(error => {
             console.error('Error fetching localization:', error);
