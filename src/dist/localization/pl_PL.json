@@ -42,6 +42,7 @@
         "ConfirmDeletionOfFolder": "Czy na pewno chcesz usunąć folder",
         "ConfirmDeletionOfFile": "Czy na pewno chcesz usunąć plik",
         "NotGiveAwayEmailAdress": "Nie podajemy twojego adresu e-mail nikomu",
+        "Sorting": "Sortuj",
         "SortBy": "Sortuj według:",
         "SortNames": "Nazwy",
         "SortTypes": "Typ pliku",
