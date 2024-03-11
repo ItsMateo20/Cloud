@@ -23,6 +23,14 @@ const UserSettings = sequelize.define('UserSettings', {
         type: Sequelize.STRING,
         defaultValue: 'pl_PL',
     },
+    sortingBy: {
+        type: Sequelize.STRING,
+        defaultValue: 'name',
+    },
+    sortingDirection: {
+        type: Sequelize.STRING,
+        defaultValue: 'asc',
+    },
     showImage: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
