@@ -6,7 +6,7 @@
     "changeSettings": "node ./src/changeSettings.js"
   },
   "name": "cloud",
-  "version": "1.4.3",
+  "version": "1.4.5",
   "description": "Cloud files",
   "main": "index.js",
   "repository": {
