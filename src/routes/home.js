@@ -32,11 +32,8 @@ module.exports = {
         if (!UserSettingsS) return res.redirect("/login");
 
         let folder
-        if (req.cookies.folder) {
-            folder = `${req.cookies.folder}`;
-        } else {
-            folder = "/";
-        }
+        if (req.cookies.folder) folder = `${req.cookies.folder}`
+        else folder = "/";
 
 
         const userFolder = readdirSync(`${process.env.USERS_DIR}`).some(
@@ -76,9 +73,9 @@ module.exports = {
                 let url = "assets/icons/other.png";
                 let relativePath = "";
                 let type = "other";
+                let length = 0
                 let height = 100;
                 let width = 300;
-                let dateModified = 1;
 
                 const extnameS = extname(entry).toLowerCase()
 
@@ -94,8 +91,6 @@ module.exports = {
                     const dimensions = await sharp(entryPath).metadata();
                     height = dimensions.height;
                     width = dimensions.width;
-
-                    dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp4" || extnameS === ".mp4a" || extnameS === ".avi" || extnameS === ".mov") {
                     relativePath = `/video?path=${entryRelativePath}`
                     url = "icons/video.png";
@@ -104,10 +99,9 @@ module.exports = {
                     const metadata = await ffprobe(entryPath);
                     const dimensions = metadata.streams[0]
                     const dimensions2 = metadata.streams[1]
+                    length = metadata.format.duration || 1;
                     height = dimensions.height || dimensions2.height || 100;
                     width = dimensions.width || dimensions2.width || 300;
-
-                    dateModified = statSync(entryPath).mtimeMs;
                 } else if (extnameS === ".mp3" || extnameS === ".wav" || extnameS === ".ogg" || extnameS === ".flac" || extnameS === ".m4a") {
                     relativePath = `/audio?path=${entryRelativePath}`
                     url = "icons/audio.png";
@@ -120,18 +114,21 @@ module.exports = {
                     relativePath = `/file/download?name=${entry}&path=${entryRelativePath}&type=other`
                     url = "icons/other.png";
                     type = "other";
-                    dateModified = statSync(entryPath).mtimeMs;
                 }
 
                 const itemInfo = {
                     name: entry,
+                    type: type,
+                    size: isDirectory ? null : statSync(entryPath).size,
+                    length: isDirectory ? null : (type === "video" ? length : 0),
+                    height: isDirectory ? null : height,
+                    width: isDirectory ? null : width,
+                    dateModified: statSync(entryPath).mtimeMs,
+                    dateCreated: statSync(entryPath).birthtimeMs,
+                    dateAccessed: statSync(entryPath).atimeMs,
                     redirect: relativePath,
                     path: entryRelativePath,
-                    type: type,
                     imageurl: url,
-                    height: height,
-                    width: width,
-                    dateModified: dateModified,
                 };
 
                 items.push(itemInfo);
@@ -142,26 +139,21 @@ module.exports = {
                     return -1;
                 } else if (a.type !== "folder" && b.type === "folder") {
                     return 1;
+                } else if (a.type === "folder" && b.type === "folder") {
+                    return a.name.localeCompare(b.name);
                 } else if (a.type === "audio" && b.type !== "audio") {
                     return 1;
                 } else if (a.type !== "audio" && b.type === "audio") {
                     return -1;
+                } else if (a.type === "audio" && b.type === "audio") {
+                    return a.name.localeCompare(b.name);
                 } else if (a.type === "document" && b.type !== "document") {
                     return 1;
                 } else if (a.type !== "document" && b.type === "document") {
                     return -1;
-                }
-                if (b.dateModified - a.dateModified === 0) {
-                    const aNumbers = a.name.match(/\d+/g);
-                    const bNumbers = b.name.match(/\d+/g);
-                    const aSum = aNumbers ? aNumbers.map(Number).reduce((a, b) => a + b, 0) : 0;
-                    const bSum = bNumbers ? bNumbers.map(Number).reduce((a, b) => a + b, 0) : 0;
-                    if (aSum !== bSum) {
-                        return bSum - aSum;
-                    }
+                } else if (a.type === "document" && b.type === "document") {
                     return a.name.localeCompare(b.name);
-                }
-                return b.dateModified - a.dateModified;
+                } else return sort(UserSettingsS.sortingBy, UserSettingsS.sortingDirection, a, b);
             });
 
             return items;
@@ -171,12 +163,7 @@ module.exports = {
         const items = [];
         await getSubfolders(folderPath, items);
 
-        if (folder.startsWith("/")) {
-            folder = folder.substring(1);
-        }
-        if (folder.includes("//")) {
-            folder = folder.replace("//", "/");
-        }
+        if (folder.includes("//")) folder = folder.replace("//", "/");
 
         let args = {
             body: [`Główna strona | Chmura`],
@@ -213,3 +200,25 @@ module.exports = {
         res.render("../pages/home.ejs", args);
     },
 };
+
+
+function sort(by, direction, a, b) {
+    if (by === "name") {
+        return direction === "desc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+    } else if (by === "type") {
+        return direction === "desc" ? a.type.localeCompare(b.type) : b.type.localeCompare(a.type);
+    } else if (by === "size") {
+        return direction === "desc" ? b.size - a.size : a.size - b.size;
+    } else if (by === "length") {
+        return direction === "desc" ? b.length - a.length : a.length - b.length;
+    } else if (by === "dimensions") {
+        const areaA = a.height * a.width;
+        const areaB = b.height * b.width;
+        return direction === "desc" ? areaB - areaA : areaA - areaB;
+    } else if (by === "dateModified" || by === "dateCreated") {
+        const timestampA = new Date(a[by]).getTime();
+        const timestampB = new Date(b[by]).getTime();
+        return direction === "desc" ? timestampB - timestampA : timestampA - timestampB;
+    }
+}
+
