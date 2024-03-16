@@ -35,6 +35,10 @@ const UserSettings = sequelize.define('UserSettings', {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
     },
+    newWindowFileOpen: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+    },
     adminMode: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
