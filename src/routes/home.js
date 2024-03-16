@@ -7,7 +7,7 @@ const { join, extname, relative } = require("path");
 const sharp = require('sharp');
 const ffprobe = require('node-ffprobe')
 
-const textDocumentFiles = readFileSync(__dirname + "/../dist/json/txtDocumentExtensionMap.json")
+const fileExtentionMap = JSON.parse(readFileSync(__dirname + "/../dist/json/fileExtensionMap.json"))
 
 module.exports = {
     name: "Home",
@@ -65,10 +65,9 @@ module.exports = {
 
             for (const entry of entries) {
                 const entryPath = join(directory, entry);
-                let entryRelativePath = relative(userFolderPath, entryPath);
+                let entryRelativePath = relative(userFolderPath, entryPath).toString().replace(/\\/g, "/");
                 const isDirectory = statSync(entryPath).isDirectory();
 
-                entryRelativePath = entryRelativePath.toString().replace(/\\/g, "/");
 
                 let url = "assets/icons/other.png";
                 let relativePath = "";
@@ -83,7 +82,7 @@ module.exports = {
                     relativePath = `/folder/folder?path=${entryRelativePath}`
                     url = "icons/folder.png";
                     type = "folder";
-                } else if (extnameS === ".jpg" || extnameS === ".jfif" || extnameS === ".jpeg" || extnameS === ".png" || extnameS === ".gif" || extnameS === ".webp") {
+                } else if (fileExtentionMap["image"].toString().includes(extnameS)) {
                     relativePath = `/image?path=${entryRelativePath}`
                     url = "icons/image.png"
                     type = "image";
@@ -91,7 +90,7 @@ module.exports = {
                     const dimensions = await sharp(entryPath).metadata();
                     height = dimensions.height;
                     width = dimensions.width;
-                } else if (extnameS === ".mp4" || extnameS === ".mp4a" || extnameS === ".avi" || extnameS === ".mov") {
+                } else if (fileExtentionMap["video"].toString().includes(extnameS)) {
                     relativePath = `/video?path=${entryRelativePath}`
                     url = "icons/video.png";
                     type = "video";
@@ -102,11 +101,11 @@ module.exports = {
                     length = metadata.format.duration || 1;
                     height = dimensions.height || dimensions2.height || 100;
                     width = dimensions.width || dimensions2.width || 300;
-                } else if (extnameS === ".mp3" || extnameS === ".wav" || extnameS === ".ogg" || extnameS === ".flac" || extnameS === ".m4a") {
+                } else if (fileExtentionMap["audio"].toString().includes(extnameS)) {
                     relativePath = `/audio?path=${entryRelativePath}`
                     url = "icons/audio.png";
                     type = "audio";
-                } else if (textDocumentFiles.toString().includes(extnameS)) {
+                } else if (fileExtentionMap["document"].toString().includes(extnameS)) {
                     relativePath = `/document?path=${entryRelativePath}`
                     url = "icons/document.png";
                     type = "document";
@@ -125,7 +124,6 @@ module.exports = {
                     width: isDirectory ? null : width,
                     dateModified: statSync(entryPath).mtimeMs,
                     dateCreated: statSync(entryPath).birthtimeMs,
-                    dateAccessed: statSync(entryPath).atimeMs,
                     redirect: relativePath,
                     path: entryRelativePath,
                     imageurl: url,
