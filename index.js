@@ -136,7 +136,7 @@ BeforeStart().then(() => {
             }
         })
         app.use(function (req, res, next) {
-            res.status(404).render("404.ejs", { body: ["404 | Chmura"], loggedIn: false })
+            res.status(404).send("404 Not Found")
         });
         console.log(gray("[ROUTING]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
 
