@@ -50,7 +50,7 @@ module.exports = {
         if (password1 !== password2) return res.redirect("/signup?error=PASSWORD_NOT_MATCH_SIGNUP")
 
         const WhitelistedS = await Whitelisted.findOne({ where: { email: email } })
-        if (!WhitelistedS) return res.redirect("/signup?error=EMAIL_NOT_WHITELISTED")
+        if (!WhitelistedS && !User.findOne({ where: { email: email } }).admin) return res.redirect("/signup?error=EMAIL_NOT_WHITELISTED")
 
         try {
             const UserFind = await User.findOne({ where: { email: email } })
