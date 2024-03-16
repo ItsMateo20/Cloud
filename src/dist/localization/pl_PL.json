@@ -1,7 +1,6 @@
 {
     "Main": {
         "Title": "Chmura",
-        "LoadingMessage": "Wczytywanie...",
         "Directory": "Katalog",
         "OldPassword": "Stare Hasło",
         "RepeatOldPassword": "Powtórz Stare Hasło",
@@ -13,6 +12,7 @@
         "AdminMenuTitle": "Menu Administratora",
         "WhitelistMenuTitle": "Menu Białej Listy",
         "SortingMenuTitle": "Menu Sortowania",
+        "FileWindowTitle": "Okno Pliku",
         "Add": "Dodaj",
         "Back": "Powrót",
         "EditFiles": "Edytuj Pliki",

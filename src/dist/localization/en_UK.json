@@ -1,7 +1,6 @@
 {
     "Main": {
         "Title": "Cloud",
-        "LoadingMessage": "Loading...",
         "Directory": "Directory",
         "OldPassword": "Old Password",
         "RepeatOldPassword": "Repeat Old Password",
@@ -13,6 +12,7 @@
         "AdminMenuTitle": "Admin Menu",
         "WhitelistMenuTitle": "Whitelist Menu",
         "SortingMenuTitle": "Sorting Menu",
+        "FileWindowTitle": "File Window",
         "Add": "Add",
         "Back": "Back",
         "EditFiles": "Edit Files",
