@@ -2,7 +2,7 @@ const User = require("../models/User.js");
 const UserSettings = require("../models/UserSettings.js");
 const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
-const { readdirSync, mkdirSync, statSync, existsSync, readFileSync } = require("fs");
+const { readdirSync, mkdirSync, statSync, readFileSync } = require("fs");
 const { join, extname, relative } = require("path");
 const sharp = require('sharp');
 const ffprobe = require('node-ffprobe')
@@ -53,7 +53,7 @@ module.exports = {
         const folderPath = `${userFolderPath}${folder}`;
 
         try {
-            await existsSync(folderPath)
+            await readdirSync(folderPath)
         } catch (e) {
             res.clearCookie('folder');
             return res.redirect("/?error=INVALID_FOLDER")

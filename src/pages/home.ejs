@@ -19,8 +19,14 @@
 	<body class="app-light-theme user-select-none">
 		<div id="loading">
 			<div class="text-center position-absolute top-50 start-50 translate-middle ">
-				<div class="spinner-border" role="status"></div>
-				<p data-localize="LoadingMessage">Wczytywanie...</p>
+				<div class="wrapper">
+					<div class="circle"></div>
+					<div class="circle"></div>
+					<div class="circle"></div>
+					<div class="shadow"></div>
+					<div class="shadow"></div>
+					<div class="shadow"></div>
+				</div>
 			</div>
 		</div>
 		<div class="app-container">
@@ -164,6 +170,11 @@
 												<span data-localize="ShowThumbnails">Pokaż Miniatury</span>
 												<i class="bi"></i>
 											</li>
+											<li class="dropdown-item user-select-none"
+												id="newWindowFileOpenSettingButton">
+												<span data-localize="newWindow">Nowe okno</span>
+												<i class="bi"></i>
+											</li>
 											<li class="dropdown-item user-select-none" data-bs-toggle="offcanvas"
 												data-bs-target="#offcanvasSortingMenu"
 												aria-controls="offcanvasSortingMenu">
@@ -193,6 +204,25 @@
 					</div>
 				</div>
 			</nav>
+			<div class="fileWindowOverlay d-none" id="fileWindowOpenMain">
+				<div class="fileWindowOpen">
+					<div class="fileWindowHeader">
+						<h5 class="fileWindowHeaderTitle" data-localize="FileWindowTitle">Okno Pliku</h5>
+						<button type="button" class="btn-close" id="closeFileWindow"></button>
+					</div>
+					<div class="fileWindowBody">
+						<img src="" alt title class="fileWindowBodyContentImage d-none" id="fileWindowImage">
+						<video controls class="fileWindowBodyContentVideo d-none" id="fileWindowVideo">
+							Your browser does not support the video tag.
+						</video>
+						<audio controls class="fileWindowBodyContentAudio d-none" id="fileWindowAudio">
+							Your browser does not support the audio tag.
+						</audio>
+						<iframe src="" title class="fileWindowBodyContentDocument d-none"
+							id="fileWindowDocument"></iframe>
+					</div>
+				</div>
+			</div>
 			<div class="cloud">
 				<div class="cloudBody app-row row-cols-auto" id="cloudBody">
 					<% for (let i=0; i < items.length; i++) { %>
@@ -243,7 +273,8 @@
 		<div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasSortingMenu"
 			aria-labelledby="offcanvasSortingMenuLabel">
 			<div class="offcanvas-header">
-				<h5 class="offcanvas-title " id="offcanvasSortingMenuLabel" data-localize="SortingMenuTitle"> Menu
+				<h5 class="offcanvas-title " id="offcanvasSortingMenuLabel" data-localize="SortingMenuTitle">
+					Menu
 					Sortowania</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>

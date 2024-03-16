@@ -31,6 +31,11 @@ const downloadBtn = document.getElementById('downloadButton');
 
 const darkThemeBtn = document.getElementById('darkThemeSettingButton');
 const showImageBtn = document.getElementById('showImageSettingButton');
+const newWindowFileOpenBtn = document.getElementById('newWindowFileOpenSettingButton');
+
+//divs
+
+const closeFileWindow = document.getElementById('closeFileWindow');
 
 //handle window events
 
@@ -65,6 +70,7 @@ function loadSettings() {
                 if (localButton) localButton.classList.add('active');
                 document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
 
+
                 const SortingTypeButton = document.getElementById(settings.sortingBy);
                 if (SortingTypeButton) SortingTypeButton.checked = true;
                 const SortingDirectionButton = document.getElementById(settings.sortingDirection);
@@ -79,6 +85,14 @@ function loadSettings() {
                 } else if (settings.showImage == false) {
                     showImageBtn.dataset.value = "false";
                     showImageBtn.querySelector('i').classList.add('bi-x');
+                }
+
+                if (settings.newWindowFileOpen == true) {
+                    newWindowFileOpenBtn.dataset.value = "true";
+                    newWindowFileOpenBtn.querySelector('i').classList.add('bi-check');
+                } else if (settings.newWindowFileOpen == false) {
+                    newWindowFileOpenBtn.dataset.value = "false";
+                    newWindowFileOpenBtn.querySelector('i').classList.add('bi-x');
                 }
 
 
@@ -313,8 +327,46 @@ function handleItemClick(event) {
             window.location.href = clickedItemPath.trim();
             return event.stopPropagation();
         } else {
-            window.open(clickedItemPath.trim(), "_blank", `location=yes,height=${clickedItemHeight},width=${clickedItemWidth},status=yes`);
-            return event.stopPropagation();
+            items.forEach(item => {
+                item.classList.remove('cloudItemContainerSelected');
+            })
+            if (settings.newWindowFileOpen == true) {
+                window.open(clickedItemPath.trim(), "_blank", `location=yes,height=${clickedItemHeight},width=${clickedItemWidth},status=yes`);
+            } else if (settings.newWindowFileOpen == false) {
+                document.getElementById('fileWindowOpenMain').classList.remove('d-none');
+                if (clickedItemType === "image") {
+                    const fileWindowImage = document.getElementById('fileWindowImage');
+                    fileWindowImage.classList.remove('d-none');
+                    fileWindowImage.src = clickedItemPath.trim();
+                    fileWindowImage.alt = clickedItem.dataset.filename;
+                    fileWindowImage.title = clickedItem.dataset.filename;
+                    fileWindowImage.height = clickedItemHeight;
+                    fileWindowImage.width = clickedItemWidth;
+                    return event.stopPropagation();
+                } else if (clickedItemType === "video") {
+                    const fileWindowVideo = document.getElementById('fileWindowVideo');
+                    fileWindowVideo.classList.remove('d-none');
+                    fileWindowVideo.src = clickedItemPath.trim();
+                    fileWindowVideo.alt = clickedItem.dataset.filename;
+                    fileWindowVideo.title = clickedItem.dataset.filename;
+                    fileWindowVideo.height = clickedItemHeight;
+                    fileWindowVideo.width = clickedItemWidth;
+                    return event.stopPropagation();
+                } else if (clickedItemType === "audio") {
+                    const fileWindowAudio = document.getElementById('fileWindowAudio');
+                    fileWindowAudio.classList.remove('d-none');
+                    fileWindowAudio.src = clickedItemPath.trim();
+                    fileWindowAudio.alt = clickedItem.dataset.filename;
+                    fileWindowAudio.title = clickedItem.dataset.filename;
+                    return event.stopPropagation();
+                } else if (clickedItemType === "document") {
+                    const fileWindowDocument = document.getElementById('fileWindowDocument');
+                    fileWindowDocument.classList.remove('d-none');
+                    fileWindowDocument.src = clickedItemPath.trim();
+                    fileWindowDocument.title = clickedItem.dataset.filename;
+                    return event.stopPropagation();
+                }
+            }
         }
     } else {
         items.forEach(item => {
@@ -324,6 +376,24 @@ function handleItemClick(event) {
         setDisabledState(false);
         return event.stopPropagation();
     }
+}
+
+closeFileWindow.addEventListener('click', handleCloseFileWindow, { passive: true });
+
+function handleCloseFileWindow(event) {
+    document.getElementById('fileWindowOpenMain').classList.add('d-none');
+    const fileWindowImage = document.getElementById('fileWindowImage');
+    const fileWindowVideo = document.getElementById('fileWindowVideo');
+    const fileWindowAudio = document.getElementById('fileWindowAudio');
+    const fileWindowDocument = document.getElementById('fileWindowDocument');
+    if (!fileWindowImage.classList.contains('d-none')) fileWindowImage.classList.add('d-none');
+    if (!fileWindowVideo.classList.contains('d-none')) fileWindowVideo.classList.add('d-none');
+    if (!fileWindowAudio.classList.contains('d-none')) fileWindowAudio.classList.add('d-none');
+    if (!fileWindowDocument.classList.contains('d-none')) fileWindowDocument.classList.add('d-none');
+    fileWindowImage.src = '';
+    fileWindowVideo.src = '';
+    fileWindowAudio.src = '';
+    fileWindowDocument.src = '';
 }
 
 function handleBodyClick(event) {
@@ -588,7 +658,6 @@ function handleDarkThemeClick(event) {
     })
 }
 
-
 // handle sorting
 const sortingTypeBy = document.querySelectorAll('input[name="SortingTypeBy"]');
 sortingTypeBy.forEach((input) => {
@@ -616,7 +685,7 @@ function handleSortingTypeByChange({ target }) {
     });
 }
 
-// handle direction
+// handle direction for sorting
 const sortingDirection = document.querySelectorAll('input[name="SortingDirection"]');
 sortingDirection.forEach((input) => {
     input.addEventListener('change', handleSortingDirectionChange, { passive: true });
@@ -672,6 +741,42 @@ function handleShowImageClick(event) {
             headers: { 'Content-Type': 'application/json' },
             method: 'post',
             body: JSON.stringify({ _csrf: csrfToken, value: showImageBtn.dataset.value.toString() }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success === false) {
+                    getErrorMessage(data.message);
+                }
+            });
+    })
+}
+
+// handle new window file open button
+
+newWindowFileOpenBtn.addEventListener('click', handleNewWindowFileOpenClick, { passive: true });
+
+function handleNewWindowFileOpenClick(event) {
+    const newWindowFileOpenSettingStatus = newWindowFileOpenBtn.querySelector('i')
+
+    if (newWindowFileOpenBtn.dataset.value === "true") {
+        newWindowFileOpenBtn.dataset.value = "false";
+        settings.newWindowFileOpen = false;
+        newWindowFileOpenSettingStatus.classList.toggle('bi-x');
+        newWindowFileOpenSettingStatus.classList.toggle('bi-check');
+    } else if (newWindowFileOpenBtn.dataset.value === "false") {
+        newWindowFileOpenBtn.dataset.value = "true";
+        settings.newWindowFileOpen = true;
+        newWindowFileOpenSettingStatus.classList.toggle('bi-check');
+        newWindowFileOpenSettingStatus.classList.toggle('bi-x');
+    }
+
+    setDisabledState(true);
+
+    GetCsrfToken().then((csrfToken) => {
+        fetch("/api/user?action=settings&action2=newWindowFileOpen", {
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify({ _csrf: csrfToken, value: newWindowFileOpenBtn.dataset.value.toString() }),
         }).then((response) => response.json())
             .then((data) => {
                 if (data.success === false) {
