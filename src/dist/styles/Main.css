@@ -13,10 +13,6 @@ body {
 
 :root .app-light-theme {
     --app-body-bg: #ffffff;
-    /* --app-loading-color: #555555;
-    --app-loading-bg: rgba(255, 255, 255, 0.9); */
-    --app-loading-color: #c8c8c8;
-    --app-loading-bg: rgba(30, 30, 30, 0.9);
 
     --app-card-shadow: 15px 15px 51px #cccccc,
         -15px -15px 51px #ffffff;
@@ -34,8 +30,6 @@ body {
 
 :root .app-dark-theme {
     --app-body-bg: #353535;
-    --app-loading-color: #c8c8c8;
-    --app-loading-bg: rgba(30, 30, 30, 0.9);
 
     --app-card-shadow: 15px 15px 51px #1d1d1d,
         -15px -15px 51px #4d4d4d;
@@ -186,16 +180,22 @@ a.navbar-text:hover {
 
 
 div#loading {
-    height: 100%;
-    width: 100%;
-    position: absolute !important;
-    background: var(--app-loading-bg);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(30, 30, 30, 0.9);
+    ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
 }
 
 div#loading div {
-    color: var(--app-loading-color);
-    z-index: 1000;
+    color: #c8c8c8;
+    z-index: 1001;
 }
 
 .spinner-border {
