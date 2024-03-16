@@ -69,32 +69,13 @@ async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder,
             await data.save();
             return res.status(200).json({ success: true, message: "PASSWORD_CHANGED" });
         } else if (req.query.action == "settings") {
-            if (req.query.action2 === "showImage") {
-                const { value } = req.body;
-                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
-                let newValue
-                if (value.toString() === "true") newValue = true
-                if (value.toString() === "false") newValue = false
-                UserSettingsS.showImage = newValue
-                await UserSettingsS.save()
-                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
-            } else if (req.query.action2 === "darkMode") {
+            if (req.query.action2 === "darkMode") {
                 const { value } = req.body;
                 if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
                 let newValue
                 if (value.toString() === "true") newValue = true
                 if (value.toString() === "false") newValue = false
                 UserSettingsS.darkMode = newValue
-                await UserSettingsS.save()
-                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
-            } else if (req.query.action2 === "adminMode") {
-                if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
-                const { value } = req.body;
-                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
-                let newValue
-                if (value.toString() === "true") newValue = true
-                if (value.toString() === "false") newValue = false
-                UserSettingsS.adminMode = newValue
                 await UserSettingsS.save()
                 res.status(200).json({ success: true, message: "UPDATED_SETTING" })
             } else if (req.query.action2 === "localization") {
@@ -112,7 +93,38 @@ async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder,
                 UserSettingsS.sortingDirection = value
                 await UserSettingsS.save()
                 res.status(200).json({ success: true, message: "UPDATED_SETTING" })
-            } else if (req.query.action2 === "get") return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode: UserSettingsS.darkMode, localization: UserSettingsS.localization, sortingBy: UserSettingsS.sortingBy, sortingDirection: UserSettingsS.sortingDirection, showImage: UserSettingsS.showImage, adminMode: UserSettingsS.adminMode } })
+            } else if (req.query.action2 === "showImage") {
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.showImage = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "newWindowFileOpen") {
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.newWindowFileOpen = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "adminMode") {
+                if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
+                const { value } = req.body;
+                if (value.toString() !== "true" && value.toString() !== "false") return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+                let newValue
+                if (value.toString() === "true") newValue = true
+                if (value.toString() === "false") newValue = false
+                UserSettingsS.adminMode = newValue
+                await UserSettingsS.save()
+                res.status(200).json({ success: true, message: "UPDATED_SETTING" })
+            } else if (req.query.action2 === "get") {
+                const { darkMode, localization, sortingBy, sortingDirection, showImage, newWindowFileOpen, adminMode } = UserSettingsS
+                return res.status(200).json({ success: true, info: { admin: data.admin }, settings: { darkMode, localization, sortingBy, sortingDirection, showImage, newWindowFileOpen, adminMode } })
+            } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
         } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
     } else if (req.params.id == "admin") {
         if (!data.admin) return res.status(500).json({ success: false, message: "ACCESS_DENIED" });
