@@ -26,6 +26,11 @@ body {
     --app-dropdownmenu-bg: #ffffff;
     --app-dropdownitem-text-disabled-color: #cccccc;
     --app-dropdownitem-hover: #e6e6e6;
+
+    --app-window-bg: #ffffff;
+    --app-window-color: #555555;
+    --app-window-shadow: 15px 15px 51px #cccccc,
+        -15px -15px 51px #ffffff;
 }
 
 :root .app-dark-theme {
@@ -44,6 +49,11 @@ body {
     --app-dropdownitem-text-disabled-color: #5f5e5e;
     --app-dropdownitem-hover-text: #c8c8c8;
     --app-dropdownitem-hover: #323232;
+
+    --app-window-bg: #2e2e2e;
+    --app-window-color: #c8c8c8;
+    --app-window-shadow: 15px 15px 51px #1d1d1d,
+        -15px -15px 51px #4d4d4d;
 }
 
 
@@ -88,7 +98,7 @@ body {
     border-radius: 10px;
     color: var(--app-navbar-color);
     background: var(--app-navbar-bg);
-    box-shadow: var(--app-card-shadow);
+    box-shadow: var(--app-window-shadow);
 }
 
 .navbar-brand {
@@ -186,7 +196,6 @@ div#loading {
     top: 0;
     left: 0;
     background: rgba(30, 30, 30, 0.9);
-    ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -198,13 +207,161 @@ div#loading div {
     z-index: 1001;
 }
 
-.spinner-border {
-    color: #007bff;
+.wrapper {
+    width: 200px;
+    height: 60px;
+    position: relative;
+    z-index: 1;
 }
+
+.circle {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border-radius: 50%;
+    background-color: #fff;
+    left: 15%;
+    transform-origin: 50%;
+    animation: circle7124 .5s alternate infinite ease;
+}
+
+@keyframes circle7124 {
+    0% {
+        top: 60px;
+        height: 5px;
+        border-radius: 50px 50px 25px 25px;
+        transform: scaleX(1.7);
+    }
+
+    40% {
+        height: 20px;
+        border-radius: 50%;
+        transform: scaleX(1);
+    }
+
+    100% {
+        top: 0%;
+    }
+}
+
+.circle:nth-child(2) {
+    left: 45%;
+    animation-delay: .2s;
+}
+
+.circle:nth-child(3) {
+    left: auto;
+    right: 15%;
+    animation-delay: .3s;
+}
+
+.shadow {
+    width: 20px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.9);
+    position: absolute;
+    top: 62px;
+    transform-origin: 50%;
+    z-index: -1;
+    left: 15%;
+    filter: blur(1px);
+    animation: shadow046 .5s alternate infinite ease;
+}
+
+@keyframes shadow046 {
+    0% {
+        transform: scaleX(1.5);
+    }
+
+    40% {
+        transform: scaleX(1);
+        opacity: .7;
+    }
+
+    100% {
+        transform: scaleX(.2);
+        opacity: .4;
+    }
+}
+
+.shadow:nth-child(4) {
+    left: 45%;
+    animation-delay: .2s
+}
+
+.shadow:nth-child(5) {
+    left: auto;
+    right: 15%;
+    animation-delay: .3s;
+}
+
 
 p {
     font-weight: bold;
 }
+
+
+.fileWindowOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 30, 30, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.fileWindowOpen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border-radius: 10px;
+    background: var(--app-window-bg);
+    box-shadow: var(--app-window-shadow);
+    min-width: 300px;
+    min-height: 100px;
+    padding: 20px;
+}
+
+.fileWindowHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    color: var(--app-window-color);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.fileWindowHeaderTitle {
+    margin: 0;
+}
+
+.fileWindowBody {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.fileWindowBodyContentImage,
+.fileWindowBodyContentVideo,
+.fileWindowBodyContentDocument {
+    border-radius: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .fileWindowOpen {
+        width: 90%;
+        height: 90%;
+    }
+}
+
 
 
 .cloud {
