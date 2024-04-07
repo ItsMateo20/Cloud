@@ -8,10 +8,20 @@ module.exports = {
     name: "Api",
     url: "/api/:id",
     run: async (req, res) => {
-        await ApiFunction(req, res, await Auth(req, res));
+        if (req.params.id == "env") {
+            if (req.query.action == "get") {
+                const { DEFAULT_LANGUAGE } = process.env;
+                return res.status(200).json({ success: true, env: { DEFAULT_LANGUAGE } });
+            } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+        } else await ApiFunction(req, res, await Auth(req, res));
     },
     run2: async (req, res) => {
-        await ApiFunction(req, res, await Auth(req, res));
+        if (req.params.id == "env") {
+            if (req.query.action == "get") {
+                const { DEFAULT_LANGUAGE } = process.env;
+                return res.status(200).json({ success: true, env: { DEFAULT_LANGUAGE } });
+            } else return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" })
+        } else await ApiFunction(req, res, await Auth(req, res));
     }
 }
 
