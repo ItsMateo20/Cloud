@@ -1,5 +1,16 @@
 const urlParams = new URLSearchParams(window.location.search);
-let localizationFile = `localization/pl_PL.json`
+let localizationFile = "localization/pl_PL.json"
+fetch("/api/env?action=get", {
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    method: 'get',
+}).then((response) => response.json())
+    .then((data) => {
+        if (data.success) {
+            localizationFile = `localization/${data.env.DEFAULT_LANGUAGE}.json`
+        }
+    });
+
 
 const textDiv = document.getElementById('message');
 

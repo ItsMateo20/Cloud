@@ -69,6 +69,7 @@ function loadSettings() {
                 const localButton = document.querySelector(`[data-local="${settings.localization}"]`);
                 if (localButton) localButton.classList.add('active');
                 document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
+                local = settings.localization;
 
 
                 const SortingTypeButton = document.getElementById(settings.sortingBy);

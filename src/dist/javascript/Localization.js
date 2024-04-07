@@ -1,6 +1,17 @@
 const elements = document.querySelectorAll('[data-localize]');
 const inputElements = document.querySelectorAll('[data-localize-placeholder]');
-let local = 'pl_PL';
+let local = "pl_PL";
+fetch("/api/env?action=get", {
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    method: 'get',
+}).then((response) => response.json())
+    .then((data) => {
+        if (data.success) {
+            local = data.env.DEFAULT_LANGUAGE;
+            localize();
+        }
+    });
 let localization = {};
 
 const localButton = document.querySelectorAll('[id=localButton]');
@@ -43,7 +54,6 @@ async function changeLocal(event) {
 }
 
 async function localize() {
-    local = settings.localization || 'pl_PL';
     localizationFile = `localization/${local}.json`
     localization = await fetch('localization/' + local + '.json').then((response) => response.json())
     const fetchPromises = Array.from(elements).map(async element => {
