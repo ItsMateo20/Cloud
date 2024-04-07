@@ -21,7 +21,7 @@ const UserSettings = sequelize.define('UserSettings', {
     },
     localization: {
         type: Sequelize.STRING,
-        defaultValue: 'pl_PL',
+        defaultValue: process.env.DEFAULT_LANGUAGE,
     },
     sortingBy: {
         type: Sequelize.STRING,
