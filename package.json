@@ -2,11 +2,10 @@
   "scripts": {
     "start": "node index.js",
     "setup": "node index.js --setup",
-    "dev": "nodemon index.js --dev",
-    "changeSettings": "node ./src/changeSettings.js"
+    "dev": "nodemon index.js --dev"
   },
   "name": "cloud",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Cloud files",
   "main": "index.js",
   "repository": {
@@ -39,7 +38,6 @@
     "archiver": "^6.0.1",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.6",
-    "crypto": "^1.0.1",
     "discord-rich-presence": "^0.0.8",
     "dotenv": "^16.4.4",
     "ejs": "^3.1.9",
