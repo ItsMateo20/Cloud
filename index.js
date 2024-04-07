@@ -92,8 +92,8 @@ BeforeStart().then(() => {
         const UserS = await User.findOne({ where: { email: username, password: password } })
         const WhitelistedS = await Whitelisted.findOne({ where: { email: username } })
         if (!UserS || !WhitelistedS) return
-        if (UserS && UserS.admin == true) return resolve({ root: process.env.USERS_ADMIN_DIR });
-        if (UserS) return resolve({ root: __dirname + `/${process.env.USERS_DIR}${username}/` });
+        if (UserS && UserS.admin == true) return resolve({ root: __dirname + `${process.env.USERS_DIR}/` });
+        if (UserS) return resolve({ root: __dirname + `${process.env.USERS_DIR}${username}/` });
         return
     })
 
