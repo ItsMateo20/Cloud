@@ -1,60 +1,50 @@
 const fs = require('fs');
 const crypto = require('crypto');
 
-
-function generateSecret(value) {
-    return crypto.randomBytes(value).toString('hex');
+function generateSecret(length) {
+    return crypto.randomBytes(length).toString('hex');
 }
 
 function setup() {
     if (process.env.DISCORD_ACTIVITY === "true") {
-        const { updateState } = require("./src/DiscordActivity.js")
-        updateState("Setting up Cloud Server...")
+        const { updateState } = require("./src/DiscordActivity.js");
+        updateState("Setting up Cloud Server...");
     }
     return new Promise((resolve, reject) => {
-        fs.rename('./.env.example', './.env', (err) => {
+        fs.readFile('./.env.example', 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 reject(err);
                 return;
             }
 
-            const content = `
+            const newContent = data.replace(/({32bit secret}|{64bit secret})/g, function (match) {
+                return match === "{32bit secret}" ? generateSecret(16) : generateSecret(32);
+            });
 
-USERS_DIR=".././Users/"
-CHECKVERSION="true"
-DISCORD_ACTIVITY="false"
-FTP_SERVER="false"
-LOGGED_IN_TIMEOUT_MS="86400000"
-
-PORT="3000"
-FTP_PORT="3001"
-
-COOKIE_SECRET="${generateSecret(16)}"
-SESSION_SECRET="${generateSecret(16)}"
-CSRF_SECRET="${generateSecret(16)}"
-
-JWTALGORITHM="HS256"
-JWTSECRET="${generateSecret(32)}"
-JWTEXPIRESIN="1d"
-`;
-
-            fs.mkdir('../Users', (err) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                    return;
-                }
-            })
-
-            fs.writeFile('./.env', content, (err) => {
-                if (err) {
+            fs.mkdir('./Users', (err) => {
+                if (err && err.code !== 'EEXIST') {
                     console.error(err);
                     reject(err);
                     return;
                 }
 
-                resolve(true);
+                fs.writeFile('./.env', newContent, (err) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    fs.unlink('./.env.example', (err) => {
+                        if (err) {
+                            console.error(err);
+                            reject(err);
+                            return;
+                        }
+                        resolve(true);
+                    });
+                });
             });
         });
     });
