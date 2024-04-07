@@ -1,0 +1,94 @@
+---
+description: How to configure your server
+---
+
+# ⚙️ Configuration
+
+{% hint style="danger" %}
+Don't edit this file if you don't know what you're doing. It might effect your file security!
+{% endhint %}
+
+### USERS\_DIR
+
+```properties
+USERS_DIR="./Users/"
+```
+
+This setting determines where the users directory will be located. By default, it is appended as `./Users/`(The folder will be in the server directory)
+
+### CHECKVERSION
+
+```properties
+CHECKVERSION="true"
+```
+
+This setting determines whether you want to check the version of your server every time you start it up.
+
+### DISCORD\_ACTIVITY
+
+```properties
+DISCORD_ACTIVITY="false"
+```
+
+This setting determines whether you want to display on Discord that your server is running. (Requires Discord to be installed)
+
+### FTP\_SERVER
+
+```properties
+FTP_SERVER="true"
+```
+
+This setting determines whether the FTP server is enabled.
+
+### LOGGED\_IN\_TIMEOUT\_MS
+
+```properties
+LOGGED_IN_TIMEOUT_MS="604800000" # 7 Days in miliseconds
+```
+
+This setting determines the duration after which you will be automatically logged out of your account if logged in. You can use an online tool to convert days, hours, secounds into miliseconds.
+
+### DEFAULT\_LANGUAGE
+
+```properties
+DEFAULT_LANGUAGE="pl_PL"
+```
+
+This setting determines the default language for the entire server and webpage.
+
+### PORT and FTP\_PORT
+
+```properties
+PORT="3000"
+FTP_PORT="3001"
+```
+
+These settings determine the network ports on which the server and FTP server will be running.
+
+### COOKIE\_SECRET, SESSION\_SECRET, CSRF\_SECRET and JWTSECRET
+
+```properties
+COOKIE_SECRET="14c92838e26216d3c5978219af06cd65"
+SESSION_SECRET="15f81542869a975cdee080537a1eb1da"
+CSRF_SECRET="f0885d49275252e1d8d0633d780bd5d8"
+
+JWTSECRET="93c66e63fbd0399c2b347d7a58f065d9c13a84c86c2b22fad2452d50b316c8d9"
+```
+
+These are the secrets for cookies, sessions, CSRF tokens, and JWT. They consist of a set of random characters that are then hashed into tokens and IDs. They protect your email and password from being unhashed and discovered. Do not share them!
+
+### JWTALGORITHM
+
+```properties
+JWTALGORITHM="H256"
+```
+
+This is the algorithm used to hash your email and password with the above secret, ensuring they cannot be cracked or discovered.
+
+### JWTEXPIRESIN
+
+```properties
+JWTEXPIRESIN="1d"
+```
+
+Similarly to `LOGGED_IN_TIMEOUT_MS`, ensure that they are set to the same value in normal format to avoid interference. For example, '1d' represents 1 day and '60h' represents 60 hours.&#x20;
