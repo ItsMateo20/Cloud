@@ -36,11 +36,12 @@
         "EmailAdress": "Email Address",
         "Password": "Password",
         "EnterNewName": "Enter new name for",
-        "EnterEmail": "Enter email address",
-        "EnterPassword": "Enter password",
-        "PleaseEnterEmail": "Please enter email address",
-        "PleaseEnterPassword": "Please enter password",
-        "PleaseRepeatPassword": "Please repeat password",
+        "EnterEmail": "Enter your email address",
+        "EnterPassword": "Enter your password",
+        "RepeatPassword": "Repeat your password",
+        "PleaseEnterEmail": "Please enter your email address",
+        "PleaseEnterPassword": "Please enter your password",
+        "PleaseRepeatPassword": "Please repeat your password",
         "ConfirmDeletionOfFolder": "Are you sure you want to delete the folder",
         "ConfirmDeletionOfFile": "Are you sure you want to delete the file",
         "NotGiveAwayEmailAdress": "We do not give away your email address",
@@ -59,8 +60,11 @@
     },
     "Pages": {
         "Home": "Home",
+        "Strona główna": "Home",
         "Login": "Login",
-        "SignUp": "Sign Up"
+        "Zaloguj się": "Log in",
+        "SignUp": "Sign Up",
+        "Zarejestruj się": "Sign up"
     },
     "Errors": {
         "MISSING_DATA_LOGIN": "Sorry, you must enter all required data.",

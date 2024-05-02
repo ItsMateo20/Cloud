@@ -36,11 +36,12 @@
         "EmailAdress": "Adres E-mail",
         "Password": "Hasło",
         "EnterNewName": "Wprowadź nową nazwę",
-        "EnterEmail": "Wprowadź adres e-mail",
-        "EnterPassword": "Wprowadź hasło",
-        "PleaseEnterEmail": "Proszę podać adres e-mail",
-        "PleaseEnterPassword": "Wprowadź Hasło",
-        "PleaseRepeatPassword": "Proszę Powtórz Hasło",
+        "EnterEmail": "Wprowadź swój adres e-mail",
+        "EnterPassword": "Wprowadź swoje hasło",
+        "RepeatPassword": "Powtórz swoje hasło",
+        "PleaseEnterEmail": "Proszę podać swój adres e-mail",
+        "PleaseEnterPassword": "Wprowadź swoje hasło",
+        "PleaseRepeatPassword": "Proszę powtórz swoje hasło",
         "ConfirmDeletionOfFolder": "Czy na pewno chcesz usunąć folder",
         "ConfirmDeletionOfFile": "Czy na pewno chcesz usunąć plik",
         "NotGiveAwayEmailAdress": "Nie podajemy twojego adresu e-mail nikomu",
@@ -60,7 +61,9 @@
     "Pages": {
         "Home": "Strona główna",
         "Login": "Zaloguj się",
-        "SignUp": "Zarejestruj się"
+        "Log In": "Zaloguj się",
+        "SignUp": "Zarejestruj się",
+        "Sign Up": "Zarejestruj się"
     },
     "Errors": {
         "MISSING_DATA_LOGIN": "Przepraszamy, musisz wprowadzić wszystkie wymagane dane.",
