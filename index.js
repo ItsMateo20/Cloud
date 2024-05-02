@@ -20,13 +20,13 @@ async function BeforeStart() {
         }).catch((err) => {
             console.log(err)
         })
-    } else console.log(gray("[VERSION]: ") + cyan("Version check disabled.\n") + gray("<------------------------------------------------------>"))
+    }
 
     if (process.env.DISCORD_ACTIVITY == "true") {
         const { deploy } = require("./src/DiscordActivity.js")
         await deploy()
         console.log(gray("[DISCORD]: ") + cyan("Discord activity connection complete.\n") + gray("<------------------------------------------------------>"))
-    } else console.log(gray("[DISCORD]: ") + cyan("Discord activity disabled.\n") + gray("<------------------------------------------------------>"))
+    }
 }
 
 BeforeStart().then(() => {
