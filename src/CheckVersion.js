@@ -54,7 +54,19 @@ async function checkForUpdates() {
     const latestVersion = await fetchLatestVersion();
     if (latestVersion && isOutdated(currentVersion, latestVersion)) {
         const releaseUrl = `https://github.com/ItsMateo20/Cloud/archive/refs/tags/${latestVersion}.zip`;
-        return console.log(gray("[VERSION]: ") + red("You are using an outdated version. ") + gray(`(${red(currentVersion)} -> ${green(latestVersion)})`) + gray("\n[VERSION]: ") + red(`Please download the update at ${gray(releaseUrl)}`));
+        console.log(gray("[VERSION]: ") + red("You are using an outdated version. ") + gray(`(${red(currentVersion)} -> ${green(latestVersion)})`));
+        if (process.env.AUTO_UPDATE === "true") {
+            console.log(gray("[VERSION]: ") + cyan("Starting auto-update..."));
+            try {
+                await require("./autoUpdate.js").downloadAndApplyUpdate(latestVersion);
+            } catch (error) {
+                console.error(gray("[VERSION]: ") + red(`Error applying update: ${error}`) + gray(`\nPlease download the update manually at ${releaseUrl} and follow the instructions on our gitbook guide https://itsmateo20.gitbook.io/cloud/guides/server/migrating`));
+            } finally {
+                return process.exit(0);
+            }
+        } else {
+            console.log(gray("[VERSION]: ") + red(`To automatically update, set the AUTOUPDATE environment variable to 'true' else just download the update manually at ${gray(releaseUrl)} and follow the instructions on our gitbook guide ${gray("https://itsmateo20.gitbook.io/cloud/guides/server/migrating")}`));
+        }
     } else {
         return console.log(gray("[VERSION]: ") + cyan(`You are using the latest version. ${gray(`(${green(currentVersion)})`)}`));
     }
