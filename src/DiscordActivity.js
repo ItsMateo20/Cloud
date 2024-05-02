@@ -5,7 +5,7 @@ let connected = false;
 
 client.on('error', (err) => {
     if (err.message === 'RPC_CONNECTION_TIMEOUT') {
-        connected = false;
+        connected = true;
         console.log(gray('[DISCORD]: ') + red('Discord activity has failed to connect, RATELIMITED!'));
     }
 })
