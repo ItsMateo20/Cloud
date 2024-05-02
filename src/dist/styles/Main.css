@@ -195,7 +195,7 @@ div#loading {
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(30, 30, 30, 0.9);
+    background: rgba(30, 30, 30, 0.975);
     display: flex;
     justify-content: center;
     align-items: center;
