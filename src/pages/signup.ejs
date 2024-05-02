@@ -17,6 +17,18 @@
     </head>
 
     <body class="app-light-theme">
+        <div id="loading">
+            <div class="text-center position-absolute top-50 start-50 translate-middle ">
+                <div class="wrapper">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="shadow"></div>
+                    <div class="shadow"></div>
+                    <div class="shadow"></div>
+                </div>
+            </div>
+        </div>
         <div class="app-container">
             <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
                 action="/signup" method="POST">
@@ -30,28 +42,29 @@
                         aria-describedby="emailHelp" placeholder="Wprowadź adres e-mail" name="email"
                         data-localize-placeholder="EnterEmail" required>
                     <div class="invalid-feedback" data-localize="PleaseEnterEmail">
-                        Proszę podać adres e-mail!
+                        Proszę podać swój adres e-mail!
                     </div>
                     <small id="emailHelp" class="form-text text-muted" data-localize="NotGiveAwayEmailAdress">Nie
                         podajemy twojego adresu e-mail nikomu</small>
                     </br>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="password1">Hasło <strong class="text-danger">*</strong></label>
+                    <label for="password1" data-localize="Password">Hasło<strong class="text-danger">*</strong></label>
                     <input type="password" autocomplete="new-password" class="form-control" id="password1"
                         placeholder="Wprowadź hasło" name="password1" maxlength="40" minlength="5"
                         data-localize-placeholder="EnterPassword" required>
                     <div class="invalid-feedback" data-localize="PleaseEnterPassword">
-                        Prosze wpisać hasło!
+                        Prosze wpisać swoje hasło!
                     </div>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="password2">Powtórz hasło <strong class="text-danger">*</strong></label>
+                    <label for="password2" data-localize="RepeatPassword">Powtórz swoje hasło<strong
+                            class="text-danger">*</strong></label>
                     <input type="password" autocomplete="new-password" class="form-control" id="password2"
                         placeholder="Wprowadź hasło" name="password2" maxlength="40" minlength="5"
-                        data-localize-placeholder="EnterPassword" required>
+                        data-localize-placeholder="PleaseRepeatPassword" required>
                     <div class="invalid-feedback" data-localize="PleaseRepeatPassword">
-                        Prosze powtórzyć hasło!
+                        Prosze powtórzyć swoje hasło!
                     </div>
                 </div>
                 <a href="/login" class="text-muted" data-localize="YesAccountLogin">Masz już konto? Zaloguj się!</a>
@@ -61,6 +74,7 @@
         </div>
     </body>
 
+    <script src="javascript/Default.js"></script>
     <script src="javascript/Validate.js"></script>
     <script src="javascript/Messages.js"></script>
     <script src="javascript/Localization.js"></script>

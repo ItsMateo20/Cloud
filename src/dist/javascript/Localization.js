@@ -10,6 +10,7 @@ fetch("/api/env?action=get", {
         if (data.success) {
             local = data.env.DEFAULT_LANGUAGE;
             localize();
+            loadingDiv('hide');
         }
     });
 let localization = {};
@@ -31,7 +32,6 @@ async function changeLocal(event) {
 
         document.getElementById('localButtonImage').src = `icons/${settings.localization}.png`;
         clickedItem.classList.add('active');
-        document.title = `${localization.Pages["Home"]} | ${localization.Main["Title"]}`
         localizationFile = `localization/${local}.json`
 
         loadingDiv('show');
@@ -54,8 +54,9 @@ async function changeLocal(event) {
 }
 
 async function localize() {
-    localizationFile = `localization/${local}.json`
     localization = await fetch('localization/' + local + '.json').then((response) => response.json())
+    var localizedPageName = localization.Pages[document.title.split(" | ")[0]] || document.title.split(" | ")[0];
+    document.title = `${localizedPageName} | ${localization.Main["Title"]}`;
     const fetchPromises = Array.from(elements).map(async element => {
         let key = element.getAttribute('data-localize');
         let value = localization.Main[key];

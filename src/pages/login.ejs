@@ -17,6 +17,18 @@
     </head>
 
     <body class="app-light-theme">
+        <div id="loading">
+            <div class="text-center position-absolute top-50 start-50 translate-middle ">
+                <div class="wrapper">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="shadow"></div>
+                    <div class="shadow"></div>
+                    <div class="shadow"></div>
+                </div>
+            </div>
+        </div>
         <div class="app-container">
             <form id="auth" class="needs-validation position-absolute top-50 start-50 translate-middle" novalidate
                 action="/login" method="POST">
@@ -30,7 +42,7 @@
                         placeholder="Wprowadź adres e-mail" name="email" data-localize-placeholder="EnterEmail"
                         required>
                     <div class="invalid-feedback" data-localize="PleaseEnterEmail">
-                        Proszę podać adres e-mail!
+                        Proszę podać swój adres e-mail!
                     </div>
                 </div>
                 <div class="form-group mb-2">
@@ -40,7 +52,7 @@
                         placeholder="Wprowadź hasło" name="password" maxlength="40" minlength="5"
                         data-localize-placeholder="EnterPassword" required>
                     <div class="invalid-feedback" data-localize="PleaseEnterPassword">
-                        Prosze wpisać hasło!
+                        Prosze wpisać swoje hasło!
                     </div>
                 </div>
                 <a href="/signup" class="text-muted" data-localize="NoAccountSignUp">Nie masz konta? Zarejestruj
@@ -51,6 +63,7 @@
         </div>
     </body>
 
+    <script src="javascript/Default.js"></script>
     <script src="javascript/Validate.js"></script>
     <script src="javascript/Messages.js"></script>
     <script src="javascript/Localization.js"></script>
