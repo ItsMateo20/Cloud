@@ -2,6 +2,7 @@ const User = require("../models/User.js")
 const UserSettings = require("../models/UserSettings.js")
 const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 module.exports = {
     name: "Login",
@@ -44,15 +45,16 @@ module.exports = {
         res.render("../pages/login.ejs", args)
     },
     run2: async (req, res) => {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
 
         if (!email || !password) return res.redirect("/login?error=MISSING_DATA_LOGIN")
-        const UserS = await User.findOne({ where: { email: email, password: password } })
+        const UserS = await User.findOne({ where: { email: email } })
         const UserSettingsS = await UserSettings.findOne({ where: { email: email } })
         const WhitelistedS = await Whitelisted.findOne({ where: { email: email } })
-        if (!WhitelistedS && !UserS.admin) return res.redirect("/login?error=EMAIL_NOT_WHITELISTED")
 
         if (UserS) {
+            if (!WhitelistedS && !UserS.admin) return res.redirect("/login?error=EMAIL_NOT_WHITELISTED")
+            if (!bcrypt.compareSync(password, UserS.password)) return res.redirect("/login?error=INCORRECT_DATA_LOGIN")
             UserS.token = jwt.sign({ email: UserS.email, password: UserS.password }, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM, expiresIn: process.env.JWTEXPIRESIN })
             await UserS.save()
             if (!UserSettingsS) {

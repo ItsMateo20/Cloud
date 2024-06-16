@@ -2,6 +2,8 @@ const User = require("../models/User.js")
 const UserSettings = require("../models/UserSettings.js")
 const Whitelisted = require("../models/Whitelisted.js")
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 const { readdirSync } = require("fs");
 
 module.exports = {
@@ -75,7 +77,7 @@ async function ApiFunction(req, res, { decoded, data, UserSettingsS, userFolder,
             if (!oldpassword1 || !oldpassword2 || !newpassword) return res.status(500).json({ success: false, message: "UNKNOWN_ERROR" });
             if (oldpassword1 != oldpassword2) return res.status(500).json({ success: false, message: "PASSWORDS_NOT_MATCH" });
             if (!data) return res.status(500).json({ success: false, message: "USER_NOT_FOUND" });
-            data.password = newpassword;
+            data.password = bcrypt.hashSync(newpassword, saltRounds);
             await data.save();
             return res.status(200).json({ success: true, message: "PASSWORD_CHANGED" });
         } else if (req.query.action == "settings") {

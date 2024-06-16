@@ -102,6 +102,9 @@ async function areTablesEqual(model, sequelize) {
     return JSON.stringify(originalData) === JSON.stringify(backupData);
 }
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 module.exports = {
     name: 'database',
     description: 'Database',
@@ -115,9 +118,9 @@ module.exports = {
             if (!adminFind) {
                 await User.create({
                     email: 'admin@localhost',
-                    password: 'admin',
+                    password: bcrypt.hashSync('admin', saltRounds),
                     admin: true,
-                    token: 'admin',
+                    token: null,
                 })
                 await (UserSettings.findOne({ where: { email: 'admin@localhost' } }) ? UserSettings.create({ email: 'admin@localhost' }) : "")
                 await (Whitelisted.findOne({ where: { email: 'admin@localhost' } }) ? Whitelisted.create({ email: 'admin@localhost' }) : "")

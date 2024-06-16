@@ -2,6 +2,8 @@ const User = require("../models/User.js")
 const UserSettings = require("../models/UserSettings.js")
 const Whitelisted = require("../models/Whitelisted.js");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 module.exports = {
     name: "signup",
@@ -55,8 +57,9 @@ module.exports = {
         try {
             const UserFind = await User.findOne({ where: { email: email } })
             if (UserFind) return res.redirect("/signup?error=ACCOUNT_ALREADY_EXISTS_SIGNUP")
-            const UserS = await User.create({ email: email, password: password1 });
-            UserS.token = jwt.sign({ email: email, password: password1 }, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM, expiresIn: process.env.JWTEXPIRESIN });
+            const password = bcrypt.hashSync(password1, saltRounds)
+            const UserS = await User.create({ email: email, password: password });
+            UserS.token = jwt.sign({ email: email, password: UserS.password }, process.env.JWTSECRET, { algorithm: process.env.JWTALGORITHM, expiresIn: process.env.JWTEXPIRESIN });
             await UserS.save();
             const UserSettingsS = await UserSettings.create({ email: email })
             await UserSettingsS.save()

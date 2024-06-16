@@ -18,8 +18,14 @@ function setup() {
                 return;
             }
 
-            const newContent = data.replace(/({32bit secret}|{64bit secret})/g, function (match) {
-                return match === "{32bit secret}" ? generateSecret(16) : generateSecret(32);
+            const newContent = data.replace(/({32bit secret}|{64bit secret}|{number of rounds})/g, function (match) {
+                if (match === "{32bit secret}") {
+                    return generateSecret(16);
+                } else if (match === "{64bit secret}") {
+                    return generateSecret(32);
+                } else if (match === "{number of rounds}") {
+                    return Math.floor(Math.random() * (100 - 10 + 1) + 10).toString();
+                }
             });
 
             fs.mkdir('./Users', (err) => {
