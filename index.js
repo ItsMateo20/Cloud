@@ -21,6 +21,20 @@ async function BeforeStart() {
         })
     }
 
+    if (process.argv.includes("--update")) {
+        const { isOutdated, fetchLatestVersion } = require("./src/components/CheckVersion.js")
+        const { downloadAndApplyUpdate } = require("./src/components/autoUpdate.js")
+        const version = await fetchLatestVersion()
+        if (isOutdated) {
+            await downloadAndApplyUpdate(version).then(() => {
+                log("Update complete.", null, { line: true, type: "info", name: "UPDATE" })
+            }).catch((err) => {
+                log("Update failed.", err, { line: true, type: "error", name: "UPDATE", msgColor: "red" })
+            })
+        }
+        return process.exit(0)
+    }
+
     if (process.env.DISCORD_ACTIVITY == "true") {
         const { deploy } = require("./src/components/DiscordActivity.js")
         await deploy()

@@ -2,6 +2,7 @@
   "scripts": {
     "start": "node index.js",
     "setup": "node index.js --setup",
+    "update": "node index.js --update",
     "dev": "nodemon index.js --dev"
   },
   "name": "cloud",
