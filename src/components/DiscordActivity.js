@@ -1,4 +1,4 @@
-const { red, gray, cyan } = require('chalk');
+const log = require('./logger.js');
 const { getCurrentVersion } = require('./CheckVersion.js');
 const client = require('discord-rich-presence')('1193532736925876384');
 let connected = false;
@@ -6,14 +6,14 @@ let connected = false;
 client.on('error', (err) => {
     if (err.message === 'RPC_CONNECTION_TIMEOUT') {
         connected = true;
-        console.log(gray('[DISCORD]: ') + red('Discord activity has failed to connect, RATELIMITED!'));
+        log('Discord activity has failed to connect, RATELIMITED!', null, { name: 'DISCORD', type: 'error', msgColor: 'red' });
     }
-})
+});
 
 client.on('connected', () => {
     connected = true;
-    console.log(gray('[DISCORD]: ') + cyan('Discord activity connected!'));
-})
+    log('Discord activity connected!', null, { name: 'DISCORD' });
+});
 
 let SystemOS
 
@@ -68,8 +68,8 @@ function disconnect() {
 }
 
 async function deploy() {
-    client.updatePresence(Activity)
-    console.log(gray('[DISCORD]: ') + cyan('Connecting Discord activity to your client...'))
+    client.updatePresence(Activity);
+    log('Connecting Discord activity to your client...', null, { name: 'DISCORD' });
     while (!connected) {
         await new Promise(resolve => setTimeout(resolve, 1000));
     }

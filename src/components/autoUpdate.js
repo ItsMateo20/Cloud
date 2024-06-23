@@ -1,3 +1,4 @@
+const log = require('./logger');
 const axios = require('axios');
 const fs = require('fs');
 const extract = require('extract-zip');
@@ -23,7 +24,7 @@ async function downloadAndApplyUpdate(latestVersion) {
     fs.unlinkSync(zipPath);
     fs.rmdirSync(updateDir, { recursive: true });
 
-    console.log('Update applied successfully. Please restart the application.');
+    log('Update applied successfully. Please restart the application.', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
 }
 
 function updateFiles(currentDir, updateDir) {

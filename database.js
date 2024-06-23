@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const User = require('./src/models/User.js');
 const UserSettings = require('./src/models/UserSettings.js');
 const Whitelisted = require('./src/models/Whitelisted.js');
+const log = require("./src/components/logger.js")
 
 async function connectDatabase() {
     const sequelize = new Sequelize({
@@ -13,33 +14,34 @@ async function connectDatabase() {
 
     try {
         await sequelize.authenticate();
-        console.log(gray('[DATABASE]: ') + cyan('Database connected!'));
+        log('Database connected!', null, { name: 'DATABASE' });
         return sequelize;
     } catch (error) {
-        console.error(gray('[DATABASE]: ') + red('Database connection error:'), error);
+        log('Database connection error:', error, { name: 'DATABASE', type: 'error', msgColor: 'red' });
         throw error;
     }
 }
 
 async function synchronizeModels(sequelize) {
     const isDev = process.argv.includes('--dev');
-    if (isDev) console.log(gray('[DATABASE]: ') + cyan('Synchronizing models...'));
+    if (isDev) log('Synchronizing models...', null, { name: 'DATABASE' });
     try {
         await sequelize.sync({ alter: true });
 
         await User.sync({ alter: true });
-        if (isDev) console.log(gray('[DATABASE]: ') + cyan('User model synchronized successfully!'));
+        if (isDev) log('User model synchronized successfully!', null, { name: 'DATABASE' });
 
         await UserSettings.sync({ alter: true });
-        if (isDev) console.log(gray('[DATABASE]: ') + cyan('UserSettings model synchronized successfully!'));
+        if (isDev) log('UserSettings model synchronized successfully!', null, { name: 'DATABASE' });
 
         await Whitelisted.sync({ alter: true });
-        if (isDev) console.log(gray('[DATABASE]: ') + cyan('Whitelisted model synchronized successfully!'));
+        if (isDev) log('Whitelisted model synchronized successfully!', null, { name: 'DATABASE' });
 
-        console.log(gray('[DATABASE]: ') + cyan('All models synchronized successfully!\n') + gray('[DATABASE]: ') + cyan('Database ready!\n') + gray('<------------------------------------------------------>'));
+        log('All models synchronized successfully - Database ready!', null, { line: true, name: 'DATABASE' });
     } catch (error) {
-        console.error(gray('[DATABASE]: ') + red('Error synchronizing models:'), error);
-        console.log(gray('[DATABASE]: ') + cyan('Trying automatic repairs...'));
+        log('Error synchronizing models:', error, { name: 'DATABASE', type: 'error', msgColor: 'red' });
+        log('Trying automatic repairs...', null, { name: 'DATABASE' });
+
         const modelsToSync = [User, UserSettings, Whitelisted];
 
         for (const model of modelsToSync) {
@@ -77,13 +79,13 @@ async function synchronizeModelWithRetry(sequelize, model) {
 
                 await sequelize.getQueryInterface().dropTable(backupTableName);
 
-                if (isDev) console.log(gray('[DATABASE]: ') + cyan(`${model.name} model synchronized successfully!`));
+                if (isDev) log(`${model.name} model synchronized successfully!`, null, { name: 'DATABASE' });
                 return;
             } catch (error) {
-                console.error(gray('[DATABASE]: ') + red(`Error synchronizing ${model.name} model:`), error);
+                log(`Error synchronizing ${model.name} model:`, error, { name: 'DATABASE', type: 'error', msgColor: 'red' });
                 retries++;
                 if (retries < maxRetries) {
-                    console.log(gray('[DATABASE]: ') + cyan(`Retrying synchronization of ${model.name} model (Retry ${retries}/${maxRetries})...`));
+                    log(`Retrying synchronization of ${model.name} model (Retry ${retries}/${maxRetries})...`, null, { name: 'DATABASE' });
                 } else {
                     throw error;
                 }

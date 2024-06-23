@@ -1,31 +1,30 @@
 require("dotenv").config()
-const { gray, cyan, red } = require("chalk")
+const log = require("./src/components/logger.js")
 
 async function BeforeStart() {
     if (process.argv.includes("--setup")) {
-        await require("./src/setup.js")().then((success) => {
-            if (success) console.log(gray("[SETUP]: ") + cyan("Setup complete.\n") + gray("<------------------------------------------------------>"))
+        await require("./src/components/setup.js")().then((success) => {
+            if (success) log("Setup complete.", null, { line: true, type: "info", name: "SETUP" })
             return process.exit(0)
         }).catch((err) => {
-            console.log(err)
-            console.log(gray("[SETUP]: ") + cyan("Setup failed.\n") + gray("<------------------------------------------------------>") + red("Please check the error above"))
+            log("Setup failed.", err, { line: true, type: "error", name: "SETUP", msgColor: "red" })
             return process.exit(0)
         })
     }
 
     if (process.env.CHECKVERSION == "true") {
-        const { checkForUpdates } = require("./src/CheckVersion.js")
+        const { checkForUpdates } = require("./src/components/CheckVersion.js")
         await checkForUpdates().then(() => {
-            console.log(gray("[VERSION]: ") + cyan("Version check complete.\n") + gray("<------------------------------------------------------>"))
+            log("Version check complete.", null, { line: true, type: "info", name: "VERSION" })
         }).catch((err) => {
-            console.log(err)
+            log("Version check failed.", err, { line: true, type: "error", name: "VERSION", msgColor: "red" })
         })
     }
 
     if (process.env.DISCORD_ACTIVITY == "true") {
-        const { deploy } = require("./src/DiscordActivity.js")
+        const { deploy } = require("./src/components/DiscordActivity.js")
         await deploy()
-        console.log(gray("[DISCORD]: ") + cyan("Discord activity connection complete.\n") + gray("<------------------------------------------------------>"))
+        log("Discord activity started.", null, { line: true, type: "info", name: "DISCORD" })
     }
 }
 
@@ -66,30 +65,30 @@ BeforeStart().then(() => {
         app.use(express.static(__dirname + '/src/dist/'))
 
         let files = readdirSync(__dirname + '/src/routes/')
-        console.log(gray("[ROUTING]: ") + cyan(`Started loading ${files.length} routes`));
+        log(`Started loading ${files.length} routes`, null, { type: "info", name: "ROUTING" })
         files.forEach(f => {
-            if (f.endsWith(".js") === false) return console.log(gray("[ROUTING]: ") + red(`Found folder inside routes folder: ${f} skipping...`))
+            if (f.endsWith(".js") === false) return log(`Found folder inside routes folder: ${f} skipping...`, null, { type: "warn", name: "ROUTING", msgColor: "yellow" })
             const file = require(`./src/routes/${f}`)
             if (file && file.url) {
                 app.get(file.url, file.run)
                 if (file.run2) app.post(file.url, file.run2)
-                console.log(gray("[ROUTING]: ") + cyan(`Loaded ${file.url}`))
+                log(`Loaded ${file.url}`, null, { type: "info", name: "ROUTING" })
             }
         })
         app.use(function (req, res, next) {
             res.status(404).send("404 Not Found")
+            log(`404 Not Found: ${req.url}`, null, { line: true, type: "warn", name: "USER" })
         });
-        console.log(gray("[ROUTING]: ") + cyan(`Finished loading ${files.length} routes\n`) + gray("<------------------------------------------------------>"));
+        log(`Finished loading ${files.length} routes`, null, { line: true, type: "info", name: "ROUTING" })
 
-        console.log(gray("[SITE]: ") + cyan(`Starting on port ${process.env.PORT}`));
-        app.listen(process.env.PORT, () => console.log(gray("[SITE]: ") + cyan(`Webpage listening on port ${process.env.PORT}`)))
+        log(`Starting on port {green ${process.env.PORT}}`, null, { type: "info", name: "SITE" })
+        app.listen(process.env.PORT, () => log(`Webpage listening on port {green ${process.env.PORT}} {gray - You can now view your cloud on http://localhost:${process.env.PORT}}`, null, { type: "info", name: "SITE" }))
     }).catch((err) => {
-        console.log(err)
+        log("Failed to connect to database.", err, { type: "error", name: "SITE" })
         return process.exit(1)
     })
 
     process.on('unhandledRejection', (reason, error) => {
-        console.error(gray("[SITE]: ") + red('Unhandled Rejection reason:', reason));
-        console.error(error);
+        log('Unhandled Rejection at:', error, { type: "error", name: "SITE" })
     });
 })

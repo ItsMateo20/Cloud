@@ -533,7 +533,6 @@ async function handleRenameClick() {
                     if (data.success) {
                         const newFileName = `${newName}.${selectedFileName.split('.').pop()}`
                         selectedFile.querySelector('h1').textContent = newFileName
-                        console.log(newName)
                         selectedFile.dataset.filename = newFileName
                         selectedFile.dataset.fileredirect = selectedFile.dataset.fileredirect.replace(selectedFileName, newFileName);
                         selectedFile.dataset.filepath = selectedFile.dataset.filepath.replace(selectedFileName, newFileName);
