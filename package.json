@@ -6,7 +6,7 @@
     "dev": "nodemon index.js --dev"
   },
   "name": "cloud",
-  "version": "1.4.8",
+  "version": "1.4.7",
   "description": "Cloud files",
   "main": "index.js",
   "repository": {
