@@ -109,3 +109,5 @@ async function updatePackagesWithNpm() {
         });
     });
 }
+
+module.exports = { downloadAndApplyUpdate };
