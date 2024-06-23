@@ -1,5 +1,6 @@
 # Cloud Storage
-[![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray)](#) [![Last commit](https://img.shields.io/github/last-commit/ItsMateo20/Cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
+<!--- ![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray)] --->
+[![Last commit](https://img.shields.io/github/last-commit/ItsMateo20/Cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
  [![Release](https://img.shields.io/github/v/release/ItsMateo20/Cloud?include_prereleases&sort=date&display_name=tag&style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/releases/latest)
  [![Website](https://img.shields.io/website?url=https%3A%2F%2Fitsmateo20.github.io%2FCloud&up_message=ONLINE&down_message=OFFLINE&style=for-the-badge&label=Cloud%20Storage%20Preview%20Website&labelColor=white&color=gray)](https://itsmateo20.github.io/Cloud)
  [![Docs](https://img.shields.io/website?url=https%3A%2F%2Fitsmateo20.gitbook.io%2Fcloud&up_message=ONLINE&down_message=OFFLINE&style=for-the-badge&label=Documentaion%20and%20Guides&labelColor=white&color=gray)](https://itsmateo20.gitbook.io/cloud/)
@@ -114,17 +115,11 @@ You can preview what this project can do on the [Github page](https://itsmateo20
 
 ## Technologies Used
 
-- **Node.js:** <img src="./src/assets/README/nodejs.svg" alt="Node.js" width="auto" height="25">
-- **Express.js:** <img src="./src/assets/README/expressjs.svg" alt="Express.js" width="auto" height="25">
-- **Sqlite3:** <img src="./src/assets/README/sqlite3.svg" alt="Sqlite3" width="auto" height="25">
-- **Sequelize:** <img src="./src/assets/README/sequelize.svg" alt="Sequelize" width="auto" height="25">
-- **Ejs:** <img src="./src/assets/README/ejs.svg" alt="Ejs" width="auto" height="25">
-- **Css:** <img src="./src/assets/README/css.svg" alt="Css" width="auto" height="25">
-- **FFmpeg:** <img src="./src/assets/README/ffmpeg.svg" alt="FFmpeg" width="auto" height="25">
-- **JSON:** <img src="./src/assets/README/json.svg" alt="JSON" width="auto" height="25">
-- **JavaScript:** <img src="./src/assets/README/javascript.svg" alt="JavaScript" width="auto" height="25">
-- **Bootstrap:** <img src="./src/assets/README/bootstrap.svg" alt="Bootstrap" width="auto" height="25">
-- **Bootstrap Icons:** <img src="./src/assets/README/bootstrap.svg" alt="Bootstrap Icons" width="auto" height="25">
+![](https://skillicons.dev/icons?i=nodejs,express,sqlite,sequelize,css,js,bootstrap)
+<img src="./src/assets/README/ejs.svg" alt="Ejs" style="border-radius: 50px" width="auto" height="48">
+<img src="./src/assets/README/ffmpeg.svg" alt="FFmpeg" style="border-radius: 50px" width="auto" height="48">
+<img src="./src/assets/README/json.svg" alt="JSON" style="border-radius: 50px" width="auto" height="48">
+<img src="./src/assets/README/bootstrap.svg" alt="Bootstrap Icons" style="border-radius: 50px" width="auto" height="48">
 
 - And some other [**npm**](https://npmjs.com) packages (full list in [**package.json**](./package.json))
 
