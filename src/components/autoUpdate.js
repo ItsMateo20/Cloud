@@ -6,7 +6,7 @@ const path = require('path');
 const { exec } = require('child_process');
 
 async function downloadAndApplyUpdate(latestVersion) {
-    if (!latestVersion || typeof latestVersion !== 'string' || lastestVersion === undefined || latestVersion === null || latestVersion === '') {
+    if (!latestVersion || typeof latestVersion !== 'string' || latestVersion === undefined || latestVersion === null || latestVersion === '') {
         log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
         const { fetchLatestVersion } = require('./CheckVersion');
         latestVersion = await fetchLatestVersion();
