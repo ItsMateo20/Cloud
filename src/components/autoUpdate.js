@@ -84,9 +84,11 @@ async function updatePackagesWithBun() {
     return new Promise((resolve, reject) => {
         exec('bun install', (error, stdout, stderr) => {
             if (error) {
+                logger.log(`Error updating bun packages:`, error.message, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(error);
             }
             if (stderr) {
+                logger.log(`Error output from bun update:`, stderr, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(stderr);
             }
             logger.log(`Bun update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
@@ -99,11 +101,11 @@ async function updatePackagesWithNpm() {
     return new Promise((resolve, reject) => {
         exec('npm install', (error, stdout, stderr) => {
             if (error) {
-                logger.log(`Error updating npm packages: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                logger.log(`Error updating npm packages:`, error.message, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(error);
             }
             if (stderr) {
-                logger.log(`Error output from npm update: ${stderr}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                logger.log(`Error output from npm update:`, stderr, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(stderr);
             }
             logger.log(`Npm update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
