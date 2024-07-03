@@ -1,5 +1,5 @@
 const logger = require('./logger.js');
-const { getCurrentVersion } = require('./CheckVersion.js');
+const { getCurrentVersion } = require('./checkVersion.js');
 const client = require('discord-rich-presence')('1193532736925876384');
 let connected = false;
 

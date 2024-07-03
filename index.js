@@ -13,7 +13,7 @@ async function BeforeStart() {
     }
 
     if (process.env.CHECKVERSION == "true") {
-        const { checkForUpdates } = require("./src/components/CheckVersion.js")
+        const { checkForUpdates } = require("./src/components/checkVersion.js")
         await checkForUpdates().then(() => {
             logger.log("Version check complete.", null, { line: true, type: "info", name: "VERSION" })
         }).catch((err) => {
@@ -22,7 +22,7 @@ async function BeforeStart() {
     }
 
     if (process.argv.includes("--update")) {
-        const { isOutdated, fetchLatestVersion } = require("./src/components/CheckVersion.js")
+        const { isOutdated, fetchLatestVersion } = require("./src/components/checkVersion.js")
         const { downloadAndApplyUpdate } = require("./src/components/autoUpdate.js")
         const version = await fetchLatestVersion()
         if (isOutdated) {
@@ -36,7 +36,7 @@ async function BeforeStart() {
     }
 
     if (process.env.DISCORD_ACTIVITY == "true") {
-        const { deploy } = require("./src/components/DiscordActivity.js")
+        const { deploy } = require("./src/components/discordActivity.js")
         await deploy()
         logger.log("Discord activity started.", null, { line: true, type: "info", name: "DISCORD" })
     }

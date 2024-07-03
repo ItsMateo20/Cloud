@@ -7,7 +7,7 @@ function generateSecret(length) {
 
 function setup() {
     if (process.env.DISCORD_ACTIVITY === "true") {
-        const { updateState } = require("./src/conponents/DiscordActivity.js");
+        const { updateState } = require("./src/conponents/discordActivity.js");
         updateState("Setting up Cloud Server...");
     }
     return new Promise((resolve, reject) => {
