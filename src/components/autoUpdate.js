@@ -148,7 +148,7 @@ async function downloadAndApplyUpdate(latestVersion) {
         const ignorePaths = loadIgnorePaths();
 
         // Replace the current files with the updated ones
-        compareAndUpdateFiles(path.join(__dirname, '../../'), updateDir, ignorePaths);
+        await compareAndUpdateFiles(path.join(__dirname, '../../'), updateDir, ignorePaths);
 
         // Clean up temporary files
         fs.unlinkSync(zipPath);
