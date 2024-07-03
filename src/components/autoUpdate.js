@@ -1,122 +1,83 @@
-const logger = require('./logger');
-const axios = require('axios');
 const fs = require('fs');
-const extract = require('extract-zip');
 const path = require('path');
+const axios = require('axios');
+const extract = require('extract-zip');
 const { exec } = require('child_process');
 const crypto = require('crypto');
+const logger = require('./logger');
 
-async function downloadAndApplyUpdate(latestVersion) {
-    try {
-        if (!latestVersion || typeof latestVersion !== 'string' || !latestVersion.trim()) {
-            logger.log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            const { fetchLatestVersion } = require('./CheckVersion');
-            latestVersion = await fetchLatestVersion();
-            if (!latestVersion) {
-                logger.log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-                return;
-            }
-        }
+const updateTempDir = path.join(__dirname, '../../updateTemp');
+const gitignorePath = path.join(__dirname, '../../.gitignore');
+const autoUpdatePath = path.join(__dirname, 'autoUpdate.js');
 
-        const tempDir = path.join(__dirname, '../../updateTemp');
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir);
-        }
-
-        const releaseUrl = `https://github.com/ItsMateo20/Cloud/archive/refs/tags/${latestVersion}.zip`;
-        const response = await axios.get(releaseUrl, { responseType: 'arraybuffer' });
-        const zipPath = path.join(tempDir, 'update.zip');
-        fs.writeFileSync(zipPath, response.data);
-
-        await extract(zipPath, { dir: tempDir });
-
-        const updateDir = path.join(tempDir, `Cloud-${latestVersion}`);
-        const autoUpdateFile = path.join(updateDir, 'src/components/autoUpdate.js');
-
-        const autoUpdateOutdated = await isFileOutdated(autoUpdateFile, path.join(__dirname, 'autoUpdate.js'));
-        if (autoUpdateOutdated) {
-            logger.log('autoUpdate.js is outdated. Please update manually and restart the application.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            cleanupTempFiles(tempDir);
-            return;
-        }
-
-        await updateFiles(path.join(__dirname, '../../'), updateDir);
-
-        cleanupTempFiles(tempDir);
-
-        logger.log('Update applied successfully. Now updating npm packages...', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
-
-        try {
-            await updatePackagesWithBun();
-        } catch (error) {
-            logger.log('Failed to update packages with bun. Trying with npm...', null, { name: 'AUTO-UPDATE', type: 'warn', msgColor: 'yellow' });
-            await updatePackagesWithNpm();
-        }
-
-        logger.log('Npm packages updated successfully. Please restart the application.', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
-    } catch (error) {
-        logger.log(`Error during update process: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-    }
-}
-
-async function isFileOutdated(newFile, currentFile) {
-    if (!fs.existsSync(newFile) || !fs.existsSync(currentFile)) {
-        return true;
-    }
-    const newFileHash = getFileHash(newFile);
-    const currentFileHash = getFileHash(currentFile);
-    return newFileHash !== currentFileHash;
-}
-
-function getFileHash(filePath) {
+// Calculate SHA-256 hash of a file
+function calculateHash(filePath) {
     const fileBuffer = fs.readFileSync(filePath);
     const hashSum = crypto.createHash('sha256');
     hashSum.update(fileBuffer);
     return hashSum.digest('hex');
 }
 
-async function updateFiles(currentDir, updateDir) {
-    const currentFiles = fs.readdirSync(currentDir);
-    const updateFiles = fs.readdirSync(updateDir);
-
-    for (const file of currentFiles) {
-        if (file === 'updateTemp' || isInGitignore(file)) {
+// Get all files in a directory recursively, ignoring specified paths
+function getFiles(dir, ignorePaths, files = []) {
+    const dirEntries = fs.readdirSync(dir);
+    for (const entry of dirEntries) {
+        const entryPath = path.join(dir, entry);
+        if (ignorePaths.some(ignorePath => entryPath.startsWith(ignorePath))) {
             continue;
         }
-        const currentFilePath = path.join(currentDir, file);
-        const backupDir = path.join(currentDir, 'backup');
-        if (!fs.existsSync(backupDir)) {
-            fs.mkdirSync(backupDir);
+        if (fs.statSync(entryPath).isDirectory()) {
+            getFiles(entryPath, ignorePaths, files);
+        } else {
+            files.push(entryPath);
         }
-        const backupFilePath = path.join(backupDir, file);
-        if (fs.statSync(currentFilePath).isFile()) {
-            fs.renameSync(currentFilePath, backupFilePath);
+    }
+    return files;
+}
+
+// Load .gitignore and updateTemp paths to ignore
+function loadIgnorePaths() {
+    const ignorePaths = [updateTempDir];
+    if (fs.existsSync(gitignorePath)) {
+        const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8');
+        const gitignoreEntries = gitignoreContent.split('\n').map(entry => entry.trim()).filter(entry => entry && !entry.startsWith('#'));
+        ignorePaths.push(...gitignoreEntries.map(entry => path.join(__dirname, '../../', entry)));
+    }
+    return ignorePaths;
+}
+
+// Compare and update files, avoiding specified paths
+function compareAndUpdateFiles(currentDir, updateDir, ignorePaths) {
+    const currentFiles = getFiles(currentDir, ignorePaths);
+    const updateFiles = getFiles(updateDir, ignorePaths);
+
+    const filesToUpdate = [];
+
+    for (const updateFile of updateFiles) {
+        const relativePath = path.relative(updateDir, updateFile);
+        const currentFile = path.join(currentDir, relativePath);
+
+        if (!fs.existsSync(currentFile) || calculateHash(currentFile) !== calculateHash(updateFile)) {
+            filesToUpdate.push({ currentFile, updateFile });
         }
     }
 
-    for (const file of updateFiles) {
-        if (file === 'updateTemp' || isInGitignore(file)) {
-            continue;
+    for (const { currentFile, updateFile } of filesToUpdate) {
+        const currentFileDir = path.dirname(currentFile);
+        if (!fs.existsSync(currentFileDir)) {
+            fs.mkdirSync(currentFileDir, { recursive: true });
         }
-        const updateFilePath = path.join(updateDir, file);
-        const currentFilePath = path.join(currentDir, file);
-        if (fs.statSync(updateFilePath).isDirectory()) {
-            if (!fs.existsSync(currentFilePath)) {
-                fs.mkdirSync(currentFilePath);
-            }
-            await updateFiles(currentFilePath, updateFilePath);
-        } else {
-            fs.copyFileSync(updateFilePath, currentFilePath);
-        }
+        fs.copyFileSync(updateFile, currentFile);
     }
 }
 
-function isInGitignore(file) {
-    if (!fs.existsSync('.gitignore')) {
+// Check if the autoUpdate.js file is out of date
+function isAutoUpdateFileOutOfDate(updateDir) {
+    const updateAutoUpdatePath = path.join(updateDir, 'src/components/autoUpdate.js');
+    if (!fs.existsSync(updateAutoUpdatePath)) {
         return false;
     }
-    const gitignore = fs.readFileSync('.gitignore', 'utf-8').split('\n');
-    return gitignore.includes(file);
+    return calculateHash(autoUpdatePath) !== calculateHash(updateAutoUpdatePath);
 }
 
 async function updatePackagesWithBun() {
@@ -151,8 +112,63 @@ async function updatePackagesWithNpm() {
     });
 }
 
-function cleanupTempFiles(tempDir) {
-    fs.rmdirSync(tempDir, { recursive: true });
+async function downloadAndApplyUpdate(latestVersion) {
+    try {
+        if (!latestVersion || typeof latestVersion !== 'string' || !latestVersion.trim()) {
+            logger.log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+            const { fetchLatestVersion } = require('./CheckVersion');
+            latestVersion = await fetchLatestVersion();
+            if (!latestVersion) {
+                logger.log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                return;
+            }
+        }
+
+        if (!fs.existsSync(updateTempDir)) {
+            fs.mkdirSync(updateTempDir, { recursive: true });
+        }
+
+        const releaseUrl = `https://github.com/ItsMateo20/Cloud/archive/refs/tags/${latestVersion}.zip`;
+
+        // Download the latest release
+        const response = await axios.get(releaseUrl, { responseType: 'arraybuffer' });
+        const zipPath = path.join(updateTempDir, 'update.zip');
+        fs.writeFileSync(zipPath, response.data);
+
+        // Extract the downloaded archive
+        await extract(zipPath, { dir: updateTempDir });
+
+        const updateDir = path.join(updateTempDir, `Cloud-${latestVersion}`);
+
+        if (isAutoUpdateFileOutOfDate(updateDir)) {
+            logger.log('The autoUpdate.js file is out of date. Please manually update the application.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+            return;
+        }
+
+        const ignorePaths = loadIgnorePaths();
+
+        // Replace the current files with the updated ones
+        compareAndUpdateFiles(path.join(__dirname, '../../'), updateDir, ignorePaths);
+
+        // Clean up temporary files
+        fs.unlinkSync(zipPath);
+        fs.rmdirSync(updateDir, { recursive: true });
+
+        logger.log('Update applied successfully. Now updating npm packages...', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
+
+        try {
+            // Try updating npm packages using bun
+            await updatePackagesWithBun();
+        } catch (error) {
+            logger.log('Failed to update packages with bun. Trying with npm...', null, { name: 'AUTO-UPDATE', type: 'warn', msgColor: 'yellow' });
+            // Fallback to npm if bun fails
+            await updatePackagesWithNpm();
+        }
+
+        logger.log('Npm packages updated successfully. Please restart the application.', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
+    } catch (error) {
+        logger.log(`Error during update process: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+    }
 }
 
 module.exports = { downloadAndApplyUpdate };
