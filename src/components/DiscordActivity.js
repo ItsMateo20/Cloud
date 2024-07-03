@@ -25,27 +25,7 @@ if (process.platform === 'win32') {
     SystemOS = 'Linux🖥';
 } else if (process.platform === 'android') {
     SystemOS = 'a Android📱';
-} else if (process.platform === 'freebsd') {
-    SystemOS = 'FreeBSD🖥';
-} else if (process.platform === 'openbsd') {
-    SystemOS = 'OpenBSD🖥';
-} else if (process.platform === 'sunos') {
-    SystemOS = 'SunOS🖥';
-} else if (process.platform === 'aix') {
-    SystemOS = 'a AIX🖥';
-} else if (process.platform === 'cygwin') {
-    SystemOS = 'a Cygwin🖥';
-} else if (process.platform === 'netbsd') {
-    SystemOS = 'NetBSD🖥';
-} else if (process.platform === 'haiku') {
-    SystemOS = 'Haiku🖥';
-} else if (process.platform === 'gnu') {
-    SystemOS = 'a GNU🖥';
-} else if (process.platform === 'openindiana') {
-    SystemOS = 'OpenIndiana🖥';
-} else {
-    SystemOS = '';
-}
+} else SystemOS = '';
 
 if (SystemOS !== '' || SystemOS !== null || SystemOS !== undefined) {
     SystemOS = `on ${SystemOS}`;
