@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const logger = require('./logger');
 const axios = require('axios');
 const fs = require('fs');
 const extract = require('extract-zip');
@@ -10,7 +10,7 @@ async function downloadAndApplyUpdate(latestVersion) {
     try {
         if (!latestVersion || typeof latestVersion !== 'string' || !latestVersion.trim()) {
             logger.log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            const { fetchLatestVersion } = require('../CheckVersion');
+            const { fetchLatestVersion } = require('./CheckVersion');
             latestVersion = await fetchLatestVersion();
             if (!latestVersion) {
                 logger.log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
