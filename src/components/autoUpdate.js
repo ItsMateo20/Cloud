@@ -52,6 +52,8 @@ function loadIgnorePaths() {
         ignorePaths.push(...gitignoreEntries.map(entry => path.join(__dirname, '../../', entry)));
     }
     ignorePaths.push(path.join(__dirname, '../../.env.example'));
+    ignorePaths.push(path.join(__dirname, '../../docs'));
+    ignorePaths.push(path.join(__dirname, '../assets/README'));
     return ignorePaths;
 }
 
@@ -131,7 +133,7 @@ async function downloadAndApplyUpdate(latestVersion) {
     try {
         if (!latestVersion || typeof latestVersion !== 'string' || !latestVersion.trim()) {
             logger.log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            const { fetchLatestVersion } = require('./checkVersion');
+            const { fetchLatestVersion } = require('./checkVersion.js');
             latestVersion = await fetchLatestVersion();
             if (!latestVersion) {
                 logger.log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
