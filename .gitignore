@@ -2,8 +2,7 @@ node_modules
 database.sqlite
 database.sqlite-journal
 *env
-runCloud.bat
 src/assets/icons/webpageicon.ico
 temp
-gh-pages
+itsmateo20
 Users
