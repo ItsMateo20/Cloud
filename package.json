@@ -3,7 +3,11 @@
     "start": "node index.js",
     "setup": "node index.js --setup",
     "update": "node index.js --update",
-    "dev": "nodemon index.js --dev"
+    "dev": "node index.js --dev --watch",
+    "startbun": "bun index.js",
+    "setupbun": "bun index.js --setup",
+    "updatebun": "bun index.js --update",
+    "devbun": "bun index.js --dev --watch"
   },
   "name": "cloud",
   "version": "1.4.7",
