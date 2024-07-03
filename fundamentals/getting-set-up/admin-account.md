@@ -14,7 +14,7 @@ layout:
 
 # 👤 Admin account
 
-## Whitelist and Admin privileges
+## Whitelist and Administrator privileges
 
 Now that the server has started, you can log in to the admin account. This allows you to whitelist your email, grant yourself admin privileges, change the password of the admin account and view other users files when you turn on "Admin mode".
 

@@ -3,19 +3,19 @@
 Run the following command inside of the folder.
 
 {% hint style="info" %}
-This will take a bit, so don't lose your patience and try to restart it, as it will take the same amount of time.
+This process will take some time, so please be patient and avoid restarting it, as it will still take the same amount of time. (Unless you use 'bun', which speeds it up to about 10 seconds, depending on how good your computer is.)
 {% endhint %}
 
 {% tabs %}
-{% tab title="Command Prompt" %}
+{% tab title="Using node" %}
 ```
 npm install
 ```
 {% endtab %}
 
-{% tab title="PowerShell" %}
-```powershell
-$ npm install
+{% tab title="Using bun (recommended)" %}
+```
+bun install
 ```
 {% endtab %}
 {% endtabs %}

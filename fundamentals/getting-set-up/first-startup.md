@@ -17,15 +17,17 @@ layout:
 To start up the server you have to run the following command inside of the folder.
 
 {% tabs %}
-{% tab title="Command Prompt" %}
+{% tab title="Using node" %}
+{% code fullWidth="true" %}
 ```
 npm run start
 ```
+{% endcode %}
 {% endtab %}
 
-{% tab title="PowerShell" %}
-```powershell
-$ npm run start
+{% tab title="Using bun (recommended)" %}
+```
+bun run start
 ```
 {% endtab %}
 {% endtabs %}

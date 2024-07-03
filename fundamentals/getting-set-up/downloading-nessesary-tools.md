@@ -27,15 +27,15 @@ We really suggest downloading this, It speeds up the downloading of everything. 
 * Open PowerShell as administrator and run the command.
 
 {% tabs %}
-{% tab title="Command Prompt" %}
+{% tab title="Admin Command Prompt" %}
 ```
-choco install git nodejs ffmpeg
+choco install git nodejs ffmpeg bun
 ```
 {% endtab %}
 
-{% tab title="PowerShell" %}
+{% tab title="Admin PowerShell (recommended)" %}
 ```powershell
-$ choco install git nodejs ffmpe
+$ choco install git nodejs ffmpeg bun
 ```
 {% endtab %}
 {% endtabs %}
@@ -44,7 +44,11 @@ $ choco install git nodejs ffmpe
 
 * Download Nodejs from the offical page at [https://nodejs.org/en](https://nodejs.org/en) and select the recommended install.
 
-### Git
+### Bun
+
+* Download bun from the offical page at [https://bun.sh/](https://bun.sh/)
+
+### Git - optional
 
 * Download Git from the offical page at [https://git-scm.com/downloads](https://git-scm.com/downloads)
 
@@ -70,4 +74,6 @@ $ choco install ffmpeg
 
 * Download 7-Zip [https://7-zip.org/](https://7-zip.org/) or WinRAR [https://www.win-rar.com/start.html](https://www.win-rar.com/start.html) to unpack the zip that you will be downloading from [https://github.com/ItsMateo20/Cloud/releases/latest](https://github.com/ItsMateo20/Cloud/releases/latest) on future steps
 
-## Linux and IOS not supported yet (I think, didn't test)
+## Linux - coming soon (the setup is pretty much the same)
+
+## IOS - not supported yet (I think, didn't test)

@@ -12,22 +12,22 @@ layout:
     visible: true
 ---
 
-# 🗄 Setting up .env file
+# 🗄️ Setting up .env file
 
 ## First Method - Recommended
 
 Open a Command Prompt and run the following command inside of the folder.
 
 {% tabs %}
-{% tab title="Command Prompt" %}
+{% tab title="Using node" %}
 ```
 $ npm run setup
 ```
 {% endtab %}
 
-{% tab title="PowerShell" %}
-```powershell
-$ npm run setup
+{% tab title="Using bun (recommended)" %}
+```
+bun run setup
 ```
 {% endtab %}
 {% endtabs %}
