@@ -1,81 +1,83 @@
-const log = require('./logger');
-const axios = require('axios');
 const fs = require('fs');
-const extract = require('extract-zip');
 const path = require('path');
+const axios = require('axios');
+const extract = require('extract-zip');
 const { exec } = require('child_process');
+const crypto = require('crypto');
+const logger = require('./logger');
 
-async function downloadAndApplyUpdate(latestVersion) {
-    if (!latestVersion || typeof latestVersion !== 'string' || latestVersion === undefined || latestVersion === null || latestVersion === '') {
-        log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-        const { fetchLatestVersion } = require('./CheckVersion');
-        latestVersion = await fetchLatestVersion();
-        if (!latestVersion) {
-            log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            return;
-        }
-    }
-    const releaseUrl = `https://github.com/ItsMateo20/Cloud/archive/refs/tags/${latestVersion}.zip`;
-    const tempDir = path.join(__dirname, 'temp');
+const updateTempDir = path.join(__dirname, '../../updateTemp');
+const gitignorePath = path.join(__dirname, '../../.gitignore');
+const autoUpdatePath = path.join(__dirname, 'autoUpdate.js');
 
-    // Download the latest release
-    const response = await axios.get(releaseUrl, { responseType: 'arraybuffer' });
-    const zipPath = path.join(tempDir, 'update.zip');
-    fs.writeFileSync(zipPath, response.data);
-
-    // Extract the downloaded archive
-    await extract(zipPath, { dir: tempDir });
-
-    // Replace the current files with the updated ones
-    const updateDir = path.join(tempDir, `Cloud-${latestVersion}`);
-    updateFiles(__dirname, updateDir);
-
-    // Clean up temporary files
-    fs.unlinkSync(zipPath);
-    fs.rmdirSync(updateDir, { recursive: true });
-
-    log('Update applied successfully. Now updating npm packages...', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
-
-    try {
-        // Try updating npm packages using bun
-        await updatePackagesWithBun();
-    } catch (error) {
-        log('Failed to update packages with bun. Trying with npm...', null, { name: 'AUTO-UPDATE', type: 'warn', msgColor: 'yellow' });
-        // Fallback to npm if bun fails
-        await updatePackagesWithNpm();
-    }
-
-    log('Npm packages updated successfully. Please restart the application.', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
+// Calculate SHA-256 hash of a file
+function calculateHash(filePath) {
+    const fileBuffer = fs.readFileSync(filePath);
+    const hashSum = crypto.createHash('sha256');
+    hashSum.update(fileBuffer);
+    return hashSum.digest('hex');
 }
 
-function updateFiles(currentDir, updateDir) {
-    const currentFiles = fs.readdirSync(currentDir);
-    const updateFiles = fs.readdirSync(updateDir);
-
-    currentFiles.forEach(file => {
-        if (!updateFiles.includes(file)) {
-            fs.unlinkSync(path.join(currentDir, file));
+// Get all files in a directory recursively, ignoring specified paths
+function getFiles(dir, ignorePaths, files = []) {
+    const dirEntries = fs.readdirSync(dir);
+    for (const entry of dirEntries) {
+        const entryPath = path.join(dir, entry);
+        if (ignorePaths.some(ignorePath => entryPath.startsWith(ignorePath))) {
+            continue;
         }
-    });
-
-    updateFiles.forEach(file => {
-        const currentFilePath = path.join(currentDir, file);
-        const updateFilePath = path.join(updateDir, file);
-
-        if (fs.statSync(updateFilePath).isDirectory()) {
-            if (!fs.existsSync(currentFilePath)) {
-                fs.mkdirSync(currentFilePath);
-            }
-            updateFiles(currentFilePath, updateFilePath);
+        if (fs.statSync(entryPath).isDirectory()) {
+            getFiles(entryPath, ignorePaths, files);
         } else {
-            if (!currentFiles.includes(file)) {
-                fs.copyFileSync(updateFilePath, currentFilePath);
-            } else {
-                fs.renameSync(currentFilePath, path.join(currentDir, `${file}.bak`));
-                fs.copyFileSync(updateFilePath, currentFilePath);
-            }
+            files.push(entryPath);
         }
-    });
+    }
+    return files;
+}
+
+// Load .gitignore and updateTemp paths to ignore
+function loadIgnorePaths() {
+    const ignorePaths = [updateTempDir];
+    if (fs.existsSync(gitignorePath)) {
+        const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8');
+        const gitignoreEntries = gitignoreContent.split('\n').map(entry => entry.trim()).filter(entry => entry && !entry.startsWith('#'));
+        ignorePaths.push(...gitignoreEntries.map(entry => path.join(__dirname, '../../', entry)));
+    }
+    return ignorePaths;
+}
+
+// Compare and update files, avoiding specified paths
+function compareAndUpdateFiles(currentDir, updateDir, ignorePaths) {
+    const currentFiles = getFiles(currentDir, ignorePaths);
+    const updateFiles = getFiles(updateDir, ignorePaths);
+
+    const filesToUpdate = [];
+
+    for (const updateFile of updateFiles) {
+        const relativePath = path.relative(updateDir, updateFile);
+        const currentFile = path.join(currentDir, relativePath);
+
+        if (!fs.existsSync(currentFile) || calculateHash(currentFile) !== calculateHash(updateFile)) {
+            filesToUpdate.push({ currentFile, updateFile });
+        }
+    }
+
+    for (const { currentFile, updateFile } of filesToUpdate) {
+        const currentFileDir = path.dirname(currentFile);
+        if (!fs.existsSync(currentFileDir)) {
+            fs.mkdirSync(currentFileDir, { recursive: true });
+        }
+        fs.copyFileSync(updateFile, currentFile);
+    }
+}
+
+// Check if the autoUpdate.js file is out of date
+function isAutoUpdateFileOutOfDate(updateDir) {
+    const updateAutoUpdatePath = path.join(updateDir, 'src/components/autoUpdate.js');
+    if (!fs.existsSync(updateAutoUpdatePath)) {
+        return false;
+    }
+    return calculateHash(autoUpdatePath) !== calculateHash(updateAutoUpdatePath);
 }
 
 async function updatePackagesWithBun() {
@@ -87,7 +89,7 @@ async function updatePackagesWithBun() {
             if (stderr) {
                 reject(stderr);
             }
-            log(`Bun update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
+            logger.log(`Bun update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
             resolve();
         });
     });
@@ -97,17 +99,76 @@ async function updatePackagesWithNpm() {
     return new Promise((resolve, reject) => {
         exec('npm install', (error, stdout, stderr) => {
             if (error) {
-                log(`Error updating npm packages: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                logger.log(`Error updating npm packages: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(error);
             }
             if (stderr) {
-                log(`Error output from npm update: ${stderr}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                logger.log(`Error output from npm update: ${stderr}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
                 reject(stderr);
             }
-            log(`Npm update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
+            logger.log(`Npm update output: ${stdout}`, null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'cyan' });
             resolve();
         });
     });
+}
+
+async function downloadAndApplyUpdate(latestVersion) {
+    try {
+        if (!latestVersion || typeof latestVersion !== 'string' || !latestVersion.trim()) {
+            logger.log('No version provided for update, trying to fetch version.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+            const { fetchLatestVersion } = require('./CheckVersion');
+            latestVersion = await fetchLatestVersion();
+            if (!latestVersion) {
+                logger.log('Failed to fetch latest version for update.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+                return;
+            }
+        }
+
+        if (!fs.existsSync(updateTempDir)) {
+            fs.mkdirSync(updateTempDir, { recursive: true });
+        }
+
+        const releaseUrl = `https://github.com/ItsMateo20/Cloud/archive/refs/tags/${latestVersion}.zip`;
+
+        // Download the latest release
+        const response = await axios.get(releaseUrl, { responseType: 'arraybuffer' });
+        const zipPath = path.join(updateTempDir, 'update.zip');
+        fs.writeFileSync(zipPath, response.data);
+
+        // Extract the downloaded archive
+        await extract(zipPath, { dir: updateTempDir });
+
+        const updateDir = path.join(updateTempDir, `Cloud-${latestVersion}`);
+
+        if (isAutoUpdateFileOutOfDate(updateDir)) {
+            logger.log('The autoUpdate.js file is out of date. Please manually update the application.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+            return;
+        }
+
+        const ignorePaths = loadIgnorePaths();
+
+        // Replace the current files with the updated ones
+        compareAndUpdateFiles(path.join(__dirname, '../../'), updateDir, ignorePaths);
+
+        // Clean up temporary files
+        fs.unlinkSync(zipPath);
+        fs.rmdirSync(updateDir, { recursive: true });
+
+        logger.log('Update applied successfully. Now updating npm packages...', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
+
+        try {
+            // Try updating npm packages using bun
+            await updatePackagesWithBun();
+        } catch (error) {
+            logger.log('Failed to update packages with bun. Trying with npm...', null, { name: 'AUTO-UPDATE', type: 'warn', msgColor: 'yellow' });
+            // Fallback to npm if bun fails
+            await updatePackagesWithNpm();
+        }
+
+        logger.log('Npm packages updated successfully. Please restart the application.', null, { name: 'AUTO-UPDATE', type: 'info', msgColor: 'green' });
+    } catch (error) {
+        logger.log(`Error during update process: ${error.message}`, null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
+    }
 }
 
 module.exports = { downloadAndApplyUpdate };
