@@ -48,8 +48,15 @@ function loadIgnorePaths() {
 
 // Compare and update files, avoiding specified paths
 function compareAndUpdateFiles(currentDir, updateDir, ignorePaths) {
+    console.log('Comparing and updating files...');
+    console.log('Current Directory:', currentDir);
+    console.log('Update Directory:', updateDir);
+
     const currentFiles = getFiles(currentDir, ignorePaths);
     const updateFiles = getFiles(updateDir, ignorePaths);
+
+    console.log('Current Files:', currentFiles);
+    console.log('Update Files:', updateFiles);
 
     const filesToUpdate = [];
 
@@ -57,19 +64,29 @@ function compareAndUpdateFiles(currentDir, updateDir, ignorePaths) {
         const relativePath = path.relative(updateDir, updateFile);
         const currentFile = path.join(currentDir, relativePath);
 
+        console.log('Comparing:', currentFile, updateFile);
+
         if (!fs.existsSync(currentFile) || calculateHash(currentFile) !== calculateHash(updateFile)) {
             filesToUpdate.push({ currentFile, updateFile });
         }
     }
 
+    console.log('Files to Update:', filesToUpdate);
+
     for (const { currentFile, updateFile } of filesToUpdate) {
         const currentFileDir = path.dirname(currentFile);
+
+        console.log('Updating:', currentFileDir, updateFile, currentFile);
+
         if (!fs.existsSync(currentFileDir)) {
             fs.mkdirSync(currentFileDir, { recursive: true });
         }
+
         fs.copyFileSync(updateFile, currentFile);
     }
 }
+
+
 
 // Check if the autoUpdate.js file is out of date
 function isAutoUpdateFileOutOfDate(updateDir) {
@@ -142,7 +159,7 @@ async function downloadAndApplyUpdate(latestVersion) {
 
         if (isAutoUpdateFileOutOfDate(updateDir)) {
             logger.log('The autoUpdate.js file is out of date. Please manually update the application.', null, { name: 'AUTO-UPDATE', type: 'error', msgColor: 'red' });
-            return;
+            // return;
         }
 
         const ignorePaths = loadIgnorePaths();
