@@ -1,5 +1,5 @@
 require('dotenv').config();
-const log = require('./logger');
+const logger = require('./logger');
 const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
@@ -34,9 +34,9 @@ function updateEnvironmentVariable(key, value) {
         envFile = envFile.replace(regex, `${key}="${value}"`);
         process.env[key] = value;
         fs.writeFileSync(envPath, envFile);
-        log(`Environment variable ${key} set to ${value}`, null, { type: "info", name: "SETTINGS", msgColor: "green" });
+        logger.log(`Environment variable ${key} set to ${value}`, null, { type: "info", name: "SETTINGS", msgColor: "green" });
     } else {
-        return log(`Environment variable ${key} does not exist`, null, { type: "error", name: "SETTINGS", msgColor: "red" });
+        return logger.log(`Environment variable ${key} does not exist`, null, { type: "error", name: "SETTINGS", msgColor: "red" });
     }
 }
 

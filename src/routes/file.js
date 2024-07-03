@@ -33,19 +33,19 @@ module.exports = {
                     });
 
                     archive.on('error', (err) => {
-                        log('Error during zip creation', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
+                        logger.log('Error during zip creation', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
                         return res.redirect('/?error=ZIP_CREATION_ERROR');
                     });
 
                     output.on('close', async function () {
                         await res.download(zipFilePath, zipFileName, async (err) => {
                             if (err) {
-                                log('Error during download:', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
+                                logger.log('Error during download:', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
                             } else {
                                 await unlinkSync(zipFilePath);
                                 if (existsSync(zipFilePath)) {
                                     await unlinkSync(zipFilePath).catch((err) => {
-                                        log('Error during deleting zip file:', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
+                                        logger.log('Error during deleting zip file:', err, { type: 'error', name: 'SITE-FILE-ZIP', msgColor: 'red' });
                                     });
                                 }
                             }
@@ -61,7 +61,7 @@ module.exports = {
                 if (existsSync(`${userFolderPath}${folder}/${name}`) && existsSync(`${userFolderPath}${path}`)) {
                     return res.download(`${userFolderPath}${path}`, async (err) => {
                         if (err) {
-                            log('Error during download:', err, { type: 'error', name: 'SITE-FILE-DOWNLOAD', msgColor: 'red' });
+                            logger.log('Error during download:', err, { type: 'error', name: 'SITE-FILE-DOWNLOAD', msgColor: 'red' });
                         }
                     });
                 } else return res.redirect("/?error=FILE_DOESNT_EXIST");

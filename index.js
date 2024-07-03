@@ -1,13 +1,13 @@
 require("dotenv").config()
-const log = require("./src/components/logger.js")
+const logger = require("./src/components/logger.js")
 
 async function BeforeStart() {
     if (process.argv.includes("--setup")) {
         await require("./src/components/setup.js")().then((success) => {
-            if (success) log("Setup complete.", null, { line: true, type: "info", name: "SETUP" })
+            if (success) logger.log("Setup complete.", null, { line: true, type: "info", name: "SETUP" })
             return process.exit(0)
         }).catch((err) => {
-            log("Setup failed.", err, { line: true, type: "error", name: "SETUP", msgColor: "red" })
+            logger.log("Setup failed.", err, { line: true, type: "error", name: "SETUP", msgColor: "red" })
             return process.exit(0)
         })
     }
@@ -15,9 +15,9 @@ async function BeforeStart() {
     if (process.env.CHECKVERSION == "true") {
         const { checkForUpdates } = require("./src/components/CheckVersion.js")
         await checkForUpdates().then(() => {
-            log("Version check complete.", null, { line: true, type: "info", name: "VERSION" })
+            logger.log("Version check complete.", null, { line: true, type: "info", name: "VERSION" })
         }).catch((err) => {
-            log("Version check failed.", err, { line: true, type: "error", name: "VERSION", msgColor: "red" })
+            logger.log("Version check failed.", err, { line: true, type: "error", name: "VERSION", msgColor: "red" })
         })
     }
 
@@ -27,9 +27,9 @@ async function BeforeStart() {
         const version = await fetchLatestVersion()
         if (isOutdated) {
             await downloadAndApplyUpdate(version).then(() => {
-                log("Update complete.", null, { line: true, type: "info", name: "UPDATE" })
+                logger.log("Update complete.", null, { line: true, type: "info", name: "UPDATE" })
             }).catch((err) => {
-                log("Update failed.", err, { line: true, type: "error", name: "UPDATE", msgColor: "red" })
+                logger.log("Update failed.", err, { line: true, type: "error", name: "UPDATE", msgColor: "red" })
             })
         }
         return process.exit(0)
@@ -38,7 +38,7 @@ async function BeforeStart() {
     if (process.env.DISCORD_ACTIVITY == "true") {
         const { deploy } = require("./src/components/DiscordActivity.js")
         await deploy()
-        log("Discord activity started.", null, { line: true, type: "info", name: "DISCORD" })
+        logger.log("Discord activity started.", null, { line: true, type: "info", name: "DISCORD" })
     }
 }
 
@@ -79,30 +79,30 @@ BeforeStart().then(() => {
         app.use(express.static(__dirname + '/src/dist/'))
 
         let files = readdirSync(__dirname + '/src/routes/')
-        log(`Started loading ${files.length} routes`, null, { type: "info", name: "ROUTING" })
+        logger.log(`Started loading ${files.length} routes`, null, { type: "info", name: "ROUTING" })
         files.forEach(f => {
-            if (f.endsWith(".js") === false) return log(`Found folder inside routes folder: ${f} skipping...`, null, { type: "warn", name: "ROUTING", msgColor: "yellow" })
+            if (f.endsWith(".js") === false) return logger.log(`Found folder inside routes folder: ${f} skipping...`, null, { type: "warn", name: "ROUTING", msgColor: "yellow" })
             const file = require(`./src/routes/${f}`)
             if (file && file.url) {
                 app.get(file.url, file.run)
                 if (file.run2) app.post(file.url, file.run2)
-                log(`Loaded ${file.url}`, null, { type: "info", name: "ROUTING" })
+                logger.log(`Loaded ${file.url}`, null, { type: "info", name: "ROUTING" })
             }
         })
         app.use(function (req, res, next) {
             res.status(404).send("404 Not Found")
-            log(`404 Not Found: ${req.url}`, null, { line: true, type: "warn", name: "USER" })
+            logger.log(`404 Not Found: ${req.url}`, null, { line: true, type: "warn", name: "USER" })
         });
-        log(`Finished loading ${files.length} routes`, null, { line: true, type: "info", name: "ROUTING" })
+        logger.log(`Finished loading ${files.length} routes`, null, { line: true, type: "info", name: "ROUTING" })
 
-        log(`Starting on port {green ${process.env.PORT}}`, null, { type: "info", name: "SITE" })
-        app.listen(process.env.PORT, () => log(`Webpage listening on port {green ${process.env.PORT}} {gray - You can now view your cloud on http://localhost:${process.env.PORT}}`, null, { type: "info", name: "SITE" }))
+        logger.log(`Starting on port {green ${process.env.PORT}}`, null, { type: "info", name: "SITE" })
+        app.listen(process.env.PORT, () => logger.log(`Webpage listening on port {green ${process.env.PORT}} {gray - You can now view your cloud on http://localhost:${process.env.PORT}}`, null, { type: "info", name: "SITE" }))
     }).catch((err) => {
-        log("Failed to connect to database.", err, { type: "error", name: "SITE" })
+        logger.log("Failed to connect to database.", err, { type: "error", name: "SITE" })
         return process.exit(1)
     })
 
     process.on('unhandledRejection', (reason, error) => {
-        log('Unhandled Rejection at:', error, { type: "error", name: "SITE" })
+        logger.log('Unhandled Rejection at:', error, { type: "error", name: "SITE" })
     });
 })
