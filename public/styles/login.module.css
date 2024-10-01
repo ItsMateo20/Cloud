@@ -1,0 +1,22 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - var(--top-nav-height) - 20px);
+    width: calc(100vw - 20px);
+}
+
+.title {
+    font-size: 102px;
+    line-height: 130px;
+}
+
+.subtitle {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--alt-text-2);
+    text-align: center;
+    max-width: 300px;
+    max-lines: 2;
+}
