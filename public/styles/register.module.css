@@ -234,7 +234,7 @@
     opacity: 8%;
 }
 
-.loginButton {
+.registerButton {
     background-color: var(--btn-background);
     border: none;
     border-radius: 10px;
@@ -251,14 +251,14 @@
     margin-top: 15px;
 }
 
-.loginButton:disabled {
+.registerButton:disabled {
     cursor: not-allowed;
 }
 
-.loginButton:hover,
-.loginButton:focus,
-.loginButton:active,
-.loginButton:disabled {
+.registerButton:hover,
+.registerButton:focus,
+.registerButton:active,
+.registerButton:disabled {
     background-color: var(--btn-disabled-background);
 }
 

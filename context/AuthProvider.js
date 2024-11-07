@@ -4,9 +4,6 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signInWithCredentials, signInWithGoogle, signInWithApple, signUpUser } from '@/lib/auth';
-import { getUserData, setUserData } from '@/lib/actions';
-import { createSession, getSession, destroySession } from '@/lib/session';
 
 const AuthContext = createContext();
 
@@ -17,64 +14,71 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loadUserFromSession = async () => {
-            const sessionUser = await getSession();
-            if (sessionUser) {
-                const userData = await getUserData(sessionUser.userID);
-                setUser(userData);
+            try {
+                const response = await fetch('/api/auth/session');
+                if (response.ok) {
+                    const userData = await response.json();
+                    if (userData.success === false) {
+                        if (userData.code === 'not_authenticated') return setUser(null);
+                    } else setUser(userData);
+                }
+            } catch (error) {
+                console.error('Failed to load user session:', error);
             }
             setLoading(false);
         };
         loadUserFromSession();
     }, []);
 
-    const login = async (provider, email, password, schoolInfo) => {
+    const login = async (email, password) => {
         setLoading(true);
-        let response;
-
-        if (provider === 'google') {
-            response = await signInWithGoogle(schoolInfo);
-        } else if (provider === 'apple') {
-            response = await signInWithApple(schoolInfo);
-        } else {
-            response = await signInWithCredentials(email, password);
-        }
-
-        if (response.success && !response.newUser) {
-            const user = { userID: response.userID };
-            await createSession(user);
-            const userData = await getUserData(response.userID);
-            setUser(userData);
-            router.refresh();
-        }
-        setLoading(false);
-        return response;
-    };
-
-    const signup = async (email, username, password, notice, schoolInfo) => {
-        const schoolInfo2 = JSON.parse(schoolInfo);
         try {
-            setLoading(true);
-            const response = await signUpUser(email, username, password, notice, schoolInfo2);
-
-            if (response.success) {
-                const user = { userID: response.userID };
-                await createSession(user);
-                const newUserData = await getUserData(response.userID);
-                setUser(newUserData);
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUser(data.user);
+                router.refresh();
             }
             setLoading(false);
-            return response;
+            return data;
         } catch (error) {
-            console.log("AuthProvider signup error", error);
             setLoading(false);
-            return { success: false, error };
+            return { success: false, error: error.message };
         }
     };
 
-    const logout = async (redirectTo) => {
-        await destroySession();
-        setUser(null);
-        router.push(redirectTo || '/app');
+    const signup = async (email, password) => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUser(data.user);
+            }
+            setLoading(false);
+            return data;
+        } catch (error) {
+            setLoading(false);
+            return { success: false, error: error.message };
+        }
+    };
+
+    const logout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            setUser(null);
+            router.push('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     return (

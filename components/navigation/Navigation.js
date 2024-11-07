@@ -113,7 +113,7 @@ export function Navigation({ user, mobile }) {
         <>
             <div className={nav.navigation} >
                 <nav className={nav.topBar}>
-                    <Link className={nav.logo} href="/"><Suspense fallback={<Loading />}><Image src="/assets/logo/WObackground.png" alt="Cloud Storage Icon" width={65} height={40} quality={100} loading='eager' priority /></Suspense></Link>
+                    <Link className={nav.logo} href="/"><Suspense fallback={<Loading />}><Image src="/assets/logo/WObackground.png" alt="Cloud Storage Icon" width={54} height={33} quality={100} loading='eager' priority /></Suspense></Link>
                     <h1 className={nav.title}>Cloud</h1>
                     {/* <div className="search-bar hide" ref={searchBarRef}>
                             <Image src="/assets/app/search.svg" className="search-bar-icon" alt="Search" width={21} height={21} quality={100} loading="eager" />

@@ -4,6 +4,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req) {
     const session = await getSession(req);
-    if (!session) return NextResponse.json({ success: false, code: "UserNotLoggedIn" });
+    if (!session) return NextResponse.json({ success: false, code: "not_authenticated" });
     return NextResponse.json({ success: true, user: session });
 }

@@ -7,7 +7,7 @@ import { AuthProvider } from '@/context/AuthProvider';
 
 export async function generateMetadata() {
   return {
-    metadataBase: new URL(process.env.SITE_URL),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL),
     icons: {
       icon: "/assets/logo/rounded.png",
       apple: "/assets/logo/rounded.png",
@@ -22,11 +22,11 @@ export async function generateMetadata() {
     openGraph: {
       title: "Home | Cloud",
       description: "The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.",
-      url: `${process.env.SITE_URL}`,
-      siteName: `${process.env.SITE_URL.replace("https://", "").replace("http://", "")}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+      siteName: `${process.env.NEXT_PUBLIC_SITE_URL.replace("https://", "").replace("http://", "")}`,
       images: [
         {
-          url: `${process.env.SITE_URL}/assets/logo/thumbnail.png`,
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/assets/logo/thumbnail.png`,
         },
       ],
       locale: "en_US",
@@ -36,7 +36,7 @@ export async function generateMetadata() {
       card: "summary_large_image",
       title: "Home | Cloud",
       description: "The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.",
-      images: [`${process.env.SITE_URL}/assets/logo/thumbnail.png`],
+      images: [`${process.env.NEXT_PUBLIC_SITE_URL}/assets/logo/thumbnail.png`],
     }
   }
 };

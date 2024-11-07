@@ -1,4 +1,9 @@
-import Link from 'next/link'
+// app/login/layout.js
+
+import fonts from "../fonts.js";
+import "@/public/styles/globals.css";
+
+import { AuthProvider } from '@/context/AuthProvider';
 
 export async function generateMetadata() {
     return {
@@ -10,12 +15,12 @@ export async function generateMetadata() {
         },
         assets: ['/assets'],
         canonical: `/`,
-        title: "404 - page not found | Cloud",
+        title: "Login | Cloud",
         description: "The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.",
         author: "itsmateo20",
         keywords: "cloud, storage, cloudstorage",
         openGraph: {
-            title: "404 - page not found | Cloud",
+            title: "Login | Cloud",
             description: "The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.",
             url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
             siteName: `${process.env.NEXT_PUBLIC_SITE_URL.replace("https://", "").replace("http://", "")}`,
@@ -29,20 +34,21 @@ export async function generateMetadata() {
         },
         twitter: {
             card: "summary_large_image",
-            title: "404 - page not found | Cloud",
+            title: "Login | Cloud",
             description: "The Cloud Storage App is a web-based application designed for users to store and manage their files and folders in the cloud. It offers a convenient way to organize, upload, download, and delete files and folders, making it easy to access your data from anywhere.",
             images: [`${process.env.NEXT_PUBLIC_SITE_URL}/assets/logo/thumbnail.png`],
         }
     }
 };
 
-import error from "@/public/styles/error.module.css";
-
-export default function NotFound() {
+export default function RootLayout({ children }) {
     return (
-        <div className={error.fourofour}>
-            <h1>Page not found.</h1>
-            <Link href="/">Redirect back to home page</Link>
-        </div>
-    )
+        <AuthProvider>
+            <html lang="en">
+                <body className={fonts.join(" ")}>
+                    {children}
+                </body>
+            </html>
+        </AuthProvider>
+    );
 }

@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/context/AuthProvider';
 import Layout from '@/components/Layout';
-import loginStyle from "@/public/styles/login.module.css";
+import register from "@/public/styles/register.module.css";
 
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
@@ -11,13 +11,16 @@ import Link from 'next/link';
 import { GoogleSignIn } from '@/components/authentication/GoogleSignIn';
 
 export default function Page() {
-    const { user, login, loading } = useAuth();
+    const { user, signup, loading } = useAuth();
 
     const [isMobile, setIsMobile] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
     const [passwordType, setPasswordType] = useState('password');
+    const [repeatPasswordType, setRepeatPasswordType] = useState('password');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -42,36 +45,47 @@ export default function Page() {
         }
     };
 
-    const handleLogin = async () => {
-        console.log("Logging in with", email, password);
+    const showRepeatPassword = () => {
+        if (repeatPasswordType === 'password') {
+            setRepeatPasswordType('text');
+            setRepeatPasswordVisible(true);
+        } else {
+            setRepeatPasswordType('password');
+            setRepeatPasswordVisible(false);
+        }
+    };
+
+    const handleSignup = async () => {
+        if (password !== repeatPassword) {
+            setError('Passwords do not match');
+            console.log("Passwords do not match");
+            return;
+        }
+        console.log("Signing up using", email, password);
         setError('');
 
         try {
-            await login(email, password);
+            await signup(email, password);
         } catch (err) {
             setError(err.message);
         }
     };
 
-    if (user) return redirect('/');
-
-    return (
+    if (!user) return (
         <Layout loading={false} mobile={isMobile} user={user}>
-            <main className={loginStyle.main}>
-                <h1 className={loginStyle.title}>Login</h1>
-                <h2 className={loginStyle.subtitle}>Login into your cloud storage account</h2>
-                <fieldset className={loginStyle.inputWithText}>
+            <main className={register.main}>
+                <h1 className={register.title}>Signup</h1>
+                <h2 className={register.subtitle}>Make an account for your cloud storage</h2>
+                <fieldset className={register.inputWithText}>
                     <legend>Email</legend>
                     <input
                         type="email"
                         name="email"
                         defaultValue={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                        required />
                 </fieldset>
-
-                <fieldset className={loginStyle.inputWithText}>
+                <fieldset className={register.inputWithText}>
                     <legend>Password</legend>
                     <input
                         type={passwordType}
@@ -94,17 +108,34 @@ export default function Page() {
                         />
                     </button>
                 </fieldset>
-
-                <GoogleSignIn style={loginStyle} />
-
-                <button onClick={handleLogin} type="button" className={loginStyle.loginButton}>Log In</button>
-
-                {error && <p className={loginStyle.error}>{error}</p>}
-
-                <Link href="/register" className={loginStyle.registerLink}>
-                    Don't have an account yet? Sign Up
-                </Link>
+                <fieldset className={register.inputWithText}>
+                    <legend>Repeat Password</legend>
+                    <input
+                        type={repeatPasswordType}
+                        name='password'
+                        defaultValue={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
+                        required
+                        minLength="8"
+                    />
+                    <button
+                        type="button"
+                        onClick={showRepeatPassword}
+                        aria-label="Toggle Repeat Password Visibility"
+                    >
+                        <Image
+                            src={repeatPasswordVisible ? "/assets/authentication/VisibilityOn.svg" : "/assets/authentication/VisibilityOff.svg"}
+                            width={30}
+                            height={30}
+                            alt="Visibility"
+                        />
+                    </button>
+                </fieldset>
+                <GoogleSignIn style={register} />
+                <button onClick={handleSignup} type="button" className={register.registerButton}>Sign Up</button>
+                <Link href="/login" className={register.registerLink}>Already have an account? Log In</Link>
             </main>
         </Layout>
     );
+    else return redirect('/');
 }

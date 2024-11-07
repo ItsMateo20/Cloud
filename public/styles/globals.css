@@ -1,9 +1,25 @@
 :root {
   --background: #ffffff;
-  --foreground: #303030;
-  --top-nav-height: 70px;
-  --side-nav-width: 70px;
+  --top-nav-height: 60px;
+  --side-nav-width: 60px;
+  --text: #303030;
+  --alt-text-1: #CFCFCF;
   --alt-text-2: #ADADAD;
+  --alt-text-3: #606060;
+  --alt-svg-1: invert(83%) sepia(0%) saturate(0%) hue-rotate(193deg) brightness(99%) contrast(98%);
+  --alt-svg-3: invert(37%) sepia(0%) saturate(0%) hue-rotate(323deg) brightness(93%) contrast(81%);
+  --btn-background: #F2F2F2;
+  --btn-disabled-background: #D8D8D8;
+}
+
+input:-webkit-autofill:focus,
+input:-webkit-autofill {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  -webkit-text-fill-color: var(--text) !important;
+  color: var(--text) !important;
+  appearance: none !important;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -21,8 +37,8 @@ body {
 
 body {
   padding: calc(var(--top-nav-height) + 10px) 10px 10px 10px;
-  color: var(--foreground);
   font-weight: 700;
+  color: var(--text);
   background: var(--background);
   font-family: var(--font-poppins);
   -webkit-font-smoothing: antialiased;
