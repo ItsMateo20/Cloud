@@ -1,3 +1,9 @@
+# NEW VERSION COMING SOON 
+- NEW DESIGN
+- OLD FUNCTIONS
+- NEW FUNCTIONS
+- AND MAYBE SOME FUNCTIONS ARE COMING BACK FROM OLDER RELEASES
+
 # Cloud Storage
 <!--- ![Lines Of Code](https://tokei.rs/b1/github/ItsMateo20/Cloud?style=for-the-badge&color=gray) --->
 [![Last commit](https://img.shields.io/github/last-commit/ItsMateo20/Cloud?style=for-the-badge&labelColor=white&color=gray)](https://github.com/ItsMateo20/Cloud/commit/main)
